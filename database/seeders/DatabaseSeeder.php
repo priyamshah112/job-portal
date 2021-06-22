@@ -19,6 +19,12 @@ class DatabaseSeeder extends Seeder
             CountriesTableSeeder::class,
             UsersTableSeeder::class,
             MenuTableSeeder::class,
+            PackageSeeder::class,
+            RecruiterSeeder::class,
+            RecruiterPackageSeeder::class,
+            StateTableSeeder::class,
+            CitiesTableSeeder::class,
+            CandidateTableSeeder::class
         ]);
     }
 }

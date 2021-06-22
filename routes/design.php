@@ -163,10 +163,10 @@ Route::group(['prefix' => 'design'], function () {
         Route::get('account-settings', [PagesController::class, 'account_settings'])->name('page-account-settings');
         Route::get('profile', [PagesController::class, 'profile'])->name('page-profile');
         Route::get('faq', [PagesController::class, 'faq'])->name('page-faq');
-        Route::get('knowledge-base', [PagesController::class, 'knowledge_base'])->name('page-knowledge-base');
-        Route::get('knowledge-base/category', [PagesController::class, 'kb_category'])->name('page-knowledge-base');
-        Route::get('knowledge-base/category/question',
-            [PagesController::class, 'kb_question'])->name('page-knowledge-base');
+        // Route::get('knowledge-base', [PagesController::class, 'knowledge_base'])->name('page-knowledge-base');
+        // Route::get('knowledge-base/category', [PagesController::class, 'kb_category'])->name('page-knowledge-base');
+        // Route::get('knowledge-base/category/question',
+        //     [PagesController::class, 'kb_question'])->name('page-knowledge-base');
         Route::get('pricing', [PagesController::class, 'pricing'])->name('page-pricing');
         Route::get('blog/list', [PagesController::class, 'blog_list'])->name('page-blog-list');
         Route::get('blog/detail', [PagesController::class, 'blog_detail'])->name('page-blog-detail');

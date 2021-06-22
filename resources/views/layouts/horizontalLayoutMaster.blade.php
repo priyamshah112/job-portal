@@ -1,5 +1,5 @@
 <?php
-$configData 
+$configData
 ?>
 
 <body class="horizontal-layout horizontal-menu {{$configData['horizontalMenuType']}} {{ $configData['showMenu'] === true ? '' : '1-column' }}

@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
@@ -11,15 +10,15 @@ class LoginOtp extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $details;
+    public $user;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($details)
+    public function __construct($user)
     {
-        $this->details = $details;
+        $this->user = $user;
     }
 
     /**
@@ -29,9 +28,6 @@ class LoginOtp extends Mailable
      */
     public function build()
     {
-        return $this->subject($this->details['subject'])
-    ->replyTo($this->details['email'])
-    ->markdown('emails.loginOtp');
-
+        return $this->view('emails.verifyUser');
     }
 }

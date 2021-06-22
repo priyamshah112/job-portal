@@ -1,110 +1,94 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'User List')
+@section('title', 'Feedback')
+
 
 @section('vendor-style')
-  {{-- Page Css files --}}
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/tables/datatable/dataTables.bootstrap4.min.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/tables/datatable/responsive.bootstrap4.min.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/tables/datatable/buttons.bootstrap4.min.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/toastr.min.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/animate/animate.min.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/sweetalert2.min.css')) }}">
+<!-- vendor css files -->
+<link rel="stylesheet" href="{{ asset(mix('vendors/css/forms/wizard/bs-stepper.min.css')) }}">
+<link rel="stylesheet" href="{{ asset(mix('vendors/css/file-uploaders/dropzone.min.css')) }}">
+<link rel="stylesheet" href="{{ asset(mix('vendors/css/forms/select/select2.min.css')) }}">
+<link rel="stylesheet" href="{{ asset(mix('vendors/css/pickers/pickadate/pickadate.css')) }}">
+<link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/toastr.min.css')) }}">
+<link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/sweetalert2.min.css')) }}">
 @endsection
 
 @section('page-style')
-  {{-- Page Css files --}}
-  <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-validation.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('css/base/pages/app-user.css')) }}">
-  <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/extensions/ext-component-toastr.css')) }}">
+<!-- Page css files -->
+<link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-validation.css')) }}">
+<link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-wizard.css')) }}">
+<link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-pickadate.css')) }}">
+
+<link rel="stylesheet" href="{{ asset(mix('css/base/pages/app-user.css')) }}">
+<link rel="stylesheet" href="{{ asset(mix('css/base/plugins/extensions/ext-component-toastr.css')) }}">
 @endsection
 
 @section('content')
-<!-- cateory list start -->
-<section class="app-category-list" >
-  <!-- list section start -->
-  <div class="card">
-    <div class="card-datatable table-responsive pt-0">
-      <table class="category-list-table table">
-        <thead class="thead-light">
-          <tr>
-            <th></th>
-            <th>Sr.No</th>
-            <th>User</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-      </table>
+<!-- Feedback Form -->
+
+<div class="container">
+    <div class="card mb-0">
+        <div class="card-body">
+            <h4 class="text-left">Feedback Form</h4>
+            <form class="auth-login-form mt-2" method="POST" id="feedback-form">
+                <div class="row mt-2">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="feedback-name" class="form-label">Name </label>
+                            <input type="text" class="form-control"  placeholder="" tabindex="1" autofocus
+                                   value="{{auth()->user()->first_name}}" readonly/>
+                        </div>
+                        <div class="form-group">
+                            <label for="login-email" class="form-label">Email</label>
+                            <input type="email" class="form-control" placeholder="" aria-describedby="login-email"
+                                   tabindex="1" value="{{auth()->user()->email }}" readonly/>
+                        </div>
+                        <div class="form-group">
+                            <label for="feedback-subject" class="form-label">Subject</label><span
+                                    class="invalid-feedback">*</span>
+                            <input type="text" class="form-control"
+                                   id="feedback-subject" name="subject" placeholder="Subject" tabindex="1"
+                                   value="{{ old('subject') }}"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlFile1" class="form-label">Attachment (Optional)</label>
+                            <input type="file" name="fileToUpload" class="myfileupload"
+                                   id="exampleFormControlFile1">
+                            <p class="filetext">Select Your File(Must be .PNG .JPEG and less than 5MB)</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="feedback" class="form-label">Feedback</label><span
+                                    class="invalid-feedback">*</span>
+                            <textarea rows="12" class="form-control"
+                                      id="feedback" name="feedback"
+                                      placeholder="Feedback Message">{{ old('feedback') }}</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-right mt-2">
+                    <button type="submit" id="data-submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
     </div>
-    <!-- Modal to add new user starts-->
-    <div class="modal modal-slide-in new-category-modal fade" id="modals-slide-in">
-      <div class="modal-dialog">
-        <form class="add-new-category modal-content pt-0" method="POST" >
-          @csrf
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
-          <div class="modal-header mb-1">
-            <h5 class="modal-title" id="exampleModalLabel">New User</h5>
-          </div>
-          <div class="modal-body flex-grow-1">
-          <div class="form-group">
-              <label class="form-label" for="basic-icon-default-fullname">Full Name</label>
-              <input
-                type="text"
-                class="form-control dt-full-name"
-                id="basic-icon-default-fullname"
-                placeholder="John Doe"
-                name="name"
-                aria-label="John Doe"
-                aria-describedby="basic-icon-default-fullname2"
-              />
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="basic-icon-default-email">Email</label>
-              <input
-                type="text"
-                id="basic-icon-default-email"
-                class="form-control dt-email"
-                placeholder="john.doe@example.com"
-                aria-label="john.doe@example.com"
-                aria-describedby="basic-icon-default-email2"
-                name="email"
-              />
-              <small class="form-text text-muted"> You can use letters, numbers & periods </small>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="user-role">User Role</label>
-              <select name="user-role" id="user-role" class="form-control">
-              </select>
-            </div>
-            <button type="submit" class="btn btn-primary mr-1 data-submit">Submit</button>
-            <button type="reset" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
-          </div>
-        </form>
-      </div>
-    </div>
-    <!-- Modal to add new user Ends-->
-  </div>
-  <!-- list section end -->
-</section>
-<!-- category list ends -->
+</div>
+
 @endsection
 
 @section('vendor-script')
-  {{-- Vendor js files --}}
-  <script src="{{ asset(mix('vendors/js/tables/datatable/jquery.dataTables.min.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/tables/datatable/datatables.bootstrap4.min.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/tables/datatable/dataTables.responsive.min.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/tables/datatable/responsive.bootstrap4.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/tables/datatable/datatables.buttons.min.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/tables/datatable/buttons.bootstrap4.min.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/forms/validation/jquery.validate.min.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/extensions/toastr.min.js')) }}"></script>
-  <script src="{{ asset(mix('vendors/js/extensions/sweetalert2.all.min.js')) }}"></script>
+<!-- vendor files -->
+<script src="{{ asset(mix('vendors/js/forms/wizard/bs-stepper.min.js')) }}"></script>
+<script src="{{ asset(mix('vendors/js/extensions/dropzone.min.js')) }}"></script>
+<script src="{{ asset(mix('vendors/js/forms/select/select2.full.min.js')) }}"></script>
+<script src="{{ asset(mix('vendors/js/forms/validation/jquery.validate.min.js')) }}"></script>
+<script src="{{ asset(mix('vendors/js/extensions/toastr.min.js')) }}"></script>
+<script src="{{ asset(mix('vendors/js/extensions/sweetalert2.all.min.js')) }}"></script>
+
 @endsection
 
 @section('page-script')
-  {{-- Page js files --}}
-  <script src="{{ asset(mix('js/user-list.js')) }}"></script>
+<script src="{{asset(mix('js/main/config.js'))}}"></script>
+<script id="pcs" src="{{asset(mix('js/main/feedback.js'))}}"></script>
 @endsection

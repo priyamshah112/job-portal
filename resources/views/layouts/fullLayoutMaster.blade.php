@@ -57,6 +57,7 @@ $configData = Helper::applClasses();
     })
 
   </script>
+
 </body>
 
 </html>

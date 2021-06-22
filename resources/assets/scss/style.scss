@@ -9,3 +9,50 @@ NOTE:
 ------
 PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
 WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
+
+.invalid-feedback {
+  display: inline !important;
+}
+.dataTables_wrapper div:nth-child(1), .dataTables_wrapper div:nth-child(3) {
+	padding: 0 10px;
+}
+.action-cell{
+  min-width: 180px;
+}
+.error{
+  color: red;
+}
+
+.dropzone .dz-preview .dz-error-message {
+  display: none !important;
+  opacity: 0 !important;
+}
+.myattachments .media {
+  border-bottom: 1px solid lightgray;
+}
+.myattachments .media:nth-last-child(1) {
+  border-bottom: 0px;
+}
+.filetext {
+  font-size: 12px;
+  margin-top: 3px;
+}
+.myfileupload{
+  display: block;
+  border-radius: .2em;
+  width: 100%;
+  border: 1px solid #0b4374;
+}
+.myfileupload::file-selector-button {
+  border: 2px solid #0b4374;
+  padding: .2em .4em;
+  border-radius: .2em;
+  color: #fff;
+  background-color: #0b4374;
+  transition: 1s;
+}
+
+.myfileupload::file-selector-button:hover {
+  background-color: #0b4374;
+  border: 2px solid #0b4374;
+}

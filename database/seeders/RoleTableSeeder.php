@@ -19,76 +19,32 @@ class RoleTableSeeder extends Seeder
        Role::create([
             'name' => 'admin'
         ])->givePermissionTo([
-            'read-admin-recruiters',
-            'create-admin-recruiters',
-            'write-admin-recruiters',
-            'delete-admin-recruiters',
-            'read-admin-candidates',
-            'create-admin-candidates',
-            'write-admin-candidates',
-            'delete-admin-candidates',
-            'read-admin-dashboard',
-            'create-admin-dashboard',
-            'write-admin-dashboard',
-            'delete-admin-dashboard',  
-            'read-admin-job-fair',
-            'create-admin-job-fair',
-            'write-admin-job-fair',
-            'delete-admin-job-fair',                                    
+            'admin-dashboard',
+           'admin-recruiter',
+           'admin-candidates',
+           'admin-jobfair',
+           'admin-feedback'
         ]);
 
         Role::create([
             'name' => 'recruiter'
         ])->givePermissionTo([
-            'read-recruiter-dashboard',
-            'create-recruiter-dashboard',
-            'write-recruiter-dashboard',
-            'delete-recruiter-dashboard',
-            'read-recruiter-applied-candidates',
-            'create-recruiter-applied-candidates',
-            'write-recruiter-applied-candidates',
-            'delete-recruiter-applied-candidates',
-            'read-recruiter-job',
-            'create-recruiter-job',
-            'write-recruiter-job',
-            'delete-recruiter-job',
-            'read-feedback',
-            'create-feedback',
-            'write-feedback',
-            'delete-feedback',
-            'read-job-fair',
-            'create-job-fair',
-            'write-job-fair',
-            'delete-job-fair',                      
+            'recruiter-dashboard',
+            'recruiter-jobs',
+            'recruiter-candidates',
+            'recruiter-jobfair',
+            'recruiter-feedback'
         ]);
 
         Role::create([
             'name' => 'candidate'
         ])->givePermissionTo([
-            'read-candidate-all-jobs',
-            'create-candidate-all-jobs',
-            'write-candidate-all-jobs',
-            'delete-candidate-all-jobs',
-            'read-candidate-applied-jobs',
-            'create-candidate-applied-jobs',
-            'write-candidate-applied-jobs',
-            'delete-candidate-applied-jobs',
-            'read-candidate-resume',
-            'create-candidate-resume',
-            'write-candidate-resume',
-            'delete-candidate-resume',
-            'read-candidate-video-resume',
-            'create-candidate-video-resume',
-            'write-candidate-video-resume',
-            'delete-candidate-video-resume',
-            'read-feedback',
-            'create-feedback',
-            'write-feedback',
-            'delete-feedback',
-            'read-job-fair',
-            'create-job-fair',
-            'write-job-fair',
-            'delete-job-fair',                      
+            'candidate-dashboard',
+            'candidate-jobs',
+            'candidate-resume',
+            'candidate-video-resume',
+            'candidate-jobfair',
+            'candidate-feedback'
         ]);
     }
 }

@@ -176,6 +176,9 @@ return [
         App\Providers\RouteServiceProvider::class,
         // custom theme menu provider
         App\Providers\MenuServiceProvider::class,
+        // Data Table
+        Yajra\DataTables\DataTablesServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
     ],
 
     /*
@@ -228,7 +231,9 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         // custom theme helper
-        'Helper' => App\Helpers\Helper::class
+        'Helper' => App\Helpers\Helper::class,
+        // Datatable
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
     ],
 
 ];

@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'User List')
+@section('title', 'Applied candidates')
 
 @section('vendor-style')
   {{-- Page Css files --}}
@@ -36,6 +36,9 @@
             <th>Actions</th>
           </tr>
         </thead>
+        <td>
+        No Data Found
+        </td>
       </table>
     </div>
     <!-- Modal to add new user starts-->
@@ -106,5 +109,5 @@
 
 @section('page-script')
   {{-- Page js files --}}
-  <script src="{{ asset(mix('js/user-list.js')) }}"></script>
+<!--  <script src="{{ asset(mix('js/user-list.js')) }}"></script>-->
 @endsection

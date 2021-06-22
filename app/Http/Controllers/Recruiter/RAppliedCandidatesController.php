@@ -9,7 +9,7 @@ class RAppliedCandidatesController extends AppBaseController
 
     public function __construct()
     {
-        //        
+        $this->middleware(['auth','verified']);
     }
 
     public function index()

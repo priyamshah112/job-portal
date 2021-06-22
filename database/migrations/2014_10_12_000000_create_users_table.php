@@ -25,11 +25,12 @@ class CreateUsersTable extends Migration
             $table->string('mobile_number')->nullable();
             $table->string('img_path')->nullable();
             $table->string('image_name')->nullable();
-            $table->enum('active',[0,1])->default(1);
+            $table->enum('active',[0,1,2])->default(0);
             $table->string('user_type');
             $table->string('password');
             $table->string('otp')->nullable();
             $table->timestamp('otp_expiry')->nullable();
+            $table->boolean('verified')->default(false);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

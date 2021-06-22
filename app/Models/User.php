@@ -21,10 +21,14 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $fillable = [
         'first_name',
+        'last_name',
+        "mobile_number",
         'email',
         'password',
+        'user_type',
         'img_path',
         'image_name',
+        'active'
     ];
 
     /**
@@ -45,4 +49,15 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+
+    public function verifyUser()
+    {
+        return $this->hasOne('App\Models\VerifyUser');
+    }
+
+    public function recruiter() {
+        return $this->hasOne(Recruiter::class)->latest()->with('package')->with('attachments');
+    }
 }

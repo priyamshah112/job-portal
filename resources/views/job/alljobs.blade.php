@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'User List')
+@section('title', 'Jobs List')
 
 @section('vendor-style')
   {{-- Page Css files --}}
@@ -17,74 +17,38 @@
   <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-validation.css')) }}">
   <link rel="stylesheet" href="{{ asset(mix('css/base/pages/app-user.css')) }}">
   <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/extensions/ext-component-toastr.css')) }}">
+  <style>
+    .dataTables_wrapper div:nth-child(1), .dataTables_wrapper div:nth-child(3) {
+        padding: 0 10px;
+    }
+    .action-cell{
+      min-width: 80px;
+    }
+</style>
 @endsection
-
 @section('content')
+<div class="float-right" style="margin-top: -50px">
+    <a href="create-jobs" class="btn btn-primary">Add Job</a>
+</div>
 <!-- cateory list start -->
 <section class="app-category-list" >
   <!-- list section start -->
   <div class="card">
     <div class="card-datatable table-responsive pt-0">
-      <table class="category-list-table table">
+      <table id="pageTable"  class="category-list-table table">
         <thead class="thead-light">
           <tr>
-            <th></th>
-            <th>Sr.No</th>
-            <th>User</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Actions</th>
+            <th>Position</th>
+            <th>Number of Posisions</th>
+            <th>Experience</th>
+            <th>Deadline</th>
+            <th>Created At</th>
+            <th>Status</th>
+            <th>Action</th>
           </tr>
         </thead>
       </table>
     </div>
-    <!-- Modal to add new user starts-->
-    <div class="modal modal-slide-in new-category-modal fade" id="modals-slide-in">
-      <div class="modal-dialog">
-        <form class="add-new-category modal-content pt-0" method="POST" >
-          @csrf
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
-          <div class="modal-header mb-1">
-            <h5 class="modal-title" id="exampleModalLabel">New User</h5>
-          </div>
-          <div class="modal-body flex-grow-1">
-          <div class="form-group">
-              <label class="form-label" for="basic-icon-default-fullname">Full Name</label>
-              <input
-                type="text"
-                class="form-control dt-full-name"
-                id="basic-icon-default-fullname"
-                placeholder="John Doe"
-                name="name"
-                aria-label="John Doe"
-                aria-describedby="basic-icon-default-fullname2"
-              />
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="basic-icon-default-email">Email</label>
-              <input
-                type="text"
-                id="basic-icon-default-email"
-                class="form-control dt-email"
-                placeholder="john.doe@example.com"
-                aria-label="john.doe@example.com"
-                aria-describedby="basic-icon-default-email2"
-                name="email"
-              />
-              <small class="form-text text-muted"> You can use letters, numbers & periods </small>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="user-role">User Role</label>
-              <select name="user-role" id="user-role" class="form-control">
-              </select>
-            </div>
-            <button type="submit" class="btn btn-primary mr-1 data-submit">Submit</button>
-            <button type="reset" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
-          </div>
-        </form>
-      </div>
-    </div>
-    <!-- Modal to add new user Ends-->
   </div>
   <!-- list section end -->
 </section>
@@ -102,9 +66,9 @@
   <script src="{{ asset(mix('vendors/js/forms/validation/jquery.validate.min.js')) }}"></script>
   <script src="{{ asset(mix('vendors/js/extensions/toastr.min.js')) }}"></script>
   <script src="{{ asset(mix('vendors/js/extensions/sweetalert2.all.min.js')) }}"></script>
+<script src="{{asset(mix('js/main/config.js'))}}"></script>
 @endsection
 
 @section('page-script')
-  {{-- Page js files --}}
-  <script src="{{ asset(mix('js/user-list.js')) }}"></script>
+<script src="{{asset(mix('js/main/recruiter-jobs.js'))}}"></script>
 @endsection

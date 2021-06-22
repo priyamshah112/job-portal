@@ -2,24 +2,27 @@
 
 namespace App\Http\Controllers\Recruiter;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class RDashboardController extends Controller
 {
-  // Dashboard - Analytics
-  public function rdashboardAnalytics()
-  {
-    $pageConfigs = ['pageHeader' => false];
+    public function __construct()
+    {
+        $this->middleware(['auth', 'verified']);
+    }
+    // Dashboard - Analytics
+    public function rdashboardAnalytics()
+    {
+        $pageConfigs = ['pageHeader' => false];
 
-    return view('/content/dashboard/dashboard-analytics', ['pageConfigs' => $pageConfigs]);
-  }
+        return view('/admin-recruiters/dashboard', ['pageConfigs' => $pageConfigs]);
+    }
 
-  // Dashboard - Ecommerce
-  public function dashboardEcommerce()
-  {
-    $pageConfigs = ['pageHeader' => false];
+    // Dashboard - Ecommerce
+    public function dashboardEcommerce()
+    {
+        $pageConfigs = ['pageHeader' => false];
 
-    return view('/content/dashboard/dashboard-ecommerce', ['pageConfigs' => $pageConfigs]);
-  }
+        return view('/content/dashboard/dashboard-ecommerce', ['pageConfigs' => $pageConfigs]);
+    }
 }

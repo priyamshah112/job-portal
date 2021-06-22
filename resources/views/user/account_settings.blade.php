@@ -144,7 +144,7 @@
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
-                                                <label for="account-name">Name</label>
+                                                <label for="account-name">Name</label><span class="invalid-feedback">*</span>
                                                 <input
                                                         type="text"
                                                         class="form-control"
@@ -157,7 +157,7 @@
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
-                                                <label for="account-e-mail">E-mail</label>
+                                                <label for="account-e-mail">E-mail</label><span class="invalid-feedback">*</span>
                                                 <input
                                                         type="email"
                                                         class="form-control"

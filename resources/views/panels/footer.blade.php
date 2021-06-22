@@ -7,5 +7,5 @@
 {{--    <span class="float-md-right d-none d-md-block">Hand-crafted & Made with<i data-feather="heart"></i></span>--}}
   </p>
 </footer>
-<button class="btn btn-primary btn-icon scroll-top" type="button"><i data-feather="arrow-up"></i></button>
+<button class="btn btn-primary btn-icon scroll-top" type="button"><i class="text-white" data-feather="arrow-up"></i></button>
 <!-- END: Footer-->

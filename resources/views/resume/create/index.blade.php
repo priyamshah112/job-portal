@@ -48,7 +48,6 @@
 @section('page-script')
 <!-- Page js files -->
 <script src="{{ asset(mix('js/scripts/forms/form-wizard.js')) }}"></script>
-<script src="{{ asset(mix('js/scripts/forms/form-file-uploader.js')) }}"></script>
 <script src="{{ asset(mix('js/scripts/forms/form-select2.js')) }}"></script>
 <script src="{{ asset(mix('js/scripts/forms/pickers/form-pickers.js')) }}"></script>
 <script src="{{asset(mix('js/scripts/components/components-collapse.js'))}}"></script>

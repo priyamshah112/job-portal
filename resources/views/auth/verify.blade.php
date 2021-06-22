@@ -6,6 +6,14 @@
 {{-- Page Css files --}}
 <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-validation.css')) }}">
 <link rel="stylesheet" href="{{ asset(mix('css/base/pages/page-auth.css')) }}">
+<style>
+    html .content.app-content{
+        padding: 0px;
+    }
+    html .content{
+        margin-left: 0px;
+    }
+</style>
 @endsection
 
 @section('content')
@@ -20,7 +28,7 @@
 
         <h4 class="card-title mb-1">Verify Your Email Address! </h4>
         @if (session('resent'))
-        <div class="alert alert-success" role="alert">
+        <div class="alert-box alert-success" role="alert" id="success">
           <div class="alert-body">
           {{ __('A fresh verification link has been sent to your email address.') }}</div>
         </div>
@@ -38,3 +46,8 @@
   </div>
 </div>
 @endsection
+<script>
+    $(document).ready(function(){
+        $("#success").delay(5000).slideUp(300);
+    });
+</script>

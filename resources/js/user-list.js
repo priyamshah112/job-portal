@@ -70,27 +70,28 @@ $(function () {
           targets: 2,
           responsivePriority: 4,
           render: function (data, type, full, meta) {
-            var $name = full['first_name'],
-                $image = full['img_path'];
+            let $name = full['first_name'];
+            let $image = full['img_path'];
+            let $imageName = full['image_name'];
             if ($image) {
               // For Avatar image
               var $output =
-                  '<img src="' + $image + '" alt="Avatar" height="32" width="32">';
+                  '<img src="' +'/'+ $image +'/'+ $imageName + '" alt="Avatar" height="35" width="35">';
             } else {
               // For Avatar badge
-              var stateNum = Math.floor(Math.random() * 6) + 1;
-              var states = ['success', 'danger', 'warning', 'info', 'dark', 'primary', 'secondary'];
-              var $state = states[stateNum];
-              var $initials = $name.match(/\b\w/g) || [];
+              let stateNum = Math.floor(Math.random() * 6) + 1;
+              let states = ['success', 'danger', 'warning', 'info', 'dark', 'primary', 'secondary'];
+              let $state = states[stateNum];
+              let $initials = $name.match(/\b\w/g) || [];
               $initials = (($initials.shift() || '') + ($initials.pop() || '')).toUpperCase();
               $output = '<span class="avatar-content">' + $initials + '</span>';
             }
-            var colorClass = $image === '' ? ' bg-light-' + $state + ' ' : '';
+            let colorClass = $image === '' ? ' bg-light-' + $state + ' ' : '';
             // Creates full output for row
-            var $row_output =
+            let $row_output =
               '<div class="d-flex justify-content-left align-items-center">' +
               '<div class="avatar-wrapper">' +
-              '<div class="avatar ' +
+              '<div class="avatar1 ' +
               colorClass +
               ' mr-1">' +
               $output +
