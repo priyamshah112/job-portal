@@ -37,7 +37,7 @@
 @endsection
 @section('content')
     <div class="float-right" style="margin-top: -50px">
-        <a href="{{ route('recruiter-jobs') }}" class="btn btn-primary">Back</a>
+        <a href="{{ route('jobs') }}" class="btn btn-primary">Back</a>
     </div>
     <div class="container">
         <div class="row">

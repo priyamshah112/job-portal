@@ -142,26 +142,31 @@
                             <select class="form-control" id="industry_type"
                                 name="industry_type">
                                 <option value="">Select Option</option>
-                                <option>Banking and
-                                    Insurance</option>
+                                <option>Banking and Insurance</option>
                                 <option>IT</option>
                                 <option>Education</option>
                                 <option>Engg</option>
                                 <option>Food</option>
                                 <option>Pharma</option>
-                                <option>Civil
-                                    Construction</option>
+                                <option>Civil Construction</option>
                                 <option>Chemical</option>
-                                <option>Civil
-                                    Hardware</option>
-                                <option>Consumer
-                                    durables</option>
+                                <option>Civil Hardware</option>
+                                <option>Consumer Durables</option>
                                 <option>FMCG</option>
                                 <option>Hospitality</option>
                                 <option>Aviation</option>
                                 <option>Electronics</option>
-                                <option>Home
-                                    Appliances</option>
+                                <option>Home Appliances</option>
+                                <option>E-Commerce</option>
+                                <option>Logistic</option>
+                                <option>Automobile</option>
+                                <option>Architecture</option>
+                                <option>Media & Entertainment</option>
+                                <option>Telecom and Broadband</option>
+                                <option>Real Estate</option>
+                                <option>Agriculture</option>
+                                <option>Healthcare</option>
+                                <option>Fashion</option>
                                 <option>Others</option>
                             </select>
                         </div>

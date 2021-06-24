@@ -19,32 +19,32 @@ class RoleTableSeeder extends Seeder
        Role::create([
             'name' => 'admin'
         ])->givePermissionTo([
-            'admin-dashboard',
-           'admin-recruiter',
-           'admin-candidates',
-           'admin-jobfair',
-           'admin-feedback'
+            'dashboard',
+            'recruiter',
+            'candidate',
+            'jobfair',
+            'feedback'
         ]);
 
         Role::create([
             'name' => 'recruiter'
         ])->givePermissionTo([
-            'recruiter-dashboard',
-            'recruiter-jobs',
-            'recruiter-candidates',
-            'recruiter-jobfair',
-            'recruiter-feedback'
+            'dashboard',
+            'job',
+            'applied-candidate',
+            'jobfair',
+            'feedback'
         ]);
 
         Role::create([
             'name' => 'candidate'
         ])->givePermissionTo([
-            'candidate-dashboard',
-            'candidate-jobs',
-            'candidate-resume',
-            'candidate-video-resume',
-            'candidate-jobfair',
-            'candidate-feedback'
+            'job',
+            'applied-job',
+            'jobfair',
+            'resume',
+            'video-resume',
+            'feedback'
         ]);
     }
 }

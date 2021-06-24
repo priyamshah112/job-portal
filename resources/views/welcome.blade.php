@@ -37,8 +37,7 @@
         <div class="uk-navbar-right">
 
             <ul class="uk-navbar-nav">
-                <li class="uk-active"><a href="{{ url('login') }}">Recruiter / Candidate</a></li>
-                <li><a href="{{ url('admin/login') }}"><strong>Admin</strong></a></li>
+                <li class="uk-active"><a href="{{ url('login') }}">Login</a></li>
             </ul>
 
         </div>

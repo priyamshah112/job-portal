@@ -363,12 +363,12 @@
                 {{-- <a class="dropdown-item" href="#"> --}}
                 {{-- <i class="mr-50" data-feather="power"></i> Logout --}}
                 {{-- </a> --}}
-                <a class="dropdown-item" href="{{ url('admin/logout') }}" onclick="event.preventDefault();
+                <a class="dropdown-item" href="{{ url('logout') }}" onclick="event.preventDefault();
                     document.getElementById('logout-form').submit();">
                     <i class="mr-50" data-feather="power"></i> Logout
                 </a>
 
-                <form id="logout-form" action="{{ url('admin/logout') }}" method="POST" style="display: none;">
+                <form id="logout-form" action="{{ url('logout') }}" method="POST" style="display: none;">
                     {{ csrf_field() }}
                 </form>
             </div>
