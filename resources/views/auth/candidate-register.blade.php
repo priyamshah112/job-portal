@@ -107,8 +107,8 @@
                         </div>
                         <div class="form-group">
                             <label for="email" class="form-label">Alternate Email</label>
-                            <input type="email" class="form-control" id="email"
-                                name="alt_email" placeholder="microsoft@outlook.com" aria-describedby="email" tabindex="2" />
+                            <input type="email" class="form-control" id="alt_email"
+                                name="alt_email" placeholder="microsoft@outlook.com" aria-describedby="alt_email" tabindex="2" />
                         </div>
                         <div class="form-group">
                             <label for="education" class="form-label">Education</label><span class="invalid-feedback">*</span>

@@ -19,18 +19,62 @@ otpform.hide();
 registerform.show();
 render();
 coderesult = null;
+
+jQuery.validator.addMethod("validate_email", function(value, element) {
+    if (value.length > 1) {
+        if (/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(value)) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return true;
+    }
+
+}, "Please enter a valid email address.");
+
+jQuery.validator.addMethod("notEqualEmail", function(value, element, param) {
+    return this.optional(element) || value != $(param).val();
+}, "This field should not be same as email.");
+
+jQuery.validator.addMethod(
+    "validDOB",
+    function(value, element) {  
+
+        var currdate = new Date();
+        var d = new Date(value);
+        var setDate = new Date(d.getFullYear() + 18, d.getMonth(), d.getDate());
+        if (currdate >= setDate){
+            return true;
+        }else{
+            return false;
+        }
+    },
+    "Sorry, you must be 18 years of age to apply"
+);
+
 let validator = registerform.validate({
     rules: {
         first_name: {required: true},
         last_name: {required: true},
-        dateOfBirth: {required: true},
+        dateOfBirth: {
+            required: true,
+            validDOB : true
+        },
         permanent_address: {required: true},
         state: {required: true},
         city: {required: true},
         company_mobile_1: {required: true, minlength: 10},
         company_mobile_2: {required: false, minlength: 10},
-        email: {required: true, email: true},
-        alt_email: {required: false, email: true},
+        email: {
+            required: true, 
+            validate_email: true
+        },
+        alt_email: {
+            required: false, 
+            validate_email: true,
+            notEqualEmail: "#alt_email"
+        },
         education: {required: true},
         category: {required: true},
         industry_type: {required: true},

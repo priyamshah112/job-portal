@@ -45,36 +45,34 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-lg-12 col-md-12">
-                                <h5 class="text-primary">{{ $job->position }}</h5>
+                            <div class="col-lg-12 col-md-12 d-flex">
+                                <h5 class="text-primary">Position: </h5>
+                                <h5 class="ml-1 mb-0 lead">{{ $job->position }}</h5>
                             </div>
                             <div class="col-lg-12 col-md-12">
                                 <hr class="p-0 text-primary mt-0">
                             </div>
-                            <div class="col-lg-12 col-md-6">
-                                <span class="text-primary">Description : </span>{{$job->description}}
+                            <div class="col-lg-12 col-md-6 d-flex">
+                                <h5 class="text-primary">Description : </h5>
+                                <h5 class="ml-1 mb-0 lead">{{$job->description}}</h5>
                             </div>
                         </div>
                         <div class="col-lg-12 col-md-12 p-0">
-                            <hr class="p-0 text-primary">
+                            <hr class="p-0 text-primary mt-0">
                         </div>
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
                                 <h5 class="text-primary">Age (Min - Max)</h5>
-                            </div>
-                            <div class="col-lg-6 text-right">
-                                <h5 class="text-primary">{{ $job->age_min }} - {{ $job->age_max }}</h5>
+                                <h5 class="mt-1">{{ $job->age_min }} - {{ $job->age_max }}</h5>
                             </div>
                         </div>
                         <div class="col-lg-12 col-md-12 p-0">
-                            <hr class="p-0 text-primary">
+                            <hr class="p-0 text-primary mt-0">
                         </div>
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
                                 <h5 class="text-primary">Salary (Min - Max)</h5>
-                            </div>
-                            <div class="col-lg-6 text-right">
-                                <h5 class="text-primary">( ₹ {{ $job->salary_min }} - ₹ {{ $job->salary_max }} ) / PM</h5>
+                                <h5 class="mt-1">( ₹ {{ $job->salary_min }} - ₹ {{ $job->salary_max }} ) / PM</h5>
                             </div>
                         </div>
                     </div>
@@ -141,17 +139,6 @@
                                 <p><i data-feather="navigation"
                                       class="text-success font-small-4 mr-2"></i>{{ $job->city }},
                                     {{ $job->state }}</p>
-                            </div>
-                            <div class="col-lg-12 col-md-12">
-                                <h5 class="text-primary center-text">No. of Positions</h5>
-                            </div>
-                            <div class="col-lg-12 col-md-12">
-                                <hr class="text-primary mt-0">
-                            </div>
-                            <div class="col-lg-12 col-md-6">
-                                <p>
-                                    {{ $job->num_position }}
-                                </p>
                             </div>
                             <div class="col-lg-12 col-md-12">
                                 <h5 class="text-primary center-text">Experience (Min - Max)</h5>
