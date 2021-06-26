@@ -19,6 +19,24 @@ otpform.hide();
 registerform.show();
 render();
 coderesult = null;
+
+jQuery.validator.addMethod("validate_email", function(value, element) {
+    if (value.length > 1) {
+        if (/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(value)) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return true;
+    }
+
+}, "Please enter a valid email address.");
+
+jQuery.validator.addMethod("notEqualMobile", function(value, element, param) {
+    return this.optional(element) || value != $(param).val();
+}, "This field should not be same as primary number.");
+
 let validator = registerform.validate({
     rules: {
         first_name: {required: true},
@@ -29,9 +47,16 @@ let validator = registerform.validate({
         city: {required: true},
         company_landline_1: {required: false},
         company_landline_2: {required: false},
-        company_mobile_1: {required: true, minlength: 10},
-        company_mobile_2: {required: false, minlength: 10},
-        email: {required: true, email: true},
+        company_mobile_1: {
+            required: true, 
+            minlength: 10
+        },
+        company_mobile_2: {
+            required: false,
+            minlength: 10,
+            notEqualMobile: "#company_mobile_1",
+        },
+        email: {required: true, validate_email: true},
         industry_segment: {required: true},
         industry_type: {required: true},
         no_of_employees: {required: true},

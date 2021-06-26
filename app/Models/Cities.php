@@ -8,6 +8,7 @@ class Cities extends Model
 {
     protected $fillable = [
         'name',
+        'display_name',
         'state_id'
     ];
 

@@ -66,7 +66,6 @@
                                 <label class="custom-control-label" for="remember-me"> Remember Me </label>
                             </div>
                         </div>
-                        <input type="hidden" name="usertype" value="UmgoIhfJWomN4jLW5wPXoMkIY8l5PPY6Tq8bPjzx6mg="/>
                         <button type="submit" class="btn btn-primary btn-block" tabindex="4">Sign in</button>
                     </form>
                     <ul class="text-center mt-2 p-0" style="list-style-type:none;">

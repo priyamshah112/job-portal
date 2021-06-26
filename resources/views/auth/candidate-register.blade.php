@@ -31,6 +31,7 @@
                 </a> --}}
                     <H3 class="text-center"><strong>Candidate - Signup</strong></H3>
                     <form class="auth-register-form" id="candidate" method="POST">
+                        @csrf
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
@@ -106,8 +107,8 @@
                         </div>
                         <div class="form-group">
                             <label for="email" class="form-label">Alternate Email</label>
-                            <input type="email" class="form-control" id="email"
-                                name="alt_email" placeholder="microsoft@outlook.com" aria-describedby="email" tabindex="2" />
+                            <input type="email" class="form-control" id="alt_email"
+                                name="alt_email" placeholder="microsoft@outlook.com" aria-describedby="alt_email" tabindex="2" />
                         </div>
                         <div class="form-group">
                             <label for="education" class="form-label">Education</label><span class="invalid-feedback">*</span>
@@ -142,26 +143,31 @@
                             <select class="form-control" id="industry_type"
                                 name="industry_type">
                                 <option value="">Select Option</option>
-                                <option>Banking and
-                                    Insurance</option>
+                                <option>Banking and Insurance</option>
                                 <option>IT</option>
                                 <option>Education</option>
                                 <option>Engg</option>
                                 <option>Food</option>
                                 <option>Pharma</option>
-                                <option>Civil
-                                    Construction</option>
+                                <option>Civil Construction</option>
                                 <option>Chemical</option>
-                                <option>Civil
-                                    Hardware</option>
-                                <option>Consumer
-                                    durables</option>
+                                <option>Civil Hardware</option>
+                                <option>Consumer Durables</option>
                                 <option>FMCG</option>
                                 <option>Hospitality</option>
                                 <option>Aviation</option>
                                 <option>Electronics</option>
-                                <option>Home
-                                    Appliances</option>
+                                <option>Home Appliances</option>
+                                <option>E-Commerce</option>
+                                <option>Logistic</option>
+                                <option>Automobile</option>
+                                <option>Architecture</option>
+                                <option>Media & Entertainment</option>
+                                <option>Telecom and Broadband</option>
+                                <option>Real Estate</option>
+                                <option>Agriculture</option>
+                                <option>Healthcare</option>
+                                <option>Fashion</option>
                                 <option>Others</option>
                             </select>
                         </div>

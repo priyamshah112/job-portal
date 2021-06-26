@@ -25,7 +25,7 @@
 @section('content')
 <!-- Vertical Wizard -->
 <div class="float-right" style="margin-top: -50px">
-    <a href="{{ url('/candidate/list-resume') }}" class="btn btn-primary">Back</a>
+    <a href="{{ url('/list-resume') }}" class="btn btn-primary">Back</a>
 </div>
 <section class="vertical-wizard">
     <div class="bs-stepper vertical vertical-wizard-example">

@@ -26,11 +26,11 @@ class RedirectIfAuthenticated
             return redirect()->intended('/account-blocked');
         }
         if (Auth::user()->user_type == 'recruiter') {
-            return redirect('recruiter/dashboard');
+            return redirect('dashboard');
         } else if (Auth::user()->user_type == 'candidate') {
-            return redirect('candidate/list-resume');
+            return redirect('list-resume');
         } else if (Auth::user()->user_type == 'admin') {
-            return redirect('admin/dashboard');
+            return redirect('dashboard');
         } else {
             return redirect('/');
         }

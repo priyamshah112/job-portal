@@ -127,7 +127,7 @@ function execreate() {
                             disableSubmitButtonDraft(false);
                         }
                         setTimeout(()=>{
-                            window.location.href = '/recruiter/jobs';
+                            window.location.href = '/jobs';
                         }, 2000)
                     })
                     .fail(function(error) {

@@ -2,9 +2,9 @@ const isRtl = $("html").attr("data-textdirection") === "rtl";
 var table = null;
 const assetPath = $("body").attr("data-asset-path");
 function enable(id, dom) {
-    const url = "".concat(assetPath, "api/v1/recruiter/jobs/enable");
+    const url = `${assetPath}api/v1/jobs/status/${id}`;
     Pace.track(()=> {
-        $.post( url, {id})
+        $.post( url, {status: "0"})
             .done(function(response) {
                 response = JSON.parse(response);
                 console.log(response)
@@ -52,8 +52,8 @@ function continueED(data, id, dom, isEnable) {
         '                              </button>' +
         '                              <div class="dropdown-menu dropdown-menu-right">';
 
-    d += '<a href="/recruiter/jobs/view/'+id+'" class="dropdown-item w-100" type="button">View</a>' +
-        '<a href="/recruiter/jobs/edit/'+id+'" class="dropdown-item w-100" type="button">Edit</a>'+
+    d += '<a href="/jobs/view/'+id+'" class="dropdown-item w-100" type="button">View</a>' +
+        '<a href="/jobs/edit/'+id+'" class="dropdown-item w-100" type="button">Edit</a>'+
 
         '                              </div>' +
         '                             </div>';
@@ -61,14 +61,14 @@ function continueED(data, id, dom, isEnable) {
     table.cell(rowIndexAction, colIndexAction).data(d);
 }
 function disable(id, dom) {
-    const url = "".concat(assetPath, "api/v1/admin/feedback");
+    const url = `${assetPath}api/v1/jobs/status/${id}`;
     const statusTd = $(dom).closest('tr').find('.status-cell')[0];
     const actionTd = $(dom).closest('tr').find('.action-cell')[0];
     if (!statusTd || !actionTd) {
         return;
     }
     Pace.track(()=> {
-        $.post( url, {id})
+        $.post( url, {status: "1"})
             .done(function(response) {
                 response = JSON.parse(response);
                 console.log(response)

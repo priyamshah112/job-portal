@@ -15,156 +15,105 @@ class MenuTableSeeder extends Seeder
      */
     public function run()
     {
-        // Admin
-
         Menu::create([
             "id"=> 1,
-            'url'=> "admin/dashboard",
+            'url'=> "dashboard",
             'name'=> "Dashboard",
             'icon'=> "home",
-            'slug'=> "admin-dashboard",
+            'slug'=> "dashboard",
             'order'=> 1,
-            'permission_id'=> Permission::where('name','admin-dashboard')->first()->id,
-            ]);
+            'permission_id'=> Permission::where('name','dashboard')->first()->id,
+        ]);
+        
         Menu::create([
             "id"=> 2,
-            'url'=> "admin/recruiters",
+            'url'=> "recruiters",
             'name'=> "Recruiters",
-            'icon'=> "align-center",
-            'slug'=> "arecruiters",
+            'icon'=> "user-check",
+            'slug'=> "recruiters",
             'order'=> 2,
-            'permission_id'=> Permission::where('name','admin-recruiter')->first()->id,
+            'permission_id'=> Permission::where('name','recruiter')->first()->id,
         ]);
+        
         Menu::create([
             "id"=> 3,
-            'url'=> "admin/candidates",
+            'url'=> "candidates",
             'name'=> "Candidates",
-            'icon'=> "image",
-            'slug'=> "acandidates",
+            'icon'=> "users",
+            'slug'=> "candidates",
             'order'=> 3,
-            'permission_id'=> Permission::where('name','admin-candidates')->first()->id,
-        ]);
-        Menu::create([
-            "id"=> 4,
-            'name'=> "Job Fair",
-            'icon'=> "book",
-            'slug'=> "",
-            'order'=> 4,
-            'permission_id'=> Permission::where('name','admin-jobfair')->first()->id,
-        ]);
-        Menu::create([
-            "id"=> 5,
-            'url'=> "admin/feedback",
-            'name'=> "Feedback",
-            'icon'=> "speaker",
-            'slug'=> "feedback-admin",
-            'order'=> 5,
-            'permission_id'=> Permission::where('name','admin-feedback')->first()->id,
+            'permission_id'=> Permission::where('name','candidate')->first()->id,
         ]);
 
-        // Recruiter
+        Menu::create([
+            "id"=> 4,
+            'url'=> "jobs",
+            'name'=> "Jobs",
+            'icon'=> "briefcase",
+            'slug'=> "jobs",
+            'order'=> 4,
+            'permission_id'=> Permission::where('name','job')->first()->id,
+        ]);
+
+        Menu::create([
+            "id"=> 5,
+            'url'=> "applied-candidates",
+            'name'=> "Applied Candidates",
+            'icon'=> "align-center",
+            'slug'=> "applied-candidates",
+            'order'=> 5,
+            'permission_id'=> Permission::where('name','applied-candidate')->first()->id,
+        ]);
+
         Menu::create([
             "id"=> 6,
-            'url'=> "recruiter/dashboard",
-            'name'=> "Dashboard",
-            'icon'=> "speaker",
-            'slug'=> "recruiter-dashboard",
+            'url'=> "applied-jobs",
+            'name'=> "Applied Jobs",
+            'icon'=> "file-plus",
+            'slug'=> "applied-jobs",
             'order'=> 6,
-            'permission_id'=> Permission::where('name','recruiter-dashboard')->first()->id,
+            'permission_id'=> Permission::where('name','applied-job')->first()->id,
         ]);
+
         Menu::create([
             "id"=> 7,
-            'url'=> "recruiter/jobs",
-            'name'=> "Jobs",
+            'url'=> "job-fair",
+            'name'=> "Job Fair",
             'icon'=> "book",
-            'slug'=> "recruiter-jobs",
+            'slug'=> "job-fairs",
             'order'=> 7,
-            'permission_id'=> Permission::where('name','recruiter-jobs')->first()->id,
+            'permission_id'=> Permission::where('name','jobfair')->first()->id,
         ]);
+
+
         Menu::create([
             "id"=> 8,
-            'url'=> "recruiter/applied_candidates",
-            'name'=> "Applied Candidates",
-            'icon'=> "speaker",
-            'slug'=> "rappliedcandidates",
+            'url'=> "list-resume",
+            'name'=> "My Resume",
+            'icon'=> "file",
+            'slug'=> "resume",
             'order'=> 8,
-            'permission_id'=> Permission::where('name','recruiter-candidates')->first()->id,
+            'permission_id'=> Permission::where('name','resume')->first()->id,
         ]);
 
         Menu::create([
             "id"=> 9,
-            'url'=> "recruiter/list-jobs",
-            'name'=> "Job Fair",
-            'icon'=> "plus",
-            'slug'=> "recruiter-jobfair",
+            'url'=> "video-resume",
+            'name'=> "My Video CV",
+            'icon'=> "film",
+            'slug'=> "video-resume",
             'order'=> 9,
-            'permission_id'=> Permission::where('name','recruiter-jobfair')->first()->id,
+            'permission_id'=> Permission::where('name','video-resume')->first()->id,
         ]);
+
         Menu::create([
             "id"=> 10,
-            'url'=> "recruiter/feedback",
+            'url'=> "feedback",
             'name'=> "Feedback",
-            'icon'=> "speaker",
-            'slug'=> "feedback-recruiter",
+            'icon'=> "file-text",
+            'slug'=> "feedbacks",
             'order'=> 10,
-            'permission_id'=> Permission::where('name','recruiter-feedback')->first()->id,
-        ]);
-
-
-        //Candidates
-        Menu::create([
-            "id"=> 11,
-            'url'=> "candidate/alljobs",
-            'name'=> "All Jobs",
-            'icon'=> "speaker",
-            'slug'=> "candidate-dashboard",
-            'order'=> 1,
-            'permission_id'=> Permission::where('name','candidate-dashboard')->first()->id,
-        ]);
-        Menu::create([
-            "id"=> 12,
-            'url'=> "candidate/appliedjobs",
-            'name'=> "Applied Jobs",
-            'icon'=> "speaker",
-            'slug'=> "candidate-jobs",
-            'order'=> 12,
-            'permission_id'=> Permission::where('name','candidate-jobs')->first()->id,
-        ]);
-        Menu::create([
-            "id"=> 13,
-            'url'=> "candidate/list-resume",
-            'name'=> "My Resume",
-            'icon'=> "book",
-            'slug'=> "candidate-resume",
-            'order'=> 13,
-            'permission_id'=> Permission::where('name','candidate-resume')->first()->id,
-        ]);
-        Menu::create([
-            "id"=> 14,
-            'url'=> "candidate/video-resume",
-            'name'=> "My Video CV",
-            'icon'=> "camera",
-            'slug'=> "candidate-video-resume",
-            'order'=> 14,
-            'permission_id'=> Permission::where('name','candidate-video-resume')->first()->id,
-        ]);
-        Menu::create([
-            "id"=> 15,
-            'url'=> "",
-            'name'=> "Job Fair",
-            'icon'=> "speaker",
-            'slug'=> "candidate-jobfair",
-            'order'=> 15,
-            'permission_id'=> Permission::where('name','candidate-jobfair')->first()->id,
-        ]);
-        Menu::create([
-            "id"=> 16,
-            'url'=> "candidate/feedback",
-            'name'=> "Feedback",
-            'icon'=> "speaker",
-            'slug'=> "candidate-feedback",
-            'order'=> 16,
-            'permission_id'=> Permission::where('name','candidate-feedback')->first()->id,
+            'permission_id'=> Permission::where('name','feedback')->first()->id,
         ]);
 
     }

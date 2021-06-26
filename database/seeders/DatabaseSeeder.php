@@ -16,14 +16,14 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PermissionTableSeeder::class,
             RoleTableSeeder::class,
-            CountriesTableSeeder::class,
+            CountriesSeeder::class,
             UsersTableSeeder::class,
             MenuTableSeeder::class,
             PackageSeeder::class,
             RecruiterSeeder::class,
             RecruiterPackageSeeder::class,
-            StateTableSeeder::class,
-            CitiesTableSeeder::class,
+            StatesSeeder::class,
+            CitiesSeeder::class,
             CandidateTableSeeder::class
         ]);
     }

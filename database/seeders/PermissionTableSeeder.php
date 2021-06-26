@@ -16,56 +16,34 @@ class PermissionTableSeeder extends Seeder
     {
         // Admin Permisions
         Permission::create([
-            'name' => 'admin-dashboard'
+            'name' => 'dashboard'
         ]);
         Permission::create([
-            'name' => 'admin-recruiter'
+            'name' => 'recruiter'
         ]);
         Permission::create([
-            'name' => 'admin-candidates'
+            'name' => 'candidate'
         ]);
         Permission::create([
-            'name' => 'admin-jobfair'
+            'name' => 'applied-candidate'
         ]);
         Permission::create([
-            'name' => 'admin-feedback'
-        ]);
-
-        // Recruiter Permisions
-        Permission::create([
-            'name' => 'recruiter-dashboard'
+            'name' => 'applied-job'
         ]);
         Permission::create([
-            'name' => 'recruiter-jobs'
+            'name' => 'job'
         ]);
         Permission::create([
-            'name' => 'recruiter-candidates'
+            'name' => 'jobfair'
         ]);
         Permission::create([
-            'name' => 'recruiter-jobfair'
+            'name' => 'feedback'
+        ]);
+       Permission::create([
+            'name' => 'resume'
         ]);
         Permission::create([
-            'name' => 'recruiter-feedback'
-        ]);
-
-        // Candidates Permisions
-        Permission::create([
-            'name' => 'candidate-dashboard'
-        ]);
-        Permission::create([
-            'name' => 'candidate-jobs'
-        ]);
-        Permission::create([
-            'name' => 'candidate-resume'
-        ]);
-        Permission::create([
-            'name' => 'candidate-video-resume'
-        ]);
-        Permission::create([
-            'name' => 'candidate-jobfair'
-        ]);
-        Permission::create([
-            'name' => 'candidate-feedback'
+            'name' => 'video-resume'
         ]);
     }
 }
