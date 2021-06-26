@@ -52,8 +52,8 @@ function continueED(data, id, dom, isEnable) {
         '                              </button>' +
         '                              <div class="dropdown-menu dropdown-menu-right">';
 
-    d += '<a href="/recruiter/jobs/view/'+id+'" class="dropdown-item w-100" type="button">View</a>' +
-        '<a href="/recruiter/jobs/edit/'+id+'" class="dropdown-item w-100" type="button">Edit</a>'+
+    d += '<a href="/jobs/view/'+id+'" class="dropdown-item w-100" type="button">View</a>' +
+        '<a href="/jobs/edit/'+id+'" class="dropdown-item w-100" type="button">Edit</a>'+
 
         '                              </div>' +
         '                             </div>';

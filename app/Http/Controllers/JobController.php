@@ -30,7 +30,7 @@ class JobController extends AppBaseController
         $skills = json_decode($job->skills);
         $qualification = json_decode($job->qualification);
         $breadcrumbs = [
-            ['link' => "recruiter/jobs", 'name' => "Job List"],
+            ['link' => "jobs", 'name' => "Job List"],
             ['name' => "Create Job"],
         ];
 
@@ -40,7 +40,7 @@ class JobController extends AppBaseController
     public function createForm()
     {
         $breadcrumbs = [
-            ['link' => "recruiter/jobs", 'name' => "Job List"],
+            ['link' => "jobs", 'name' => "Job List"],
             ['name' => "Create Job"],
         ];
         return view('job.create', ['breadcrumbs' => $breadcrumbs]);
@@ -50,7 +50,7 @@ class JobController extends AppBaseController
     public function edit(Request $request)
     {
         $breadcrumbs = [
-            ['link' => "recruiter/jobs", 'name' => "Job List"],
+            ['link' => "jobs", 'name' => "Job List"],
             ['name' => "Create Job"],
         ];
         $id = $request->id;

@@ -139,7 +139,7 @@ class JobApiController extends AppBaseController
             return collect(["status" => 0, "msg" => "Invalid Job "])->toJson();
         }
         $breadcrumbs = [
-            ['link' => "recruiter/jobs", 'name' => "Job List"],
+            ['link' => "jobs", 'name' => "Job List"],
             ['name' => "Create Job"],
         ];
 
