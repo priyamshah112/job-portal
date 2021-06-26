@@ -2,7 +2,7 @@
 # Hii ,
 
 This is your credential for Job Portal.
-{{config('app.url')}}/admin/login
+{{config('app.url')}}/login
 
 Username: {{ $details['email'] }}<br>
 Password: {{ $details['password'] }}

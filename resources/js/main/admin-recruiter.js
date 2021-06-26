@@ -166,11 +166,11 @@ function continueED(data, id, dom, isEnable) {
             ', this)" class="btn p-0 m-0"><i data-feather="toggle-left" class="text-danger font-large-1"></i></buton>';
     }
     d +=
-        '<a title="View" href="/admin/recruiters/view' +
+        '<a title="View" href="/recruiters/view' +
         id +
         '" class="btn p-0 m-0"><i data-feather="eye" class="text-primary ml-1 font-medium-5"></i></a>';
     d +=
-        '<a title="Edit" href="/admin/recruiters/edit/' +
+        '<a title="Edit" href="/recruiters/edit/' +
         id +
         '" class="btn p-0 m-0"><i data-feather="edit" class="text-warning ml-1 font-medium-5"></i></a>';
     d +=
@@ -194,7 +194,7 @@ $(window).on("load", function () {
                 orderable: false,
                 searchable: false,
                 render: (data, type, full, meta) => {
-                    let v = '<a href="/admin/recruiters/' + data.id + '" class="d-flex">';
+                    let v = '<a href="/recruiters/' + data.id + '" class="d-flex">';
                     if (data.img_path) {
                         v +=
                             '<img class="round mr-1" src="/' +

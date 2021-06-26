@@ -35,7 +35,7 @@ class CandidateApiController extends Controller
     public function view($id)
     {
         $breadcrumbs = [
-            ['link' => "admin/candidates", 'name' => "Candidate"],
+            ['link' => "candidates", 'name' => "Candidate"],
             ['name' => "View Candidates"],
         ];
         $user = User::find($id);

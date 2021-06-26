@@ -31,6 +31,7 @@
                 </a> --}}
                     <H3 class="text-center"><strong>Candidate - Signup</strong></H3>
                     <form class="auth-register-form" id="candidate" method="POST">
+                        @csrf
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">

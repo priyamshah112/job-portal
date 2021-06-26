@@ -40,7 +40,7 @@ class CandidatesController extends AppBaseController
     public function show($id)
     {
         $breadcrumbs = [
-            ['link' => "admin/candidates", 'name' => "Candidate"],
+            ['link' => "candidates", 'name' => "Candidate"],
             ['name' => "View Candidates"],
         ];
         $candidate = Candidate::with('user')->where('user_id', $id)->first();
@@ -53,7 +53,7 @@ class CandidatesController extends AppBaseController
     public function edit(Request $request)
     {
         $breadcrumbs = [
-            ['link' => "admin/candidates", 'name' => "Candidate"],
+            ['link' => "candidates", 'name' => "Candidate"],
             ['name' => "Edit Candidates"],
         ];
         $id = $request->id;

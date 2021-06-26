@@ -17,7 +17,7 @@ class ResumeController extends Controller
     public function edit()
     {
         $breadcrumbs = [
-            ['link' => "candidate/list-resume", 'name' => "Resume"],
+            ['link' => "list-resume", 'name' => "Resume"],
             ['name' => "Edit Resume"],
         ];
         $user_id = auth()->user()->id;

@@ -64,8 +64,8 @@ function continueED(data, id, dom, isEnable) {
     } else {
         d += '<buton title="Change Status" onclick="enable('+id+', this)" class="btn p-0 m-0"><i data-feather="toggle-left" class="text-danger font-large-1"></i></buton>';
     }
-    d += '<a title="View" href="/admin/candidates/'+id+'" class="btn p-0 m-0"><i data-feather="eye" class="text-primary ml-1 font-medium-5"></i></a>';
-    d += '<a title="Edit" href="/admin/candidates/edit/'+id+'" class="btn p-0 m-0"><i data-feather="edit" class="text-warning ml-1 font-medium-5"></i></a>';
+    d += '<a title="View" href="/candidates/'+id+'" class="btn p-0 m-0"><i data-feather="eye" class="text-primary ml-1 font-medium-5"></i></a>';
+    d += '<a title="Edit" href="/candidates/edit/'+id+'" class="btn p-0 m-0"><i data-feather="edit" class="text-warning ml-1 font-medium-5"></i></a>';
     d += '<buton title="Delete" onclick="deleter('+id+', this)"><i data-feather="trash-2" class="text-danger ml-1 font-medium-5"></i></buton>';
     console.log(d);
     table.cell(rowIndexAction, colIndexAction).data(d);
@@ -184,7 +184,7 @@ $(window).on('load', function () {
                 orderable: false,
                 searchable: false,
                 render: (data, type, full, meta)=>{
-                    let v = '<a href="/admin/candidates/'+data.id+'" class="d-flex">';
+                    let v = '<a href="/candidates/'+data.id+'" class="d-flex">';
                     if (data.img_path) {
                         v += '<img class="round mr-1" src="/'+data.img_path +"/"+data.image_name+'" alt="avatar" height="40" width="40">';
                     } else {

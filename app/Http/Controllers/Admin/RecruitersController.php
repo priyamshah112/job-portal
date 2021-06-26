@@ -17,7 +17,7 @@ class RecruitersController extends AppBaseController
     public function show($id)
     {
         $breadcrumbs = [
-            ['link' => "admin/recruiters", 'name' => "Recruiter"],
+            ['link' => "recruiters", 'name' => "Recruiter"],
             ['name' => "View Recruiter"],
         ];
         $user = User::with('recruiter')->where('id', $id)->first();
@@ -27,7 +27,7 @@ class RecruitersController extends AppBaseController
     public function edit(Request $request)
     {
         $breadcrumbs = [
-            ['link' => "admin/recruiters", 'name' => "Recruiter"],
+            ['link' => "recruiters", 'name' => "Recruiter"],
             ['name' => "Edit Recruiter"],
         ];
         $id = $request->id;

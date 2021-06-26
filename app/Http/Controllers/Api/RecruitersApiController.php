@@ -35,7 +35,7 @@ class RecruitersApiController extends AppBaseController
     public function view($id)
     {
         $breadcrumbs = [
-            ['link' => "admin/recruiters", 'name' => "Recruiter"],
+            ['link' => "recruiters", 'name' => "Recruiter"],
             ['name' => "View Recruiter"],
         ];
         $user = User::find($id);
@@ -133,7 +133,7 @@ class RecruitersApiController extends AppBaseController
             'last_name' => $request->last_name,
             'email' => $request->email,
             'mobile_number' => $request->mobile_number,
-            'status' => $request->status,
+            'active' => $request->status,
         ]);
         $message = 'Recruiter Data Updated Successfully';
 
