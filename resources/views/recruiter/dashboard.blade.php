@@ -7,14 +7,13 @@
     <!-- vendor css files -->
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/charts/apexcharts.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/toastr.min.css')) }}">
-    <link rel="stylesheet" href="{{ asset(mix('vendors/css/tables/datatable/datatables.min.css')) }}">
-    <link rel="stylesheet" href="{{ asset(mix('vendors/css/tables/datatable/responsive.bootstrap.min.css')) }}">
+    <link rel="stylesheet" href="{{ asset(mix('vendors/css/animate/animate.min.css')) }}">
+    <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/sweetalert2.min.css')) }}">
 @endsection
 @section('page-style')
     <!-- Page css files -->
     <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/charts/chart-apex.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/extensions/ext-component-toastr.css')) }}">
-    <link rel="stylesheet" href="{{ asset(mix('css/base/pages/app-invoice-list.css')) }}">
 @endsection
 
 @section('content')
@@ -113,38 +112,12 @@
                         <h2 class="mt-1 mb-75 pt-25 text-primary">{{$package->duration}} Days</h2>
                         <h5 class="mt-1 mb-75 pt-25">{{$package->post_quota}} Job Posting / can View 600 Applied and Unapplied</h5>
                         <h6 class="mt-1 mb-75 pt-25">Only Can Add three Locations  in one Job Posting </h6>
-                    <button type="button" class="btn btn-primary btn-block">Buy Now</button>
+                    <button type="button" class="btn btn-primary btn-block buy-button" data-id="{{$package->id}}"  data-plan="{{$package->plan_name}}">Buy Now</button>
                     </div>
                 </div>
             </div>                
             @endforeach            
         </div>
-
-        <!-- List DataTable -->
-{{--        <div class="row">--}}
-{{--            <div class="col-12">--}}
-{{--                <div class="card invoice-list-wrapper">--}}
-{{--                    <div class="card-datatable table-responsive">--}}
-{{--                        <table class="invoice-list-table table">--}}
-{{--                            <thead>--}}
-{{--                            <tr>--}}
-{{--                                <th></th>--}}
-{{--                                <th>#</th>--}}
-{{--                                --}}{{--                <th><i data-feather="trending-up"></i></th>--}}
-{{--                                <th>Orders</th>--}}
-{{--                                <th>Total</th>--}}
-{{--                                <th class="text-truncate">Course Taken Date</th>--}}
-{{--                                <th>Amount Paid</th>--}}
-{{--                                --}}{{--                <th>Invoice Status</th>--}}
-{{--                                --}}{{--                <th class="cell-fit">Actions</th>--}}
-{{--                            </tr>--}}
-{{--                            </thead>--}}
-{{--                        </table>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-        <!--/ List DataTable -->
     </section>
     <!-- Dashboard Analytics end -->
 @endsection
@@ -153,15 +126,11 @@
     <!-- vendor files -->
     <script src="{{ asset(mix('vendors/js/charts/apexcharts.min.js')) }}"></script>
     <script src="{{ asset(mix('vendors/js/extensions/toastr.min.js')) }}"></script>
-    <script src="{{ asset(mix('vendors/js/extensions/moment.min.js')) }}"></script>
-    <script src="{{ asset(mix('vendors/js/tables/datatable/datatables.min.js')) }}"></script>
-    <script src="{{ asset(mix('vendors/js/tables/datatable/datatables.buttons.min.js')) }}"></script>
-    <script src="{{ asset(mix('vendors/js/tables/datatable/datatables.bootstrap4.min.js')) }}"></script>
-    <script src="{{ asset(mix('vendors/js/tables/datatable/dataTables.responsive.min.js')) }}"></script>
-    <script src="{{ asset(mix('vendors/js/tables/datatable/responsive.bootstrap.min.js')) }}"></script>
+    <script src="{{ asset(mix('vendors/js/extensions/sweetalert2.all.min.js')) }}"></script>
 @endsection
 @section('page-script')
     <!-- Page js files -->
-    <script src="{{ asset(mix('js/scripts/pages/dashboard-analytics.js')) }}"></script>
-    <script src="{{ asset(mix('js/scripts/pages/app-invoice-list.js')) }}"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="{{asset(mix('js/main/config.js'))}}"></script>
+    <script src="{{ asset(mix('js/main/recruiter/dashboard.js')) }}"></script>
 @endsection

@@ -498,5 +498,5 @@
 @endsection
 @section('page-script')
 <!-- Page js files -->
-{{-- <script data-url="{{route('dashboard')}}" id="pageScript" src="{{ asset('js/admin-dashboard.js') }}"></script> --}}
+{{-- <script src="{{ asset('js/admin-dashboard.js') }}"></script> --}}
 @endsection

@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\CandidateResumeController;
 use App\Http\Controllers\Api\DepartmentApiController;
 use App\Http\Controllers\Api\JobFairApiController;
 use App\Http\Controllers\API\NotificationAPIController;
+use App\Http\Controllers\Api\PaymentApiController;
 use App\Http\Controllers\Api\QualificationApiController;
 
 Route::group(['prefix' => 'v1'], function () {
@@ -84,6 +85,10 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('attachments', [UserAccountController::class, 'attachmentList']);
             Route::post('attachments/upload', [UserAccountController::class, 'uploadAtt']);
             Route::post('attachments/delete', [UserAccountController::class, 'attachmentDelete']);
+
+            //Payment
+            Route::post('order/{id}', [PaymentApiController::class, 'order']);
+            Route::post('payments', [PaymentApiController::class, 'store']);
 
             Route::post('/jobs/create-job', [JobApiController::class, 'store']);
             
