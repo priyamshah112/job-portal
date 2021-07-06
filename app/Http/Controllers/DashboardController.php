@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Package;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -20,7 +21,8 @@ class DashboardController extends Controller
     }
     else if($role === 'recruiter')
     {
-      return view('recruiters.dashboard', ['pageConfigs' => $pageConfigs]);
+      $packages = Package::all();
+      return view('recruiter.dashboard', ['pageConfigs' => $pageConfigs])->with('packages', $packages);
     }
   }
 }

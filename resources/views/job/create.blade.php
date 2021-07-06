@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/file-uploaders/dropzone.min.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/forms/select/select2.min.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/pickers/pickadate/pickadate.css')) }}">
-<link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/toastr.min.css')) }}">
-<link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/sweetalert2.min.css')) }}">
+    <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/toastr.min.css')) }}">
+    <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/sweetalert2.min.css')) }}">
 @endsection
 
 @section('page-style')
@@ -65,7 +65,9 @@
                         <div class="col-lg-3 col-md-6">
                             <div class="form-group">
                                 <label for="firstName">{{ __('City') }}<span class="invalid-feedback">*</span></label>
-                                <select name="city" id="city" class="form-control"></select>
+                                <select name="city" id="city" class="form-control">
+                                    <option value="">Select City</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -84,7 +86,17 @@
                                     placeholder="Age" id="max_age" />
                             </div>
                         </div>
-
+                        <div class="col-lg-3 col-md-6">
+                            <div class="form-group">
+                                <label for="gender">Preferred Gender<span class="invalid-feedback">*</span></label>
+                                <select name="gender" id="gender" class="form-control">
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="transgender">Transgender</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="col-lg-3 col-md-6">
                             <div class="form-group">
                                 <label for="firstName">{{ __('Min. Salary P/Month') }}<span class="invalid-feedback">*</span></label>
@@ -92,6 +104,8 @@
                                     placeholder="Salary" />
                             </div>
                         </div>
+                    </div>
+                    <div class="row mt-2">
                         <div class="col-lg-3 col-md-6">
                             <div class="form-group">
                                 <label for="firstName">{{ __(' Max. Salary P/Month') }}<span class="invalid-feedback">*</span></label>
@@ -99,8 +113,6 @@
                                     placeholder="Salary" />
                             </div>
                         </div>
-                    </div>
-                    <div class="row mt-2">
                         <div class="col-lg-3 col-md-6">
                             <div class="form-group">
                                 <label for="firstName">{{ __(' Min. Exp In Yrs') }}<span class="invalid-feedback">*</span></label>
@@ -130,11 +142,9 @@
                         <div class="col-lg-3 col-md-6">
                             <div class="form-group">
                                 <label for="firstName">{{ __('Qualification') }}<span class="invalid-feedback">*</span></label>
-                                <select id="qualification"  class="form-control" size="1" placeholder="Select Qualification" name="qualification"
-                                        multiple>
-                                    <option value="BCA">BCA</option>
-                                    <option value="IT">IT</option>
-                                    <option value="BE">BE</option>
+                                <select class="form-control" id="qualification_id"
+                                    name="qualification_id" multiple>
+                                    <option value="">Select Qualification</option>
                                 </select>
                             </div>
                         </div>
@@ -185,44 +195,5 @@
 @endsection
 @section('page-script')
     <script src="{{asset(mix('js/main/config.js'))}}"></script>
-    <script type="text/javascript">
-        $("#datepicker").attr('min', today());
-        function today() {
-            const t = new Date();
-            let y = t.getFullYear()
-            let m = (t.getMonth() + 1);
-            let d = t.getDate();
-            if (m < 10) {
-                m = '0' + m;
-            }
-            if (d < 10) {
-                d = '0' + d;
-            }
-            return y + '-' + m + '-' + d;
-        }
-        $('#skills').select2();
-        $('#qualification').select2();
-        $('#state').on('change', function() {
-            $("#city").html('');
-            setcity();
-        });
-        $.getJSON("/data/statecity.json", function(json) {
-            var options = Object.keys(json);
-            $.each(options, function(key, value) {
-                $("#state").append('<option ' + (state==value ? 'selected' : '') + ' value="' + value + '">' + value + '</option>');
-            });
-        });
-        function setcity(){
-            $.getJSON("/data/statecity.json", function(json) {
-                var options = Object.keys(json);
-                var id = $( "#state option:selected" ).text();
-                console.log(id);
-                let values = json[id];
-                $.each(values, function(key, value) {
-                    $("#city").append('<option ' + (city==value ? 'selected' : '') + ' value="' + value + '">' + value + '</option>');
-                });
-            });
-        }
-    </script>
     <script id="pcs" mode="create" src="{{asset(mix('js/main/recruiter-create-job.js'))}}"></script>
 @endsection

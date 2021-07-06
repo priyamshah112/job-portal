@@ -70,5 +70,5 @@
 @endsection
 
 @section('page-script')
-<script src="{{asset(mix('js/main/recruiter-jobs.js'))}}"></script>
+<script src="{{asset(mix('js/main/jobs.js'))}}"></script>
 @endsection

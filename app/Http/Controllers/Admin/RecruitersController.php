@@ -11,7 +11,7 @@ class RecruitersController extends AppBaseController
 {
     public function index()
     {
-        return view('recruiters.index');
+        return view('recruiter.index');
     }
 
     public function show($id)
@@ -21,7 +21,7 @@ class RecruitersController extends AppBaseController
             ['name' => "View Recruiter"],
         ];
         $user = User::with('recruiter')->where('id', $id)->first();
-        return view('recruiters.view', compact('user', 'breadcrumbs'));
+        return view('recruiter.view', compact('user', 'breadcrumbs'));
     }
 
     public function edit(Request $request)
@@ -32,7 +32,7 @@ class RecruitersController extends AppBaseController
         ];
         $id = $request->id;
         $user = User::with('recruiter')->where('id', $id)->first();
-        return view('recruiters.edit', compact('user', 'breadcrumbs'));
+        return view('recruiter.edit', compact('user', 'breadcrumbs'));
     }
 
 }

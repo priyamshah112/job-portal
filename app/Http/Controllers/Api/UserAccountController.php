@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\SendNotification;
 use App\Models\Attachments;
 use App\Models\Candidate;
 use Exception;
 use App\Http\Controllers\Controller;
 use App\Models\Recruiter;
 use App\Models\User;
+use App\Traits\NotificationTraits;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -18,14 +20,18 @@ use Illuminate\Validation\Rule;
 
 class UserAccountController extends Controller
 {
+
+    use NotificationTraits;
+
     public function registerafterotpcandidate(Request $request)
     {
         $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'about' => 'required',
-            'education' => 'required',
+            'qualification_id' => 'required',
             'dateOfBirth' => 'required',
+            'gender' => 'required',
             'permanent_address' => 'required',
             'state' => 'required',
             'city' => 'required',
@@ -33,7 +39,7 @@ class UserAccountController extends Controller
             'email' => ['required', Rule::unique('users')],
             'password' => 'required|string|min:8|confirmed',
             'category' => 'required',
-            'industry_type' => 'required',
+            'department_id' => 'required',
             'skills' => 'required|array',
             'job_state' => 'required',
             'job_city' => 'required',
@@ -58,20 +64,48 @@ class UserAccountController extends Controller
         $candidate = Candidate::create([
             'user_id' => $user->id,
             'about' => $request->about,
-            'education' => $request->education,
+            'qualification_id' => $request->qualification_id,
             'skills' => $skills,
             'dateOfBirth' => $request->dateOfBirth,
+            'gender' => $request->gender,
             'mobile_number' => $request->company_mobile_2,
             'alt_email' => $request->alt_email,
             'permanent_address' => $request->permanent_address,
             'category' => $request->category,
-            'industry_type' => $request->industry_type,
+            'department_id' => $request->department_id,
             'category_work' => $request->company_type,
             'current_location_state' => $request->state,
             'current_location_city' => $request->city,
             'job_location_state' => $request->job_state,
             'job_location_city' => $request->job_city,
         ]);
+
+        // Notifications To Candidate
+        $notification_data = [
+            "title" => 'Welcome to our Job Portal',
+            "description" => 'We welcome you to our family',
+            "receiver_id" => $user->id,
+            "sender_id" => $user->id,
+        ];
+
+        $this->notification($notification_data);
+
+        broadcast(new SendNotification($notification_data, $notification_data['receiver_id']));
+
+        // Notifications To Admin
+        $admin_id = User::role('admin')->first()->id;
+
+        $admin_notification_data = [
+            "title" => 'New Candidate ' . $user->first_name . ' ' . $user->last_name . ' has registered on the platform.',
+            "description" => 'We welcome him/her to our family',
+            "receiver_id" => $admin_id,
+            "sender_id" => $user->id,
+        ];
+
+        $this->notification($admin_notification_data);
+
+        broadcast(new SendNotification($admin_notification_data, $admin_notification_data['receiver_id']));
+
         if (!$candidate) {
             DB::rollback();
         } else {
@@ -80,6 +114,7 @@ class UserAccountController extends Controller
         $user->sendEmailVerificationNotification();
         return collect(["status" => 1, "msg" => "Registered Successfully."])->toJson();
     }
+
     public function registerafterotp(Request $request) {
         $validated = $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
@@ -92,7 +127,7 @@ class UserAccountController extends Controller
             'company_mobile_1' => ['required', 'string', 'max:255'],
             'company_mobile_2' => [],
             'industry_segment' => ['required', 'string', 'max:255'],
-            'industry_type' => ['required', 'string', 'max:255'],
+            'department_id' => ['required', 'string', 'max:255'],
             'no_of_employees' => ['required', 'string', 'max:255'],
             'annual_turnover' => ['required', 'string', 'max:255'],
             'email' => ['required', Rule::unique('users')],
@@ -120,12 +155,39 @@ class UserAccountController extends Controller
             'company_mobile_1' => $request['company_mobile_1'],
             'company_mobile_2' => $request['company_mobile_2'],
             'industry_segment' => $request['industry_segment'],
-            'industry_type' => $request['industry_type'],
+            'department_id' => $request['department_id'],
             'no_of_employees' => $request['no_of_employees'],
             'annual_turnover' => $request['annual_turnover'],
             'state' => $request['state'],
             'city' => $request['city'],
         ]);
+
+        // Notifications To Recruiter
+        $notification_data = [
+            "title" => 'Welcome to our Job Portal',
+            "description" => 'We welcome you to our family',
+            "receiver_id" => $user->id,
+            "sender_id" => $user->id,
+        ];
+
+        $this->notification($notification_data);
+
+        broadcast(new SendNotification($notification_data, $notification_data['receiver_id']));
+
+        // Notifications To Admin
+        $admin_id = User::role('admin')->first()->id;
+
+        $admin_notification_data = [
+            "title" => 'New Recruiter ' . $user->first_name . ' ' . $user->last_name . ' has registered on the platform.',
+            "description" => 'We welcome him/her to our family',
+            "receiver_id" => $admin_id,
+            "sender_id" => $user->id,
+        ];
+
+        $this->notification($admin_notification_data);
+
+        broadcast(new SendNotification($admin_notification_data, $admin_notification_data['receiver_id']));
+
         if (!$user || !$recruiter) {
             DB::rollback();
         } else {
@@ -381,7 +443,7 @@ class UserAccountController extends Controller
             'company_landline_2' => '',
             'company_mobile_1' => 'required',
             'company_mobile_2' => '',
-            'industry_type' => 'required',
+            'department_id' => 'required',
             'no_of_employees' => 'required',
             'industry_segment' => 'required',
             'annual_turnover' => 'required',
@@ -407,7 +469,7 @@ class UserAccountController extends Controller
             'company_landline_2' => $request->company_landline_2,
             'company_mobile_1' => $request->company_mobile_1,
             'company_mobile_2' => $request->company_mobile_2,
-            'industry_type' => $request->industry_type,
+            'department_id' => $request->department_id,
             'no_of_employees' => $request->no_of_employees,
             'industry_segment' => $request->industry_segment,
             'annual_turnover' => $request->annual_turnover,

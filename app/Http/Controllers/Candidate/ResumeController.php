@@ -22,8 +22,6 @@ class ResumeController extends Controller
         ];
         $user_id = auth()->user()->id;
         $candidate = Candidate::with('user')->where('user_id', $user_id)->first();
-
-
         $cities = Cities::get(["name", "id"])->take(10);
         return view('/resume/my-resume/edit', [
             'breadcrumbs' => $breadcrumbs,
@@ -56,6 +54,7 @@ class ResumeController extends Controller
             "first_name" => 'required',
             "last_name" => 'required',
             "dateOfBirth" => 'required',
+            "gender" => 'required',
             "permanent_address" => 'required',
             "city" => "required",
             "state" =>'required',
@@ -63,11 +62,11 @@ class ResumeController extends Controller
             "email" => 'required',
             "alt_email" => 'required',
             "category" => 'required',
-            "industry_type" => 'required',
+            "department_id" => 'required',
             "job_location" => 'required',
             "img_name" => 'image|max:2048',
             "skills" => 'required|array',
-            "education" => 'required',
+            "qualification_id" => 'required',
             "about" => 'required',
         ];
 
@@ -102,16 +101,17 @@ class ResumeController extends Controller
 
         $candidate = Candidate::where('id', $candidate_id->id)->update([
             'about'=> $request->about,
-            'education' =>$request->education,
+            'qualification_id' =>$request->qualification_id,
             'current_location_state' => $request->state,
             'current_location_city' => $request->city,
             'skills' => $skills,
             'dateOfBirth' => $request->dateOfBirth,
+            'gender' => $request->gender,
             'mobile_number' => $request->company_mobile_2,
             'alt_email' => $request->alt_email,
             'permanent_address' => $request->permanent_address,
             'category' => $request->category,
-            'industry_type' => $request->industry_type,
+            'department_id' => $request->department_id,
             'category_work' => $request->category_type,
 
         ]);

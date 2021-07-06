@@ -61,6 +61,20 @@
                                         </span>
                        @enderror
                    </div>
+                   <div class="form-group">
+                       <label for="gender" class="form-label">Gender</label>
+                        <select name="gender" id="gender" class="form-control">
+                            <option value="">Select Gender</option>
+                            <option value="">Male</option>
+                            <option value="">Female</option>
+                            <option value="">Transgender</option>
+                        </select>
+                       @error('gender')
+                       <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                       @enderror
+                   </div>
                     <div class="form-group">
                         <label for="permanent_address" class="form-label">Permanent Address</label>
                         <input type="text" class="form-control @error('permanent_address') is-invalid @enderror"
@@ -134,34 +148,17 @@
                             </div>
                         </div>
                         <div class="col">
-                            <div class="form-group">
-                                <label for="industry_type" class="form-label">Industry Type</label>
-                                <select class="form-control @error('industry_type') is-invalid @enderror"
-                                        id="industry_type" name="industry_type">
-                                    <option value="">Select Option</option>
-                                    <option  @if (old('industry_type') == 'Banking and Insurance') selected="selected" @endif>Banking and Insurance</option>
-                                    <option  @if (old('industry_type') == 'IT') selected="selected" @endif>IT</option>
-                                    <option @if (old('industry_type') == 'Education') selected="selected" @endif>Education</option>
-                                    <option @if (old('industry_type') == 'Engg') selected="selected" @endif>Engg</option>
-                                    <option @if (old('industry_type') == 'Food') selected="selected" @endif>Food</option>
-                                    <option @if (old('industry_type') == 'Pharma') selected="selected" @endif>Pharma</option>
-                                    <option @if (old('industry_type') == 'Civil Construction') selected="selected" @endif>Civil Construction</option>
-                                    <option @if (old('industry_type') == 'Chemical') selected="selected" @endif>Chemical</option>
-                                    <option @if (old('industry_type') == 'Civil Hardware') selected="selected" @endif>Civil Hardware</option>
-                                    <option @if (old('industry_type') == 'Consumer durables') selected="selected" @endif>Consumer durables</option>
-                                    <option @if (old('industry_type') == 'FMCG') selected="selected" @endif>FMCG</option>
-                                    <option @if (old('industry_type') == 'Hospitality') selected="selected" @endif>Hospitality</option>
-                                    <option @if (old('industry_type') == 'Aviation') selected="selected" @endif>Aviation</option>
-                                    <option @if (old('industry_type') == 'Electronics') selected="selected" @endif>Electronics</option>
-                                    <option @if (old('industry_type') == 'Home Appliances') selected="selected" @endif>Home Appliances</option>
-                                    <option @if (old('industry_type') == 'Others') selected="selected" @endif>Others</option>
-                                </select>
-                                @error('industry_type')
-                                <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                @enderror
-                            </div>
+                        <div class="form-group">
+                            <label for="department_id" class="form-label">Department Type</label><span class="invalid-feedback">*</span>
+                            <select class="select2-size-lg form-control" id="department_id"
+                                name="department_id">
+                                <option value="">Select Option</option>
+                            </select>
+                            @error('department_id')
+                            <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                            @enderror
                         </div>
                     </div>
                     <div class="row">

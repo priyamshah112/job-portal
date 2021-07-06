@@ -184,63 +184,12 @@
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
-                                                <label for="industry_type">Industry Type<span
-                                                            class="invalid-feedback">*</span></label>
-                                                <select class="form-control"
-                                                        id="industry_type" name="industry_type">
-                                                    <option @if ($recruiterInfo->industry_type == 'Banking and Insurance') selected="selected" @endif>
-                                                        Banking
-                                                        and Insurance
-                                                    </option>
-                                                    <option @if ($recruiterInfo->industry_type == 'IT') selected="selected" @endif>
-                                                        IT
-                                                    </option>
-                                                    <option @if ($recruiterInfo->industry_type == 'Education') selected="selected" @endif>
-                                                        Education
-                                                    </option>
-                                                    <option @if ($recruiterInfo->industry_type == 'Engg') selected="selected" @endif>
-                                                        Engg
-                                                    </option>
-                                                    <option @if ($recruiterInfo->industry_type == 'Food') selected="selected" @endif>
-                                                        Food
-                                                    </option>
-                                                    <option @if ($recruiterInfo->industry_type == 'Pharma') selected="selected" @endif>
-                                                        Pharma
-                                                    </option>
-                                                    <option @if ($recruiterInfo->industry_type == 'Civil Construction') selected="selected" @endif>
-                                                        Civil
-                                                        Construction
-                                                    </option>
-                                                    <option @if ($recruiterInfo->industry_type == 'Chemical') selected="selected" @endif>
-                                                        Chemical
-                                                    </option>
-                                                    <option @if ($recruiterInfo->industry_type == 'Civil Hardware') selected="selected" @endif>
-                                                        Civil
-                                                        Hardware
-                                                    </option>
-                                                    <option @if ($recruiterInfo->industry_type == 'Consumer durables') selected="selected" @endif>
-                                                        Consumer
-                                                        durables
-                                                    </option>
-                                                    <option @if ($recruiterInfo->industry_type == 'FMCG') selected="selected" @endif>
-                                                        FMCG
-                                                    </option>
-                                                    <option @if ($recruiterInfo->industry_type == 'Hospitality') selected="selected" @endif>
-                                                        Hospitality
-                                                    </option>
-                                                    <option @if ($recruiterInfo->industry_type == 'Aviation') selected="selected" @endif>
-                                                        Aviation
-                                                    </option>
-                                                    <option @if ($recruiterInfo->industry_type == 'Electronics') selected="selected" @endif>
-                                                        Electronics
-                                                    </option>
-                                                    <option @if ($recruiterInfo->industry_type == 'Home Appliances') selected="selected" @endif>
-                                                        Home
-                                                        Appliances
-                                                    </option>
-                                                    <option @if ($recruiterInfo->industry_type == 'Others') selected="selected" @endif>
-                                                        Others
-                                                    </option>
+                                                <label for="department_id">Department Type
+                                                    <span class="invalid-feedback">*</span>
+                                                </label>
+                                                <select class="select2-size-lg form-control" id="department_id"
+                                                    name="department_id">
+                                                    <option value="">Select Option</option>
                                                 </select>
                                             </div>
                                         </div>

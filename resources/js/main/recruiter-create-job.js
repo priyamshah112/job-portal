@@ -6,6 +6,73 @@ let draft = $('#saveForLater');
 let save = $('#save');
 let type = 0;
 let mode = $('#pcs').attr('mode')
+
+//initial
+$('#qualification_id').select2();
+$('#skills').select2();
+
+$.ajax({
+    url: `${assetPath}api/v1/qualifications`,
+    type: "GET",
+    dataType: 'json',
+    success: function(res) {
+        res.data.forEach(item => {
+            $("#qualification_id").append('<option value="' + item.id + '">' + item.name + '</option>');
+        });
+        let qualification_id = $("#qualification_id").attr('previous-selected');
+        $("#qualification_id").find('option[value=' + qualification_id + ']').prop('selected',true);
+    },
+    failure: function(err){
+        console.log(err);
+    }
+});
+
+$.ajax({
+    url: `${assetPath}api/v1/departments`,
+    type: "GET",
+    dataType: 'json',
+    success: function(res) {
+        res.data.forEach(item => {
+            $("#department_id").append('<option value="' + item.id + '">' + item.name + '</option>');
+        });
+        let department_id = $("#department_id").attr('previous-selected');
+        $("#department_id").find('option[value=' + department_id + ']').prop('selected',true);
+    },
+    failure: function(err){
+        console.log(err);
+    }
+});
+
+$.ajax({
+    url: `${assetPath}api/v1/states/101`,
+    type: "GET",
+    dataType: 'json',
+    success: function (res) {
+        res.data.forEach(item => {
+            $("#state").append('<option value="' + item
+                .id + '">' + item.name + '</option>');
+        });  
+    }
+});
+
+$('#state').on('change', function () {
+    var id = this.value;
+    $("#city").html('');
+    $.ajax({
+        url: `${assetPath}api/v1/cities/${id}`,
+        type: "GET",
+        dataType: 'json',
+        success: function (res) {
+            $('#city').html('<option value="">Select City</option>');
+            res.data.forEach(item => {
+                $("#city").append('<option value="' + item
+                    .id + '">' + item.name + '</option>');
+            });
+
+        }
+    });
+});
+
 let validator = jobform.validate({
     rules: {
         position: { required: true},
@@ -16,6 +83,7 @@ let validator = jobform.validate({
         maxAge: { required: { depends: function () { return !type;}}, min: function() {
                 return parseInt($('#min_age').val());
             }},
+        gender: {required: true},
         minSalary: { required: { depends: function () { return !type;}}},
         maxSalary: { required: { depends: function () { return !type;}}, min: function() {
             return parseInt($('#minsal').val());
@@ -25,7 +93,7 @@ let validator = jobform.validate({
             return parseInt($('#minexp').val());
         }},
         deadline: { required: { depends: function () { return !type;}} },
-        qualification: { required: { depends: function () { return !type;}} },
+        qualification_id: { required: { depends: function () { return !type;}} },
         skills: { required: { depends: function () { return !type;}} },
         description: { required: { depends: function () { return !type;}} },
     },
@@ -85,14 +153,14 @@ function execreate() {
             cancelButtonText: 'No.'
         }).then((result) => {
             if (result.value) {
-                if (!params.qualification) {
-                    params['qualification'] = [];
+                if (!params.qualification_id) {
+                    params['qualification_id'] = [];
                 }
                 if (!params.skills) {
                     params['skills'] = [];
                 }
-                if (params.qualification && typeof params.qualification === 'string') {
-                    params['qualification'] = [params.qualification];
+                if (params.qualification_id && typeof params.qualification === 'string') {
+                    params['qualification_id'] = [params.qualification];
                 }
                 if (params.skills && typeof params.skills === 'string') {
                     params['skills'] = [params.skills];

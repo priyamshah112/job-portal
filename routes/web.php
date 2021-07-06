@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\SendNotification;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MediaController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\JobFairController;
 use App\Http\Controllers\JobController;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -63,8 +65,19 @@ Route::group(['prefix' => 'candidate'], function () {
 // For Auth Routes
 Route::group(['middleware' => ['active_user','auth']], function () {
 
+    Route::get("/notification-test/{id}", function($id){
+        $notification_data = [
+            "title" => 'Welcome to Dawaraty',
+            "description" => 'We welcome to our family',
+            "data" => null
+        ];
+        broadcast(new SendNotification($notification_data, $id));       
+    });
+
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard'); 
 
+    Route::view('/notifications', 'notifications.index')->name('notification-list');
+    
     Route::get('/jobs', [JobController::class, 'index'])->name('jobs');
 
     Route::get('/job-fair', [JobFairController::class, 'index'])->name('job-fairs');    

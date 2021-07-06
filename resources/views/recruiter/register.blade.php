@@ -160,58 +160,11 @@
                             </div>
                             <div class="col">
                                 <div class="form-group">
-                                    <label for="industry_type" class="form-label">Industry Type</label><span
-                                            class="invalid-feedback">*</span>
-                                    <select class="form-control"
-                                            id="industry_type" name="industry_type">
+                                    <label for="department_id" class="form-label">Department Type</label>
+                                    <span class="invalid-feedback">*</span>
+                                    <select class="select2-size-lg form-control" id="department_id"
+                                        name="department_id">
                                         <option value="">Select Option</option>
-                                        <option>
-                                            Banking and
-                                            Insurance
-                                        </option>
-                                        <option>IT
-                                        </option>
-                                        <option>
-                                            Education
-                                        </option>
-                                        <option>Engg
-                                        </option>
-                                        <option>Food
-                                        </option>
-                                        <option>Pharma
-                                        </option>
-                                        <option>
-                                            Civil
-                                            Construction
-                                        </option>
-                                        <option>
-                                            Chemical
-                                        </option>
-                                        <option>
-                                            Civil
-                                            Hardware
-                                        </option>
-                                        <option>
-                                            Consumer
-                                            durables
-                                        </option>
-                                        <option>FMCG
-                                        </option>
-                                        <option>
-                                            Hospitality
-                                        </option>
-                                        <option>
-                                            Aviation
-                                        </option>
-                                        <option>
-                                            Electronics
-                                        </option>
-                                        <option>
-                                            Home
-                                            Appliances
-                                        </option>
-                                        <option>Others
-                                        </option>
                                     </select>
                                 </div>
                             </div>

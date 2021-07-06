@@ -1,6 +1,7 @@
 const isRtl = $("html").attr("data-textdirection") === "rtl";
 var table = null;
 const assetPath = $("body").attr("data-asset-path");
+
 function enable(id, dom) {
     const url = `${assetPath}api/v1/jobs/status/${id}`;
     Pace.track(()=> {
@@ -33,6 +34,7 @@ function enable(id, dom) {
             })
     })
 }
+
 function continueED(data, id, dom, isEnable) {
     const statusTd = $(dom).closest('tr').find('.status-cell')[0];
     const actionTd = $(dom).closest('tr').find('.action-cell')[0];
@@ -60,6 +62,7 @@ function continueED(data, id, dom, isEnable) {
 
     table.cell(rowIndexAction, colIndexAction).data(d);
 }
+
 function disable(id, dom) {
     const url = `${assetPath}api/v1/jobs/status/${id}`;
     const statusTd = $(dom).closest('tr').find('.status-cell')[0];
@@ -96,6 +99,7 @@ function disable(id, dom) {
             })
     })
 }
+
 function deleteJob(id, dom) {
     const _token = $('#pageScript').attr('data-token');
     const url = $('#pageScript').attr('data-delete');
@@ -133,8 +137,9 @@ function deleteJob(id, dom) {
         })
     })
 }
+
 $(window).on('load', function () {
-    const url = "".concat(assetPath, "api/v1/recruiter/list-jobs");
+    const url = "".concat(assetPath, "api/v1/jobs");
     table = $('#pageTable').DataTable({
         serverSide: true,
         order: [[5, 'desc']],

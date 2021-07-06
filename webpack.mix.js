@@ -49,9 +49,16 @@ mixAssetsDir('sass/base/core/**/!(_)*.scss', (src, dest) =>
   mix.sass(src, dest.replace(/(\\|\/)sass(\\|\/)/, '$1css$2').replace(/\.scss$/, '.css'), {sassOptions})
 )
 
+// Custom stylesheets
+mixAssetsDir('sass/custom/!(_)*.scss', (src, dest) =>
+  mix.sass(src, dest.replace(/(\\|\/)sass(\\|\/)/, '$1css$2').replace(/\.scss$/, '.css'), {sassOptions})
+)
 // script js
 mixAssetsDir('js/scripts/**/*.js', (src, dest) => mix.scripts(src, dest))
 mixAssetsDir('js/main/*.js', (src, dest) => mix.scripts(src, dest))
+mixAssetsDir('js/main/admin/*.js', (src, dest) => mix.scripts(src, dest))
+mixAssetsDir('js/main/candidate/*.js', (src, dest) => mix.scripts(src, dest))
+mixAssetsDir('js/main/recruiter/*.js', (src, dest) => mix.scripts(src, dest))
 
 /*
  |--------------------------------------------------------------------------
@@ -69,6 +76,7 @@ mix.copyDirectory('resources/images', 'public/images')
 mix.copyDirectory('resources/data', 'public/data')
 
 mix
+  .js('resources/js/app.js', 'public/js')
   .js('resources/js/core/app-menu.js', 'public/js/core')
   .js('resources/js/core/app.js', 'public/js/core')
   .js('resources/js/account-settings.js', 'public/js')

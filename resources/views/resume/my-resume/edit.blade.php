@@ -98,6 +98,22 @@
                 <div class="row mt-2">
                     <div class="col-lg-4 col-md-6">
                         <div class="form-group">
+                            <label for="gender">Gender<span class="invalid-feedback">*</span></label>
+                            <select name="gender" id="gender" class="form-control">
+                                <option value="">Select Gender</option>
+                                <option value="male" @if ($candidate->gender == 'male') selected="selected" @endif>Male</option>
+                                <option value="female" @if ($candidate->gender == 'female') selected="selected" @endif>Female</option>
+                                <option value="transgender" @if ($candidate->gender == 'transgender') selected="selected" @endif>Transgender</option>
+                            </select>
+                            @error('gender')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="form-group">
                             <label for="permanent_address" class="form-label">Permanent Address</label><span class="invalid-feedback">*</span>
                             <input type="text" class="form-control @error('permanent_address') is-invalid @enderror"
                                    id="permanent_address" name="permanent_address"
@@ -115,20 +131,22 @@
                         <div class="form-group">
                             <label for="current_location_state">{{ __('State') }}<span
                                         class="invalid-feedback">*</span></label>
-                            <select name="current_location_state" id="current_location_state" class="form-control">
+                            <select name="current_location_state" id="current_location_state" class="form-control" previous-selected="{{$candidate->current_location_state}}">
                                 <option value="">Select State</option>
                             </select>
                         </div>
                     </div>
+                </div>
+                <div class="row mt-2">
                     <div class="col-lg-4 col-md-6">
                         <div class="form-group">
                             <label for="current_location_citys">{{ __('City') }}<span
                                         class="invalid-feedback">*</span></label>
-                            <select name="current_location_city" id="current_location_city" class="form-control"></select>
+                            <select name="current_location_city" id="current_location_city" class="form-control" previous-selected="{{$candidate->current_location_city}}">
+                                <option value="">Select City</option>
+                            </select>
                         </div>
                     </div>
-                </div>
-                <div class="row mt-2">
                     <div class="col-lg-4 col-md-6">
                         <div class="form-group">
                             <label for="email" class="form-label">Email</label><span class="invalid-feedback">*</span>
@@ -157,23 +175,21 @@
                             @enderror
                         </div>
                     </div>
+                </div>
+                <div class="row mt-2">
                     <div class="col-lg-4 col-md-6">
                         <div class="form-group">
-                            <label for="education" class="form-label">Education</label><span class="invalid-feedback">*</span>
-                            <input type="text" class="form-control @error('education') is-invalid @enderror" id="education"
-                                   name="education" placeholder="Education"
-                                   tabindex="2"
-                                   value="{{ old('education',$candidate->education) }}"/>
-
-                            @error('education')
+                            <label for="qualification_id" class="form-label">Qualification</label><span class="invalid-feedback">*</span>
+                            <select name="qualification_id" id="qualification_id" class="form-control" previous-selected="{{$candidate->qualification_id}}">
+                                <option value="">Select Qualification</option>
+                            </select>
+                            @error('qualification_id')
                             <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
                         </div>
                     </div>
-                </div>
-                <div class="row mt-2">
                     <div class="col-lg-4 col-md-6">
                         <div class="form-group">
                             <label for="firstName">Skills</label><span class="invalid-feedback">*</span>
@@ -212,7 +228,7 @@
                         <div class="form-group">
                             <label for="job_location_state" class="form-label">Job Location State</label>
                             <span class="invalid-feedback">*</span>
-                            <select name="job_location_state" id="job_location_state" class="form-control">
+                            <select name="job_location_state" id="job_location_state" class="form-control" previous-selected="{{$candidate->job_location_state}}">
                                 <option value="">Select State</option>
                             </select>
                             @error('job_location_state')
@@ -222,11 +238,14 @@
                             @enderror
                         </div>
                     </div>
+                </div>
+                <div class="row mt-2">
                     <div class="col-lg-4 col-md-6">
                         <div class="form-group">
                             <label for="job_location_city" class="form-label">Job Location City</label>
                             <span class="invalid-feedback">*</span>
-                            <select name="job_location_city" id="job_location_city" class="form-control">
+                            <select name="job_location_city" id="job_location_city" class="form-control" previous-selected="{{$candidate->job_location_city}}">
+                                <option value="">Select City</option>
                             </select>
                             @error('job_location_city')
                             <span class="invalid-feedback" role="alert">
@@ -235,8 +254,6 @@
                             @enderror
                         </div>
                     </div>
-                </div>
-                <div class="row mt-2">
                     <div class="col-lg-4 col-md-6">
                         <div class="form-group">
                             <label for="category" class="form-label mr-2">Category <span class="invalid-feedback">*</span> </label>
@@ -253,37 +270,13 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-lg-4 col-md-6">
-                        <div class="form-group" id="industry">
-                            <label for="industry_type" class="form-label">Industry Type</label><span class="invalid-feedback">*</span>
-                            <select class="form-control @error('industry_type') is-invalid @enderror"
-                                    id="industry_type" name="industry_type">
+                        <div class="form-group">
+                            <label for="department_id" class="form-label">Department Type</label><span class="invalid-feedback">*</span>
+                            <select class="select2-size-lg form-control" id="department_id"
+                                name="department_id" previous-selected="{{$candidate->department_id}}">
                                 <option value="">Select Option</option>
-                                <option @if ($candidate->industry_type == 'Banking and Insurance') selected="selected"
-                                    @endif>Banking and Insurance</option>
-                                <option @if ( $candidate->industry_type == 'IT') selected="selected" @endif>IT</option>
-                                <option @if ( $candidate->industry_type == 'Education') selected="selected"
-                                    @endif>Education</option>
-                                <option @if ($candidate->industry_type == 'Engg') selected="selected" @endif>Engg</option>
-                                <option @if ($candidate->industry_type == 'Food') selected="selected" @endif>Food</option>
-                                <option @if ($candidate->industry_type == 'Pharma') selected="selected" @endif>Pharma</option>
-                                <option @if ($candidate->industry_type == 'Civil Construction') selected="selected" @endif>Civil
-                                    Construction</option>
-                                <option @if ($candidate->industry_type == 'Chemical') selected="selected" @endif>Chemical</option>
-                                <option @if ($candidate->industry_type == 'Civil Hardware') selected="selected" @endif>Civil
-                                    Hardware</option>
-                                <option @if ($candidate->industry_type == 'Consumer durables') selected="selected" @endif>Consumer
-                                    durables</option>
-                                <option @if ($candidate->industry_type == 'FMCG') selected="selected" @endif>FMCG</option>
-                                <option @if ($candidate->industry_type == 'Hospitality') selected="selected"
-                                    @endif>Hospitality</option>
-                                <option @if ($candidate->industry_type == 'Aviation') selected="selected" @endif>Aviation</option>
-                                <option @if ($candidate->industry_type == 'Electronics') selected="selected"
-                                    @endif>Electronics</option>
-                                <option @if ($candidate->industry_type == 'Home Appliances') selected="selected" @endif>Home
-                                    Appliances</option>
-                                <option @if ( $candidate->industry_type== 'Others') selected="selected" @endif>Others</option>
                             </select>
-                            @error('industry_type')
+                            @error('department_id')
                             <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -403,93 +396,5 @@
 @endsection
 @section('page-script')
 <!-- Page js files -->
-<script type="text/javascript">
-    $(document).ready(function() {
-
-        hide();
-        $("input[name='category']").change(function() {
-            hide();
-        });
-        var multipleCancelButton = new Choices('#skills', {
-            removeItemButton: true,
-            searchResultLimit: 10,
-            renderChoiceLimit: 10
-        });
-
-    });
-
-    function hide() {
-        const value = $("input[name='category']:checked").val();
-        if (value === "experienced") {
-            $("#companyCategory").show();
-            $("#industry").show();
-        } else {
-            $("#companyCategory").hide();
-        }
-    }
-
-    var job_location_state = '{!! old('
-    job_location_state
-    ', $candidate->job_location_state) !!}';
-    var job_location_city = '{!! old('
-    job_location_city
-    ', $candidate->job_location_city) !!}';
-
-    $.getJSON("/data/statecity.json", function(json) {
-        var options = Object.keys(json);
-        $.each(options, function(key, value) {
-            $("#job_location_state").append('<option ' + (job_location_state==value ? 'selected' : '') + ' value="' + value + '">' + value + '</option>');
-        });
-    });
-    if (job_location_city.trim() != '') {
-        setJobcity()
-    }
-    $('#job_location_state').on('change', function() {
-        $("#job_location_city").html('');
-        setJobcity();
-    });
-    function setJobcity(){
-        $.getJSON("/data/statecity.json", function(json) {
-            var options = Object.keys(json);
-            var id = $( "#job_location_state option:selected" ).text();
-            console.log(id);
-            let values = json[id];
-            $.each(values, function(key, value) {
-                $("#job_location_city").append('<option ' + (job_location_city==value ? 'selected' : '') + ' value="' + value + '">' + value + '</option>');
-            });
-        });
-    }
-
-    var current_location_state = '{!! old('
-    current_location_state
-    ', $candidate->current_location_state) !!}';
-    var current_location_city = '{!! old('
-    current_location_city
-    ', $candidate->current_location_city) !!}';
-    $.getJSON("/data/statecity.json", function(json) {
-        var options = Object.keys(json);
-        $.each(options, function(key, value) {
-            $("#current_location_state").append('<option ' + (current_location_state==value ? 'selected' : '') + ' value="' + value + '">' + value + '</option>');
-        });
-    });
-    if (current_location_city.trim() != '') {
-        setcity()
-    }
-    $('#current_location_state').on('change', function() {
-        $("#current_location_city").html('');
-        setcity();
-    });
-    function setcity(){
-        $.getJSON("/data/statecity.json", function(json) {
-            var options = Object.keys(json);
-            var id = $( "#current_location_state option:selected" ).text();
-            console.log(id);
-            let values = json[id];
-            $.each(values, function(key, value) {
-                $("#current_location_city").append('<option ' + (current_location_city==value ? 'selected' : '') + ' value="' + value + '">' + value + '</option>');
-            });
-        });
-    }
-</script>
 <script src="{{asset(mix('js/main/candidate-resume-edit.js'))}}">
-    @endsection
+@endsection

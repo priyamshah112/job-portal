@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AppliedJobApiController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\CountryApiController;
 use App\Http\Controllers\Api\CityApiController;
@@ -10,6 +11,10 @@ use App\Http\Controllers\Api\CandidateApiController;
 use App\Http\Controllers\Api\RecruitersApiController;
 use App\Http\Controllers\Api\UserAccountController;
 use App\Http\Controllers\Api\CandidateResumeController;
+use App\Http\Controllers\Api\DepartmentApiController;
+use App\Http\Controllers\Api\JobFairApiController;
+use App\Http\Controllers\API\NotificationAPIController;
+use App\Http\Controllers\Api\QualificationApiController;
 
 Route::group(['prefix' => 'v1'], function () {
 
@@ -17,11 +22,19 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('registerRecruiter', [UserAccountController::class, 'registerafterotp']);
     Route::post('registerCandidate', [UserAccountController::class, 'registerafterotpcandidate']);
 
+    Route::get('qualifications', [QualificationApiController::class,'index']);
+    Route::get('departments', [DepartmentApiController::class,'index']);
     Route::get('countries', [CountryApiController::class, 'index']);
     Route::get('states/{id}', [StateApiController::class, 'countryBy']);
     Route::get('cities/{id}', [CityApiController::class, 'stateBy']);
 
     Route::group(['middleware' => ['auth:web']], function () {
+    
+        Route::get('jobs', [JobApiController::class, 'index']);
+        Route::get('/notifications', [NotificationAPIController::class, 'index']);
+        Route::get('/notifications/unread_count', [NotificationAPIController::class, 'unread_notification_count']);
+        Route::put('/notifications/mark_all_unread_to_read', [NotificationAPIController::class, 'mark_all_unread_to_read']);
+        Route::put('/notifications/{id}', [NotificationAPIController::class, 'mark_read']);
 
         Route::group(['prefix' => 'admin'], function () {
             // account info api for admin
@@ -51,6 +64,15 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('/feedback/delete', [FeedbackApiController::class, 'delete']);
         
             Route::post('/jobs/satus/{id}', [JobApiController::class, 'satus']);
+
+            Route::group(['prefix' => 'job-fair'], function () {
+
+                Route::get('/show/{id}', [JobFairApiController::class, 'show']);
+                Route::post('/create', [JobFairApiController::class, 'store']);
+                Route::put('/update/{id}', [JobFairApiController::class, 'update']);
+                Route::delete('/delete/{id}', [JobFairApiController::class, 'destroy']);
+
+            });
         });
     
         Route::group(['prefix' => 'recruiter'], function () {
@@ -62,15 +84,17 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('attachments', [UserAccountController::class, 'attachmentList']);
             Route::post('attachments/upload', [UserAccountController::class, 'uploadAtt']);
             Route::post('attachments/delete', [UserAccountController::class, 'attachmentDelete']);
-    
-            Route::get('list-jobs', [JobApiController::class, 'index']);
+
             Route::post('/jobs/create-job', [JobApiController::class, 'store']);
+            
             Route::get('/job/view/{id}' , [JobApiController::class, 'view']);
             Route::post('/jobs/enable', [JobApiController::class, 'enable']);
             Route::post('/jobs/disable', [JobApiController::class, 'disable']);
             Route::post('/jobs/delete', [JobApiController::class, 'destroy']);
             Route::get('/jobs/edit', [JobApiController::class, 'edit']);
             Route::post('/jobs/update', [JobApiController::class, 'update']);    
+
+            Route::put('apllied-jobs/status/{id}', [AppliedJobApiController::class,'status']);
 
             Route::post('/feedback', [FeedbackApiController::class, 'store']);
         });
@@ -79,11 +103,14 @@ Route::group(['prefix' => 'v1'], function () {
             // account info api for candidate
             Route::get('candidate-account-settings', [UserAccountController::class, 'showCandidateAccountSettings']);
             Route::post('changeCandidatePassword', [UserAccountController::class, 'changeCandidatePassword']);
-            Route::post('changeCandidateInfo', [UserAccountController::class, 'changeCandidateInfo']);
-    
+            Route::post('changeCandidateInfo', [UserAccountController::class, 'changeCandidateInfo']);    
             Route::post('/candidate-resume-update', [CandidateResumeController::class, 'update']);
 
+            Route::post('/job-apply/{id}', [AppliedJobApiController::class, 'store'])->name('job-apply');
+            Route::get('/applied-jobs', [AppliedJobApiController::class, 'index'])->name('applied-jobs');
+
             Route::post('/feedback', [FeedbackApiController::class, 'store']);
-        });    
+        });  
+          
     });
 });

@@ -118,7 +118,7 @@
                                     </div>
                                     <div class="col-md-8 text-left">
                                         <h4 class="ml-2 bg-lightNew p-1 rounded rounded-lg">
-                                            {{$user->recruiter->industry_type ? $user->recruiter->industry_type : '-'}}</h4>
+                                            {{$user->recruiter->department_id ? $user->recruiter->department_id : '-'}}</h4>
                                     </div>
                                 </div>
                             </div>

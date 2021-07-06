@@ -83,7 +83,7 @@
                             <br />
                             <div class="row begin-countdown">
                                 <div class="col-md-12 text-center">
-                                    <progress value="60" max="60" id="pageBeginCountdown"></progress><br/>
+                                    <progress value="120" max="60" id="pageBeginCountdown"></progress><br/>
                                     <p> Video end in <span id="pageBeginCountdownText"> </span> seconds</p>
                                 </div>
                             </div>
@@ -268,6 +268,7 @@
                 $('#pageBeginCountdownVideo').attr('value', $('#pageBeginCountdown').val());
                 ProgressCountdownForVideo($('#pageBeginCountdown').val(), 'pageBeginCountdownVideo', 'pageBeginCountdownTextVideo').then(value => {
             });
+
             }, false);
         }
         if (resetButton) {

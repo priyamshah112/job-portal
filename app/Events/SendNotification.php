@@ -33,7 +33,7 @@ class SendNotification implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('App.DosUser.' . $this->receiverUserId);
+        return new PrivateChannel('App.User.' . $this->receiverUserId);
     }
     /**
      * broadcastAs

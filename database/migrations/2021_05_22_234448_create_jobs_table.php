@@ -16,7 +16,7 @@ class CreateJobsTable extends Migration
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('recruiter_id');
-            $table->foreign('recruiter_id')->references('id')->on('recruiters');
+            $table->foreign('recruiter_id')->references('id')->on('users');
             $table->string('position')->nullable();
             $table->longText('description')->nullable();
             $table->integer('num_position')->nullable();
@@ -24,7 +24,8 @@ class CreateJobsTable extends Migration
             $table->string('city')->nullable();
             $table->integer('age_min')->nullable();
             $table->integer('age_max')->nullable();
-            $table->json('qualification')->nullable();
+            $table->string('gender')->nullable();
+            $table->json('qualification_id')->nullable();
             $table->integer('experience')->nullable();
             $table->integer('maxexperience')->nullable();
             $table->bigInteger('salary_min')->nullable();
