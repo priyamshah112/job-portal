@@ -15,10 +15,13 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->enum('status', [0,1]);
-            $table->bigInteger('amount');
+            $table->string('razorpay_payment_id')->nullable();
+            $table->string('razorpay_order_id')->nullable();
+            $table->string('razorpay_signature')->nullable();
+            $table->string('amount');
+            $table->enum('status', ['initial','success','failed'])->default('initial');
+            $table->foreignId('created_by')->references('id')->on('users');
+            $table->foreignId('updated_by')->references('id')->on('users'); 
             $table->timestamps();
             $table->softDeletes();
         });

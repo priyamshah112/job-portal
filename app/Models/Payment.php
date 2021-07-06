@@ -10,6 +10,16 @@ class Payment extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = [
+        'razorpay_payment_id',
+        'razorpay_order_id',
+        'razorpay_signature',
+        'amount',
+        'status',
+        'created_by',
+        'updated_by',
+    ];
+
     public function user() {
         return $this->belongsTo(User::class);
     }
