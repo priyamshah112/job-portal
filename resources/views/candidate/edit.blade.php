@@ -141,13 +141,13 @@
                         </div>
                         <div class="col-lg-4 col-md-6">
                             <div class="form-group">
-                                <label for="education" class="form-label">Education</label><span class="invalid-feedback">*</span>
-                                <input type="text" class="form-control @error('education') is-invalid @enderror" id="education"
-                                       name="education" placeholder="Education"
+                                <label for="qualification_id" class="form-label">Qualification</label><span class="invalid-feedback">*</span>
+                                <input type="text" class="form-control @error('qualification_id') is-invalid @enderror" id="qualification_id"
+                                       name="qualification_id" placeholder="Qualification"
                                        tabindex="2"
-                                       value="{{ old('education',$candidate->education) }}"/>
+                                       value="{{ old('qualification_id',$candidate->qualification_id) }}"/>
 
-                                @error('education')
+                                @error('qualification_id')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -235,74 +235,25 @@
                     </div>
                     <div class="row mt-2">
                         <div class="col-lg-4 col-md-6">
-                            <div class="form-group" id="industry">
-                                <label for="industry_type" class="form-label">Industry Type</label><span class="invalid-feedback">*</span>
-                                <select class="form-control @error('industry_type') is-invalid @enderror"
-                                        id="industry_type" name="industry_type">
+                            <div class="form-group">
+                                <label for="department_id" class="form-label">Department Type</label><span class="invalid-feedback">*</span>
+                                <select class="select2-size-lg form-control" id="department_id"
+                                    name="department_id">
                                     <option value="">Select Option</option>
-                                    <option @if ($candidate->industry_type == 'Banking and Insurance') selected="selected"
-                                        @endif>Banking and Insurance</option>
-                                    <option @if ( $candidate->industry_type == 'IT') selected="selected" @endif>IT</option>
-                                    <option @if ( $candidate->industry_type == 'Education') selected="selected"
-                                        @endif>Education</option>
-                                    <option @if ($candidate->industry_type == 'Engg') selected="selected" @endif>Engg</option>
-                                    <option @if ($candidate->industry_type == 'Food') selected="selected" @endif>Food</option>
-                                    <option @if ($candidate->industry_type == 'Pharma') selected="selected" @endif>Pharma</option>
-                                    <option @if ($candidate->industry_type == 'Civil Construction') selected="selected" @endif>Civil
-                                        Construction</option>
-                                    <option @if ($candidate->industry_type == 'Chemical') selected="selected" @endif>Chemical</option>
-                                    <option @if ($candidate->industry_type == 'Civil Hardware') selected="selected" @endif>Civil
-                                        Hardware</option>
-                                    <option @if ($candidate->industry_type == 'Consumer durables') selected="selected" @endif>Consumer
-                                        durables</option>
-                                    <option @if ($candidate->industry_type == 'FMCG') selected="selected" @endif>FMCG</option>
-                                    <option @if ($candidate->industry_type == 'Hospitality') selected="selected"
-                                        @endif>Hospitality</option>
-                                    <option @if ($candidate->industry_type == 'Aviation') selected="selected" @endif>Aviation</option>
-                                    <option @if ($candidate->industry_type == 'Electronics') selected="selected"
-                                        @endif>Electronics</option>
-                                    <option @if ($candidate->industry_type == 'Home Appliances') selected="selected" @endif>Home
-                                        Appliances</option>
-                                    <option @if ( $candidate->industry_type== 'Others') selected="selected" @endif>Others</option>
                                 </select>
-                                @error('industry_type')
+                                @error('department_id')
                                 <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                 @enderror
                             </div>
-
                         </div>
                         <div class="col-lg-4 col-md-6">
-                            <div class="form-group" id="companyCategory" @if($candidate->category == 'fresher') style="display:none" @endif>
-                                <label for="industry_type" class="form-label">Select Company Category</label><span class="invalid-feedback">*</span>
-                                <select class="form-control @error('category_type') is-invalid @enderror"
-                                        id="industry_type" name="category_type">
+                            <div class="form-group">
+                                <label for="department_id" class="form-label">Department Type</label><span class="invalid-feedback">*</span>
+                                <select class="select2-size-lg form-control" id="department_id"
+                                    name="department_id">
                                     <option value="">Select Option</option>
-                                    <option @if ($candidate->category_work == 'Banking and Insurance') selected="selected"
-                                        @endif>Banking and Insurance</option>
-                                    <option @if ($candidate->category_work == 'IT') selected="selected" @endif>IT</option>
-                                    <option @if ($candidate->category_work == 'Education') selected="selected"
-                                        @endif>Education</option>
-                                    <option @if ($candidate->category_work == 'Engg') selected="selected" @endif>Engg</option>
-                                    <option @if ($candidate->category_work == 'Food') selected="selected" @endif>Food</option>
-                                    <option @if ($candidate->category_work == 'Pharma') selected="selected" @endif>Pharma</option>
-                                    <option @if ($candidate->category_work == 'Civil Construction') selected="selected" @endif>Civil
-                                        Construction</option>
-                                    <option @if ($candidate->category_work == 'Chemical') selected="selected" @endif>Chemical</option>
-                                    <option @if ($candidate->category_work == 'Civil Hardware') selected="selected" @endif>Civil
-                                        Hardware</option>
-                                    <option @if ($candidate->category_work == 'Consumer durables') selected="selected" @endif>Consumer
-                                        durables</option>
-                                    <option @if ($candidate->category_work == 'FMCG') selected="selected" @endif>FMCG</option>
-                                    <option @if ($candidate->category_work == 'Hospitality') selected="selected"
-                                        @endif>Hospitality</option>
-                                    <option @if ($candidate->category_work == 'Aviation') selected="selected" @endif>Aviation</option>
-                                    <option @if ($candidate->category_work == 'Electronics') selected="selected"
-                                        @endif>Electronics</option>
-                                    <option @if ($candidate->category_work == 'Home Appliances') selected="selected" @endif>Home
-                                        Appliances</option>
-                                    <option @if ($candidate->category_work== 'Others') selected="selected" @endif>Others</option>
                                 </select>
                                 @error('category_type')
                                 <span class="invalid-feedback" role="alert">

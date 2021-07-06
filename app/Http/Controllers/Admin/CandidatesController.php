@@ -34,7 +34,7 @@ class CandidatesController extends AppBaseController
                 ->rawColumns(['action'])
                 ->make(true);
         }
-        return view('candidates.index');
+        return view('candidate.index');
     }
 
     public function show($id)
@@ -43,7 +43,7 @@ class CandidatesController extends AppBaseController
             ['link' => "candidates", 'name' => "Candidate"],
             ['name' => "View Candidates"],
         ];
-        $candidate = Candidate::with('user')->where('user_id', $id)->first();
+        $candidate = Candidate::with('user','qualification')->where('user_id', $id)->first();
         $userType = 'admin';
         $id = Auth::id();
 
@@ -59,6 +59,6 @@ class CandidatesController extends AppBaseController
         $id = $request->id;
         $cities = Cities::get(["name", "id"])->take(10);
         $candidate = Candidate::with('user')->where('user_id', $id)->first();
-        return view('candidates.edit', compact('candidate','cities', 'breadcrumbs'));
+        return view('candidate.edit', compact('candidate','cities', 'breadcrumbs'));
     }
 }

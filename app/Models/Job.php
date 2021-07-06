@@ -18,7 +18,8 @@ class Job extends Model
             'city',
             'age_min',
             'age_max',
-            'qualification',
+            'gender',
+            'qualification_id',
             'experience',
             'maxexperience',
             'salary_min',
@@ -28,6 +29,10 @@ class Job extends Model
             'status',
             'draft'
     ];
+
+    protected $casts = [
+        'qualification_id' => 'array',
+    ];  
 
     public function user(){
         return $this->belongsTo(User::class)->whereNull('deleted_at');

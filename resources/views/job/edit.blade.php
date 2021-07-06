@@ -86,7 +86,17 @@
                                     placeholder="Maximum Age" />
                             </div>
                         </div>
-
+                        <div class="col-lg-3 col-md-6">
+                            <div class="form-group">
+                                <label for="gender">preferred Gender<span class="invalid-feedback">*</span></label>
+                                <select name="gender" id="gender" class="form-control">
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="transgender">Transgender</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="col-lg-3 col-md-6">
                             <div class="form-group">
                                 <label for="firstName">{{ __('Min. Salary P/Month') }}</label><span class="invalid-feedback">*</span>
@@ -94,6 +104,8 @@
                                     placeholder="Minimum Salary" />
                             </div>
                         </div>
+                    </div>
+                    <div class="row mt-2">
                         <div class="col-lg-3 col-md-6">
                             <div class="form-group">
                                 <label for="firstName">{{ __(' Max. Salary P/Month') }}</label><span class="invalid-feedback">*</span>
@@ -101,8 +113,6 @@
                                        placeholder="Maximum Salary" />
                             </div>
                         </div>
-                    </div>
-                    <div class="row mt-2">
                         <div class="col-lg-3 col-md-6">
                             <div class="form-group">
                                 <label for="firstName">{{ __(' Min. Exp In Yrs') }}</label><span class="invalid-feedback">*</span>
@@ -128,7 +138,7 @@
                         <div class="col-lg-3 col-md-6">
                             <div class="form-group">
                                 <label for="firstName">Qualification</label><span class="invalid-feedback">*</span>
-                                <select id="qualification"  class="form-control" size="1" placeholder="Select Qualification" name="qualification"
+                                <select id="qualification_id"  class="form-control" size="1" placeholder="Select Qualification" name="qualification_id"
                                         multiple>
                                     <option value="BCA">BCA</option>
                                     <option value="IT">IT</option>
@@ -190,10 +200,10 @@
         var state = '{!! $job->state !!}';
         var city = '{!! $job->city !!}';
         var skills = {!! $job->skills !!};
-        var qualification = {!! $job->qualification !!};
+        var qualification_id = {!! $job->qualification_id !!};
         var assetPath1 = $('body').attr('data-asset-path');
         $('#skills').select2().val(skills ? skills : []).trigger('change');
-        $('#qualification').select2().val(qualification ? qualification : []).trigger('change');
+        $('#qualification_id').select2().val(qualification_id ? qualification_id : []).trigger('change');
 
         $.ajax({
             url: `${assetPath1}api/v1/states/101`,

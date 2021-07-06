@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\SendNotification;
 use App\Http\Controllers\Controller;
 use App\Models\Candidate;
 use App\Models\Cities;
 use App\Models\Recruiter;
-use App\Models\States;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use App\Traits\NotificationTraits;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use Carbon\Carbon;
 
 class RegisterController extends Controller
 {
@@ -32,7 +29,7 @@ class RegisterController extends Controller
     |
      */
 
-    use RegistersUsers;
+    use RegistersUsers, NotificationTraits;
 
     /**
      * Where to redirect users after registration.
@@ -72,7 +69,7 @@ class RegisterController extends Controller
             'company_mobile_1' => ['required', 'string', 'max:255'],
             'company_mobile_2' => [],
             'industry_segment' => ['required', 'string', 'max:255'],
-            'industry_type' => ['required', 'string', 'max:255'],
+            'department_id' => ['required', 'string', 'max:255'],
             'no_of_employees' => ['required', 'string', 'max:255'],
             'annual_turnover' => ['required', 'string', 'max:255'],
             'email' => ['required', Rule::unique('users')],
@@ -100,12 +97,13 @@ class RegisterController extends Controller
             'company_mobile_1' => $request['company_mobile_1'],
             'company_mobile_2' => $request['company_mobile_2'],
             'industry_segment' => $request['industry_segment'],
-            'industry_type' => $request['industry_type'],
+            'department_id' => $request['department_id'],
             'no_of_employees' => $request['no_of_employees'],
             'annual_turnover' => $request['annual_turnover'],
             'state' => $request['state'],
             'city' => $request['city'],
         ]);
+
         if (!$user || !$recruiter) {
             DB::rollback();
         } else {
@@ -122,7 +120,7 @@ class RegisterController extends Controller
 
         $cities = Cities::get(["name", "id"])->take(10);
 
-        return view('/auth/register', [
+        return view('recruiter.register', [
             'pageConfigs' => $pageConfigs,
             'cities' => $cities,
         ]);
@@ -134,7 +132,7 @@ class RegisterController extends Controller
 
         $cities = Cities::get(["name", "id"])->take(10);
 
-        return view('/auth/candidate-register', [
+        return view('candidate.register', [
             'pageConfigs' => $pageConfigs,
             'cities' => $cities,
         ]);
@@ -147,8 +145,9 @@ class RegisterController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'about' => 'required',
-            'education' => 'required',
+            'qualification_id' => 'required',
             'dateOfBirth' => 'required',
+            'gender' => 'required',
             'permanent_address' => 'required',
             'state' => 'required',
             'city' => 'required',
@@ -156,7 +155,7 @@ class RegisterController extends Controller
             'email' => ['required', Rule::unique('users')],
             'password' => 'required|string|min:8|confirmed',
             'category' => 'required',
-            'industry_type' => 'required',
+            'department_id' => 'required',
             'skills' => 'required|array',
             'job_state' => 'required',
             'job_city' => 'required',
@@ -182,20 +181,22 @@ class RegisterController extends Controller
         $candidate = Candidate::create([
             'user_id' => $user->id,
             'about' => $request->about,
-            'education' => $request->education,
+            'qualification_id' => $request->qualification_id,
             'skills' => $skills,
             'dateOfBirth' => $request->dateOfBirth,
+            'gender' => $request->gender,
             'mobile_number' => $request->company_mobile_2,
             'alt_email' => $request->alt_email,
             'permanent_address' => $request->permanent_address,
             'category' => $request->category,
-            'industry_type' => $request->industry_type,
+            'department_id' => $request->department_id,
             'category_work' => $request->company_type,
             'current_location_state' => $request->state,
             'current_location_city' => $request->city,
             'job_location_state' => $request->job_state,
             'job_location_city' => $request->job_city,
         ]);
+        
         if (!$candidate) {
             DB::rollback();
         } else {

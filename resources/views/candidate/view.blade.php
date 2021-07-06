@@ -300,9 +300,9 @@
             <hr class="d-print-none"/>
             <div class="page-break"></div>
             <div class="education-section px-3 px-lg-4 pb-4">
-                <h2 class="h3 mb-4">Education</h2>
+                <h2 class="h3 mb-4">Qualification</h2>
                 <div>
-                    <h4 class="badgeNew ml-4"> {{$candidate->education}} </h4>
+                    <h4 class="badgeNew ml-4"> {{$candidate->qualification_id}} </h4>
                 </div>
             </div>
 

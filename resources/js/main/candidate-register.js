@@ -20,6 +20,7 @@ registerform.show();
 render();
 coderesult = null;
 
+//custom validators
 jQuery.validator.addMethod("validate_email", function(value, element) {
     if (value.length > 1) {
         if (/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(value)) {
@@ -53,6 +54,98 @@ jQuery.validator.addMethod(
     "Sorry, you must be 18 years of age to apply"
 );
 
+//initial
+
+$('#skills').select2();
+
+$('input[name="category"]').on('change', function() {
+    let category = $(this).val();
+    if (category === "experienced") {
+        $("#companyCategory").show();
+        $("#department_id").show();
+    } else {
+        $("#companyCategory").hide();
+    }
+})
+
+$.ajax({
+    url: `${assetPath}api/v1/qualifications`,
+    type: "GET",
+    dataType: 'json',
+    success: function(res) {
+        res.data.forEach(item => {
+            $("#qualification_id").append('<option value="' + item.id + '">' + item.name + '</option>');
+        });
+    },
+    failure: function(err){
+        console.log(err);
+    }
+});
+
+$.ajax({
+    url: `${assetPath}api/v1/departments`,
+    type: "GET",
+    dataType: 'json',
+    success: function(res) {
+        res.data.forEach(item => {
+            $("#department_id").append('<option value="' + item.id + '">' + item.name + '</option>');
+        });
+    },
+    failure: function(err){
+        console.log(err);
+    }
+});
+
+$.ajax({
+    url: `${assetPath}api/v1/states/101`,
+    type: "GET",
+    dataType: 'json',
+    success: function (res) {
+        res.data.forEach(item => {
+            $("#state").append('<option value="' + item
+                .id + '">' + item.name + '</option>');
+            $("#job_state").append('<option value="' + item
+                .id + '">' + item.name + '</option>');
+        });   
+    }
+});
+
+$('#state').on('change', function () {
+    var id = this.value;
+    $("#city").html('');
+    $.ajax({
+        url: `${assetPath}api/v1/cities/${id}`,
+        type: "GET",
+        dataType: 'json',
+        success: function (res) {
+            $('#city').html('<option value="">Select City</option>');
+            res.data.forEach(item => {
+                $("#city").append('<option value="' + item
+                    .id + '">' + item.name + '</option>');
+            });
+
+        }
+    });
+});
+
+$('#job_state').on('change', function () {
+    var id = this.value;
+    $("#job_city").html('');
+    $.ajax({
+        url: `${assetPath}api/v1/cities/${id}`,
+        type: "GET",
+        dataType: 'json',
+        success: function (res) {
+            $('#job_city').html('<option value="">Select City</option>');
+            res.data.forEach(item => {
+                $("#job_city").append('<option value="' + item
+                    .id + '">' + item.name + '</option>');
+            });
+
+        }
+    });
+});
+
 let validator = registerform.validate({
     rules: {
         first_name: {required: true},
@@ -61,6 +154,7 @@ let validator = registerform.validate({
             required: true,
             validDOB : true
         },
+        gender: {required: true},
         permanent_address: {required: true},
         state: {required: true},
         city: {required: true},
@@ -75,9 +169,9 @@ let validator = registerform.validate({
             validate_email: true,
             notEqualEmail: "#alt_email"
         },
-        education: {required: true},
+        qualification_id: {required: true},
         category: {required: true},
-        industry_type: {required: true},
+        department_id: {required: true},
         company_type: {required: { depends: function () {
             let value = $("input[name='category']:checked").val();
             if (value === "experienced") {
@@ -105,6 +199,7 @@ let validator = registerform.validate({
         }
     }
 });
+
 registerform.on('submit', function (e) {
     e.preventDefault();
     var isValid = registerform.valid();
@@ -168,9 +263,11 @@ registerform.on('submit', function (e) {
         disableSubmitButton(false)
     });
 });
+
 const otpvalidator = otpform.validate({
     otp: {required: true, min: 4}
 });
+
 otpform.on('submit', function(e) {
     e.preventDefault();
     console.log('submitotpform')
@@ -180,36 +277,6 @@ otpform.on('submit', function(e) {
     }
 });
 
-function render() {
-    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container',
-        {
-            callback: () => {
-                submitBtn.removeAttr('disabled');
-            },
-            'expired-callback': function() {
-                submitBtn.prop('disabled', true);
-            }
-        });
-    recaptchaVerifier.render();
-}
-function disableSubmitButton(status) {
-    if (status) {
-        submitBtn.attr('disabled', 'disabled');
-        submitBtn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="ml-25 align-middle">Loading</span>');
-    } else {
-        submitBtn.removeAttr('disabled');
-        submitBtn.html('Sign up');
-    }
-}
-function disableOTPButton(status) {
-    if (status) {
-        otpbtn.attr('disabled', 'disabled');
-        otpbtn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="ml-25 align-middle">Loading</span>');
-    } else {
-        otpbtn.removeAttr('disabled');
-        otpbtn.html('Verify OTP');
-    }
-}
 otpbtn.on('click', function() {
     if(!$('#otp').val() || $('#otp').val().length < 4) {
         toastr["error"]("", "Enter valid OTP.", {
@@ -221,11 +288,46 @@ otpbtn.on('click', function() {
     }
     verify();
 });
+
 $('#goback').on('click', () => {
     registerform.show();
     otpform.hide();
     submitBtn.prop('disabled', true);
 });
+
+function render() {
+    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container',
+    {
+        callback: () => {
+            submitBtn.removeAttr('disabled');
+        },
+        'expired-callback': function() {
+            submitBtn.prop('disabled', true);
+        }
+    });
+    recaptchaVerifier.render();
+}
+
+function disableSubmitButton(status) {
+    if (status) {
+        submitBtn.attr('disabled', 'disabled');
+        submitBtn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="ml-25 align-middle">Loading</span>');
+    } else {
+        submitBtn.removeAttr('disabled');
+        submitBtn.html('Sign up');
+    }
+}
+
+function disableOTPButton(status) {
+    if (status) {
+        otpbtn.attr('disabled', 'disabled');
+        otpbtn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="ml-25 align-middle">Loading</span>');
+    } else {
+        otpbtn.removeAttr('disabled');
+        otpbtn.html('Verify OTP');
+    }
+}
+
 function sendOTP() {
     firebase.auth().signInWithPhoneNumber('+91' + params.company_mobile_1, window.recaptchaVerifier).then(function (confirmationResult) {
         window.confirmationResult = confirmationResult;
@@ -252,6 +354,7 @@ function sendOTP() {
         });
     });
 }
+
 function register() {
     if (!params.skills) {
         params['skills'] = [];

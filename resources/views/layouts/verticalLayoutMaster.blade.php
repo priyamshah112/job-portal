@@ -65,9 +65,43 @@
 
      {{-- include footer --}}
      @include('panels/footer')
-
+     <script>
+          window.laravel = {!! json_encode([
+              'user' => auth()->check() ? auth()->user()->id : null,
+          ]) !!};
+      </script>
      {{-- include default scripts --}}
-     @include('panels/scripts')
+     @include('panels/scripts')<script src="{{ asset(mix('js/app.js')) }}"></script>
+     <script type="text/javascript">
+          if ( Notification.permission !== 'denied' || Notification.permission === 'default') 
+          {
+               Notification.requestPermission().then(result => {
+                    // if (result === 'granted') {
+                    //      const notification = new Notification(
+                    //      'Awesome! You will start receiving notifications shortly'
+                    //      );
+                    // }
+               });
+          }
+          
+          const showNotification = data => {
+               new Notification(data.title,{
+                    "body" : data.description,
+                    "silent": false,
+                    "requireInteraction": true, 
+               });
+          };
+
+          window.Echo.private('App.User.' + window.laravel.user)
+          .listen('.SendNotification', (notification) => {
+               showNotification(notification.data);
+          });
+
+          // window.Echo.private('App.User.' + window.laravel.user)
+          // .notification((notification) => {
+          //      showNotification(notification.message);
+          // });
+     </script>
 
      <script type="text/javascript">
      $(window).on('load', function() {

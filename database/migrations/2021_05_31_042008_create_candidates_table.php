@@ -17,15 +17,16 @@ class CreateCandidatesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->longText('about')->nullable();
-            $table->string('education')->nullable();
+            $table->foreignId('qualification_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->json('skills')->nullable();
             $table->date('dateOfBirth')->nullable();
+            $table->string('gender')->nullable();
             $table->string('mobile_number')->nullable();
             $table->string('alt_email')->unique()->nullable();
             $table->longText('permanent_address')->nullable();
             $table->string('category')->nullable();
-            $table->string('industry_type')->nullable();
+            $table->string('department_id')->nullable();
             $table->string('category_work')->nullable();
             $table->string('current_location_state')->nullable();
             $table->string('current_location_city')->nullable();

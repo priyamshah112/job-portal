@@ -171,7 +171,7 @@ $(function () {
                 state: { required: true },
                 city: { required: true },
                 company_mobile_1: { required: true },
-                industry_type: { required: true },
+                department_id: { required: true },
                 no_of_employees: { required: true },
                 annual_turnover: { required: true },
                 industry_segment: { required: true },

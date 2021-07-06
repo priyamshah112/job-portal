@@ -261,8 +261,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <h2 class="h3 mb-1"><strong>About Me</strong></h2>
-                        <p style="text-indent: 50px;"> {{$candidate->about}} gfhuhf yudgv yschbabhj vgrjbjcx bhjeruibs
-                            djbvfbeqb</p>
+                        <p style="text-indent: 50px;"> {{$candidate->about}}</p>
                         <hr class="p-0 text-primary mt-2">
                         <h6 class="mt-2"><strong>Professional Skills</strong></h6>
                         <div class="row">
@@ -276,9 +275,9 @@
                             </div>
                         </div>
                         <hr class="p-0 text-primary mt-2">
-                        <h6><strong>Education</strong></h6>
+                        <h6><strong>Qualification</strong></h6>
                         <div>
-                            <h4 class="badgeNew ml-4"> {{$candidate->education}} </h4>
+                            <h4 class="badgeNew ml-4"> {{$candidate->qualification->name}} </h4>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -288,6 +287,12 @@
                             </div>
                             <div class="col-sm-8">
                                 <div class="pb-1 text-secondary">{{$candidate->dateOfBirth}}</div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="pb-1 font-weight-bold"><i data-feather="user"></i> Gender</div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="pb-1 text-secondary">{{$candidate->gender}}</div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="pb-1 font-weight-bold"><i data-feather="mail"></i> Email</div>

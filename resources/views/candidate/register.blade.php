@@ -4,14 +4,10 @@
 
 @section('vendor-style')
 <!-- vendor css files -->
-<script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
-<link rel="stylesheet" href="{{ asset(mix('vendors/css/forms/wizard/bs-stepper.min.css')) }}">
-<link rel="stylesheet" href="{{ asset(mix('vendors/css/file-uploaders/dropzone.min.css')) }}">
-<link rel="stylesheet" href="{{ asset(mix('vendors/css/forms/select/select2.min.css')) }}">
 <link rel="stylesheet" href="{{ asset(mix('vendors/css/pickers/pickadate/pickadate.css')) }}">
 <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/toastr.min.css')) }}">
 <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/sweetalert2.min.css')) }}">
+<link rel="stylesheet" href="{{ asset(mix('vendors/css/forms/select/select2.min.css')) }}">
 @endsection
 @section('page-style')
 {{-- Page Css files --}}
@@ -29,7 +25,7 @@
                     <img src="{{ asset('images/logo/job_portal_logo.png') }}" alt="Logo"
                          style="width: 300px; height: 200px;">
                 </a> --}}
-                    <H3 class="text-center"><strong>Candidate - Signup</strong></H3>
+                    <h3 class="text-center"><strong>Candidate - Signup</strong></h3>
                     <form class="auth-register-form" id="candidate" method="POST">
                         @csrf
                         <div class="row">
@@ -50,12 +46,26 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            <label for="dateOfBirth" class="form-label">Date of Birth</label><span class="invalid-feedback">*</span>
-                            <input type="date" class="form-control" id="dob"
-                                name="dateOfBirth" placeholder="Last Name" aria-describedby="dateOfBirth" tabindex="1"
-                                autofocus />
+                        <div class="row">
+                            <div class="col">                                
+                                <div class="form-group">
+                                    <label for="dateOfBirth" class="form-label">Date of Birth</label><span class="invalid-feedback">*</span>
+                                    <input type="date" class="form-control" id="dob"
+                                        name="dateOfBirth" placeholder="Last Name" aria-describedby="dateOfBirth" tabindex="1"
+                                        autofocus />
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="gender">Gender<span class="invalid-feedback">*</span></label>
+                                    <select name="gender" id="gender" class="form-control">
+                                        <option value="">Select Gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="transgender">Transgender</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="permanent_address" class="form-label">Permanent Address</label><span class="invalid-feedback">*</span>
@@ -68,7 +78,7 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="firstName">{{ __('Current State') }}<span class="invalid-feedback">*</span></label>
-                                    <select name="state" id="state" class="form-control">
+                                    <select name="state" id="state" class="select2-size-lg form-control">
                                         <option value="">Select State</option>
                                     </select>
                                 </div>
@@ -76,7 +86,9 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="firstName">{{ __('Current  City') }}<span class="invalid-feedback">*</span></label>
-                                    <select name="city" id="city" class="form-control"></select>
+                                    <select name="city" id="city" class="select2-size-lg form-control">
+                                        <option value="">Select City</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -111,9 +123,13 @@
                                 name="alt_email" placeholder="microsoft@outlook.com" aria-describedby="alt_email" tabindex="2" />
                         </div>
                         <div class="form-group">
-                            <label for="education" class="form-label">Education</label><span class="invalid-feedback">*</span>
-                            <input type="text" class="form-control" id="education"
-                            placeholder="MCA" name="education"/>
+                            <label>Qualification</label>
+                            <div class="form-group">
+                                <select class="select2-size-lg form-control" id="qualification_id"
+                                    name="qualification_id">
+                                    <option value="">Select Qualification</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Category</label><span class="invalid-feedback">*</span>
@@ -138,65 +154,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group" id="industry">
-                            <label for="industry_type" class="form-label">Industry Type</label><span class="invalid-feedback">*</span>
-                            <select class="form-control" id="industry_type"
-                                name="industry_type">
+                        <div class="form-group">
+                            <label for="department_id" class="form-label">Department Type</label><span class="invalid-feedback">*</span>
+                            <select class="select2-size-lg form-control" id="department_id"
+                                name="department_id">
                                 <option value="">Select Option</option>
-                                <option>Banking and Insurance</option>
-                                <option>IT</option>
-                                <option>Education</option>
-                                <option>Engg</option>
-                                <option>Food</option>
-                                <option>Pharma</option>
-                                <option>Civil Construction</option>
-                                <option>Chemical</option>
-                                <option>Civil Hardware</option>
-                                <option>Consumer Durables</option>
-                                <option>FMCG</option>
-                                <option>Hospitality</option>
-                                <option>Aviation</option>
-                                <option>Electronics</option>
-                                <option>Home Appliances</option>
-                                <option>E-Commerce</option>
-                                <option>Logistic</option>
-                                <option>Automobile</option>
-                                <option>Architecture</option>
-                                <option>Media & Entertainment</option>
-                                <option>Telecom and Broadband</option>
-                                <option>Real Estate</option>
-                                <option>Agriculture</option>
-                                <option>Healthcare</option>
-                                <option>Fashion</option>
-                                <option>Others</option>
-                            </select>
-                        </div>
-                        <div class="form-group" id="companyCategory" style="display: none">
-                            <label for="industry_type" class="form-label">Select Company Category</label><span class="invalid-feedback">*</span>
-                            <select class="form-control" id="industry_type"
-                                name="company_type">
-                                <option value="">Select Option</option>
-                                <option>Banking and
-                                    Insurance</option>
-                                <option>IT</option>
-                                <option>Education</option>
-                                <option>Engg</option>
-                                <option>Food</option>
-                                <option>Pharma</option>
-                                <option>Civil
-                                    Construction</option>
-                                <option>Chemical</option>
-                                <option>Civil
-                                    Hardware</option>
-                                <option>Consumer
-                                    durables</option>
-                                <option>FMCG</option>
-                                <option>Hospitality</option>
-                                <option>Aviation</option>
-                                <option>Electronics</option>
-                                <option>Home
-                                    Appliances</option>
-                                <option>Others</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -215,7 +177,7 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="firstName">{{ __('Preferred Job State') }}<span class="invalid-feedback">*</span></label>
-                                    <select name="job_state" id="job_state" class="form-control">
+                                    <select name="job_state" id="job_state" class="select2-size-lg form-control">
                                         <option value="">Select State</option>
                                     </select>
                                 </div>
@@ -223,7 +185,9 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="firstName">{{ __('Preferred Job City') }}<span class="invalid-feedback">*</span></label>
-                                    <select name="job_city" id="job_city" class="form-control"></select>
+                                    <select name="job_city" id="job_city" class="select2-size-lg form-control">
+                                        <option value="">Select City</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -236,7 +200,6 @@
                                     placeholder="About" name="about"
                             ></textarea>
                         </div>
-
                         <div class="form-group">
                             <label for="register-password" class="form-label">Password</label><span class="invalid-feedback">*</span>
                             <div
@@ -252,7 +215,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label for="register-password-confirm" class="form-label">Confirm Password</label>
 
@@ -267,7 +229,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <div class="custom-control custom-checkbox">
                                 <input name="policy" class="custom-control-input" type="checkbox" id="register-privacy" tabindex="4"/>
@@ -318,77 +279,6 @@
 <script src="{{ asset(mix('vendors/js/forms/select/select2.full.min.js')) }}"></script>
 @endsection
 @section('page-script')
-    <script>
-        $(document).ready(function() {
-            hide();
-            $("input[name='category']").change(function() {
-                hide();
-            });
-            $('#skills').select2();
-        });
-
-        function hide() {
-            const value = $("input[name='category']:checked").val();
-            console.log(value);
-            if (value === "experienced") {
-                $("#companyCategory").show();
-                $("#industry").show();
-            } else {
-                $("#companyCategory").hide();
-            }
-        }
-        // current location
-        var state = '';
-        var city = '';
-        $.getJSON("/data/statecity.json", function(json) {
-            var options = Object.keys(json);
-            $.each(options, function(key, value) {
-                $("#state").append('<option ' + (state==value ? 'selected' : '') + ' value="' + value + '">' + value + '</option>');
-            });
-        });
-        if (city.trim() != '') {
-            setcity()
-        }
-        $('#state').on('change', function() {
-            $("#city").html('');
-            setcity();
-        });
-        function setcity(){
-            $.getJSON("/data/statecity.json", function(json) {
-                var options = Object.keys(json);
-                var id = $( "#state option:selected" ).text();
-                let values = json[id];
-                $.each(values, function(key, value) {
-                    $("#city").append('<option ' + (city==value ? 'selected' : '') + ' value="' + value + '">' + value + '</option>');
-                });
-            });
-        }
-        //job location
-        var job_state = '';
-        var job_city = '';
-        $.getJSON("/data/statecity.json", function(json) {
-            var options = Object.keys(json);
-            $.each(options, function(key, value) {
-                $("#job_state").append('<option ' + (job_state==value ? 'selected' : '') + ' value="' + value + '">' + value + '</option>');
-            });
-        });
-        if (job_city.trim() != '') {
-            setjobcity()
-        }
-        $('#job_state').on('change', function() {
-            $("#job_city").html('');
-            setjobcity();
-        });
-        function setjobcity(){
-            $.getJSON("/data/statecity.json", function(json) {
-                var options = Object.keys(json);
-                var id = $( "#job_state option:selected" ).text();
-                let values = json[id];
-                $.each(values, function(key, value) {
-                    $("#job_city").append('<option ' + (job_city==value ? 'selected' : '') + ' value="' + value + '">' + value + '</option>');
-                });
-            });
-        }
-    </script>
+<script src="{{ asset(mix('js/scripts/forms/form-select2.js')) }}"></script>
 <script src="{{asset(mix('js/main/candidate-register.js'))}}"></script>
 @endsection

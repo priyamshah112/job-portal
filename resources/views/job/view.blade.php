@@ -113,7 +113,7 @@
                                 <div class="row">
                                     <div class="col-lg-12 col-md-12 text-left rounded rounded-2 m-0 p-0">
                                         @if($skills)
-                                            @foreach ($qualification as $qual)
+                                            @foreach ($qualification_id as $qual)
                                             <h5 class="badgeNew ml-1">{{ $qual }}
                                             </h5>
                                             @endforeach
@@ -152,6 +152,17 @@
                                 </p>
                             </div>
                             <div class="col-lg-12 col-md-12">
+                                <h5 class="text-primary center-text">Preferred Gender</h5>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <hr class="text-primary mt-0">
+                            </div>
+                            <div class="col-lg-12 col-md-6">
+                                <p>
+                                    {{ $job->gender }}
+                                </p>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
                                 <h5 class="text-primary center-text">Application Deadline</h5>
                             </div>
                             <div class="col-lg-12 col-md-12">
@@ -184,7 +195,7 @@
                 searchResultLimit: 10,
                 renderChoiceLimit: 10
             });
-            var multipleCancelButton = new Choices('#qualification', {
+            var multipleCancelButton = new Choices('#qualification_id', {
                 removeItemButton: true,
                 searchResultLimit: 10,
                 renderChoiceLimit: 10

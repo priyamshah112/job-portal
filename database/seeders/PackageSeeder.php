@@ -15,18 +15,22 @@ class PackageSeeder extends Seeder
     public function run()
     {
         Package::create([
-            "id"=> 1,
             "plan_name" => "Basic Plan",
-            "post_quota" => 12,
-            "duration" => 12,
+            "post_quota" => 10,
+            "duration" => 30,
             "amount" => 1000
         ]);
         Package::create([
-            "id"=> 2,
             "plan_name" => "Premium Plan",
-            "post_quota" => 24,
-            "duration" => 12,
+            "post_quota" => 30,
+            "duration" => 90,
             "amount" => 2000
+        ]);
+        Package::create([
+            "plan_name" => "Free Plan",
+            "post_quota" => 5,
+            "duration" => 10,
+            "amount" => 0
         ]);
     }
 }

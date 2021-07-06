@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\AppBaseController;
+use App\Models\Candidate;
 use App\Models\Cities;
 use App\Models\Job;
 use App\Models\Recruiter;
+use App\Models\State;
 use App\Models\States;
+use App\Traits\JobTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -15,11 +18,14 @@ use Yajra\DataTables\DataTables;
 
 class JobApiController extends AppBaseController
 {
+    use JobTrait;
+
     public function index()
     {
-        $userId = Auth::user()->id;
-        $recruiterId = Recruiter::where('user_id', $userId)->value('id');
-        return DataTables::of(Job::whereNull('deleted_at')->where('recruiter_id', $recruiterId))
+        $user = Auth::user();
+        if($user->user_type === 'recruiter')
+        {
+            return DataTables::of(Job::whereNull('deleted_at')->where('recruiter_id', $user->id))
             ->addColumn('action', function ($data) {
                 $menu = '<a href="' . route('jobs-view', ['id' => $data->id]) . '" class="btn p-0 m-0"><i data-feather="eye" class="text-primary font-medium-5"></i></a>';
                 if ($data->draft == 1) {
@@ -29,6 +35,17 @@ class JobApiController extends AppBaseController
             })
             ->rawColumns(['action'])
             ->make(true);
+        }
+        else if($user->user_type === 'candidate')
+        {
+            $jobs = Job::whereNull('deleted_at')->where(['draft' => '0'])->orderBy('updated_at')->get(); 
+            $candidate = Candidate::where('user_id', $user->id)->first();
+            foreach($jobs as $job)
+            {
+               $job['score'] = $this->score($job, $candidate->id);
+            }
+            return $this->sendResponse($jobs, "Job List Retreived Successfully");
+        }
     }
 
     public function store(Request $request)
@@ -43,13 +60,14 @@ class JobApiController extends AppBaseController
                 'city' => 'required|not_in:0',
                 'minAge' => 'required|not_in:0',
                 'maxAge' => 'required|not_in:0|gt:minAge',
+                'gender' => 'required',
                 'minSalary' => 'required|not_in:0',
                 'maxSalary' => 'required|not_in:0|gt:minSalary',
                 'experience' => 'required|not_in:0',
                 'maxexperience' => 'required|not_in:0|gt:experience',
                 'deadline' => 'required',
                 'skills' => 'required',
-                'qualification' => 'required',
+                'qualification_id' => 'required',
             ]);
 
             if ($validator->fails()) {
@@ -66,14 +84,11 @@ class JobApiController extends AppBaseController
                 return collect(["status" => 0, $response]);
             }
         }
-        $user_id = auth()->user()->id;
-        $recruiter = Recruiter::where('user_id', $user_id)->select('id')->first();
-        $recruiter_id = $recruiter->id;
-        $qualification = json_encode($request->qualification);
+        $qualification_id = json_encode($request->qualification_id);
         $skills = json_encode($request->skills);
         // dd($request); die();
         $createJob = Job::create([
-            'recruiter_id' => $recruiter_id,
+            'recruiter_id' => auth()->user()->id,
             'position' => $request->position,
             'description' => $request->description,
             'num_position' => $request->noOfPosts,
@@ -81,7 +96,8 @@ class JobApiController extends AppBaseController
             'city' => $request->city,
             'age_min' => $request->minAge,
             'age_max' => $request->maxAge,
-            'qualification' => $qualification,
+            'gender' => $request->gender,
+            'qualification_id' => $qualification_id,
             'experience' => $request->experience,
             'maxexperience' => $request->maxexperience,
             'salary_min' => $request->minSalary,
@@ -124,7 +140,7 @@ class JobApiController extends AppBaseController
 
         $job = Job::where('id', $id)->first();
         // $skills = json_decode($job->skills);
-        // $qualification = json_decode($job->qualification);
+        // $qualification_id = json_decode($job->qualification_id);
         return response()->json([
             $job
         ]);
@@ -146,12 +162,12 @@ class JobApiController extends AppBaseController
         $job = Job::where('id', $id)->first();
 
         $skills = json_decode($job->skills);
-        $qualification = json_decode($job->qualification);
+        $qualification_id = json_decode($job->qualification_id);
 
-        $states = States::get(["name", "id"]);
+        $states = State::get(["name", "id"]);
         $cities = Cities::where('state_id', $job->state)->get(["name", "id"]);
         return response()->json([
-            $job , $skills , $qualification
+            $job , $skills , $qualification_id
         ]);
     }
 
@@ -173,7 +189,7 @@ class JobApiController extends AppBaseController
             'minSalary' => 'required',
             'maxSalary' => 'required',
             'experience' => 'required',
-            'qualification' => 'required',
+            'qualification_id' => 'required',
             'skills' => 'required',
             'deadline' => 'required',
 
@@ -183,7 +199,7 @@ class JobApiController extends AppBaseController
             return  collect(["status" => 0, $response]);
         }
 
-        $qualification = json_encode($request->qualification);
+        $qualification_id = json_encode($request->qualification_id);
         $skills = json_encode($request->skills);
         if ($request->draft == 1) {
             Job::find($request->id)->update([
@@ -194,7 +210,7 @@ class JobApiController extends AppBaseController
                 'city' => $request->city,
                 'age_min' => $request->minAge,
                 'age_max' => $request->maxAge,
-                'qualification' => $qualification,
+                'qualification_id' => $qualification_id,
                 'experience' => $request->experience,
                 'maxexperience' => $request->maxexperience,
                 'salary_min' => $request->minSalary,
@@ -213,7 +229,7 @@ class JobApiController extends AppBaseController
                 'city' => $request->city,
                 'age_min' => $request->minAge,
                 'age_max' => $request->maxAge,
-                'qualification' => $qualification,
+                'qualification_id' => $qualification_id,
                 'experience' => $request->experience,
                 'maxexperience' => $request->maxexperience,
                 'salary_min' => $request->minSalary,

@@ -20,6 +20,7 @@ registerform.show();
 render();
 coderesult = null;
 
+//custom validators
 jQuery.validator.addMethod("validate_email", function(value, element) {
     if (value.length > 1) {
         if (/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(value)) {
@@ -36,6 +37,36 @@ jQuery.validator.addMethod("validate_email", function(value, element) {
 jQuery.validator.addMethod("notEqualMobile", function(value, element, param) {
     return this.optional(element) || value != $(param).val();
 }, "This field should not be same as primary number.");
+
+//initial required data
+$.ajax({
+    url: `${assetPath}api/v1/qualifications`,
+    type: "GET",
+    dataType: 'json',
+    success: function(res) {
+        res.data.forEach(item => {
+            $("#qualification_id").append('<option value="' + item.id + '">' + item.name + '</option>');
+        });
+    },
+    failure: function(err){
+        console.log(err);
+    }
+});
+
+$.ajax({
+    url: `${assetPath}api/v1/departments`,
+    type: "GET",
+    dataType: 'json',
+    success: function(res) {
+        res.data.forEach(item => {
+            $("#department_id").append('<option value="' + item.id + '">' + item.name + '</option>');
+        });
+    },
+    failure: function(err){
+        console.log(err);
+    }
+});
+
 
 let validator = registerform.validate({
     rules: {
@@ -58,7 +89,7 @@ let validator = registerform.validate({
         },
         email: {required: true, validate_email: true},
         industry_segment: {required: true},
-        industry_type: {required: true},
+        department_id: {required: true},
         no_of_employees: {required: true},
         annual_turnover: {required: true},
         password: { required: true, minlength: 8 },
