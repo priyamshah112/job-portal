@@ -13,7 +13,7 @@ use App\Http\Controllers\Api\UserAccountController;
 use App\Http\Controllers\Api\CandidateResumeController;
 use App\Http\Controllers\Api\DepartmentApiController;
 use App\Http\Controllers\Api\JobFairApiController;
-use App\Http\Controllers\API\NotificationAPIController;
+use App\Http\Controllers\Api\NotificationApiController;
 use App\Http\Controllers\Api\PaymentApiController;
 use App\Http\Controllers\Api\QualificationApiController;
 
@@ -29,13 +29,14 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('states/{id}', [StateApiController::class, 'countryBy']);
     Route::get('cities/{id}', [CityApiController::class, 'stateBy']);
 
+    Route::get('/notifications', [NotificationApiController::class, 'index']);
+
     Route::group(['middleware' => ['auth:web']], function () {
     
         Route::get('jobs', [JobApiController::class, 'index']);
-        Route::get('/notifications', [NotificationAPIController::class, 'index']);
-        Route::get('/notifications/unread_count', [NotificationAPIController::class, 'unread_notification_count']);
-        Route::put('/notifications/mark_all_unread_to_read', [NotificationAPIController::class, 'mark_all_unread_to_read']);
-        Route::put('/notifications/{id}', [NotificationAPIController::class, 'mark_read']);
+        Route::get('/notifications/unread_count', [NotificationApiController::class, 'unread_notification_count']);
+        Route::put('/notifications/mark_all_unread_to_read', [NotificationApiController::class, 'mark_all_unread_to_read']);
+        Route::put('/notifications/{id}', [NotificationApiController::class, 'mark_read']);
 
         Route::group(['prefix' => 'admin'], function () {
             // account info api for admin

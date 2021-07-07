@@ -63,7 +63,7 @@ Route::group(['prefix' => 'candidate'], function () {
 });
 
 // For Auth Routes
-Route::group(['middleware' => ['active_user','auth']], function () {
+Route::group(['middleware' => ['active_user','auth', 'prevent-back-history']], function () {
 
     Route::get("/notification-test/{id}", function($id){
         $notification_data = [
