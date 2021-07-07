@@ -159,8 +159,8 @@ function execreate() {
                 if (!params.skills) {
                     params['skills'] = [];
                 }
-                if (params.qualification_id && typeof params.qualification === 'string') {
-                    params['qualification_id'] = [params.qualification];
+                if (params.qualification_id && typeof params.qualification_id === 'string') {
+                    params['qualification_id'] = [params.qualification_id];
                 }
                 if (params.skills && typeof params.skills === 'string') {
                     params['skills'] = [params.skills];

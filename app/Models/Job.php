@@ -28,10 +28,6 @@ class Job extends Model
             'deadline',
             'status',
             'draft'
-    ];
-
-    protected $casts = [
-        'qualification_id' => 'array',
     ];  
 
     public function user(){

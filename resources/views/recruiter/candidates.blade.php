@@ -27,9 +27,6 @@
 </style>
 @endsection
 @section('content')
-<div class="float-right" style="margin-top: -50px">
-    <a href="{{route('jobs-create')}}" class="btn btn-primary">Add Job</a>
-</div>
 <!-- cateory list start -->
 <section class="app-category-list" >
   <!-- list section start -->

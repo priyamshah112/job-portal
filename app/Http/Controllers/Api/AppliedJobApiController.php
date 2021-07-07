@@ -33,7 +33,7 @@ class AppliedJobApiController extends AppBaseController
         }
 
         foreach($applied_jobs as $job)
-        {      
+        {   
             $job['score'] = $this->score($job, $job->candidate_id);
         }
 
