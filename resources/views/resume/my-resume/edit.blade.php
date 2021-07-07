@@ -152,7 +152,7 @@
                             <label for="email" class="form-label">Email</label><span class="invalid-feedback">*</span>
                             <input type="email" class="form-control @error('email') is-invalid @enderror" id="email"
                                    name="email" placeholder="microsoft@outlook.com" aria-describedby="email"
-                                   tabindex="2"
+                                   tabindex="2" readonly
                                    value="{{ old('email',$candidate->user->email) }}"/>
                             @error('email')
                             <span class="invalid-feedback" role="alert">
@@ -166,7 +166,7 @@
                             <label for="email" class="form-label">Alternate Email</label>
                             <input type="email" class="form-control @error('alt_email') is-invalid @enderror" id="email"
                                    name="alt_email" placeholder="microsoft@outlook.com" aria-describedby="email"
-                                   tabindex="2"
+                                   tabindex="2" 
                                    value="{{ old('alt_email',$candidate->alt_email) }}"/>
                             @error('alt_email')
                             <span class="invalid-feedback" role="alert">

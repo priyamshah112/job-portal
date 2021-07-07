@@ -14,67 +14,53 @@ feedbackForm.on('submit', function (e) {
     e.preventDefault();
     let isValid = feedbackForm.valid();
     if (isValid) {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: '',
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#DD6B55',
-            confirmButtonText: 'Yes!',
-            cancelButtonText: 'No.'
-        }).then((result) => {
-            if (result.value) {
-                let formdata = new FormData(this);
+        let formdata = new FormData(this);
 
-                let url = '';
-                if (mode == 'candidate') {
-                    url = "".concat(assetPath, "api/v1/candidate/feedback");
-                } else {
-                    url = "".concat(assetPath, "api/v1/recruiter/feedback");
-                }
-                disableSubmitButton(true);
-                $.ajax({
-                    method: "POST",
-                    url: url,
-                    data: formdata,
-                    contentType: false,
-                    processData: false,
-                    cache: false,
-                })
-                    .done(function (response) {
-                        feedbackForm.trigger('reset');
-                        toastr['info']('👋 Submited Successfully.', 'Success!', {
-                            closeButton: true,
-                            tapToDismiss: false,
-                            rtl: isRtl
-                        });
-                        disableSubmitButton(false)
-                    })
-                    .fail(function (err) {
-                        if (err.status === 422) {
-                            let errors = err.responseJSON.message;
-                            console.log(errors, err)
-                            let showErrors = {}
-                            Object.keys(errors).forEach((key) => {
-                                showErrors = {
-                                    ...showErrors,
-                                    [key]: errors[key]
-                                }
-                            });
-                            validator.showErrors(showErrors);
-                        } else {
-                            toastr["error"]("", "Something wrong, Please try again!", {
-                                closeButton: true,
-                                tapToDismiss: false,
-                                rtl: isRtl,
-                            });
-                        }
-                        disableSubmitButton(false)
-                    })
+        let url = '';
+        if (mode == 'candidate') {
+            url = "".concat(assetPath, "api/v1/candidate/feedback");
+        } else {
+            url = "".concat(assetPath, "api/v1/recruiter/feedback");
+        }
+        disableSubmitButton(true);
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: formdata,
+            contentType: false,
+            processData: false,
+            cache: false,
+        })
+        .done(function (response) {
+            feedbackForm.trigger('reset');
+            toastr['info']('👋 Submited Successfully.', 'Success!', {
+                closeButton: true,
+                tapToDismiss: false,
+                rtl: isRtl
+            });
+            disableSubmitButton(false)
+        })
+        .fail(function (err) {
+            if (err.status === 422) {
+                let errors = err.responseJSON.message;
+                console.log(errors, err)
+                let showErrors = {}
+                Object.keys(errors).forEach((key) => {
+                    showErrors = {
+                        ...showErrors,
+                        [key]: errors[key]
+                    }
+                });
+                validator.showErrors(showErrors);
             } else {
-                result.dismiss;
+                toastr["error"]("", "Something wrong, Please try again!", {
+                    closeButton: true,
+                    tapToDismiss: false,
+                    rtl: isRtl,
+                });
             }
-        });
+            disableSubmitButton(false)
+        })
     }
 });
 submitBtn.on('click', function (e) {
