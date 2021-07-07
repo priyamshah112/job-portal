@@ -29,7 +29,7 @@ trait JobTrait
             $score++;
         }
         
-        if(in_array($candidate->qualification_id, $job->qualification_id))
+        if(in_array($candidate->qualification_id, json_decode($job->qualification_id)))
         {
             $score++;
         }
