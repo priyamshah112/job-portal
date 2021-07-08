@@ -199,12 +199,7 @@ class JobApiController extends AppBaseController
         {
             return $this->sendError('Job Not Found');
         }
-        
-        if ($request->draft == 1) {
-            $input['status'] = 1;
-        } else {
-            $input['status'] = 0;
-        }
+
         $job = Job::find($request->id)->update($input);
         return $this->sendResponse($job, 'Job Updated Successfully');
 
