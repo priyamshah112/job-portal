@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Jobs List')
+@section('title', 'Applied Candidate List')
 
 @section('vendor-style')
   {{-- Page Css files --}}
@@ -18,11 +18,15 @@
   <link rel="stylesheet" href="{{ asset(mix('css/base/pages/app-user.css')) }}">
   <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/extensions/ext-component-toastr.css')) }}">
   <style>
-    .dataTables_wrapper div:nth-child(1), .dataTables_wrapper div:nth-child(3) {
-        padding: 0 10px;
-    }
     .action-cell{
       min-width: 80px;
+    }
+    .candidate-profile{
+      padding: 0px !important;
+    }
+    .candidate-profile img{
+      width: 40px;
+      height: 40px;
     }
 </style>
 @endsection
@@ -35,11 +39,12 @@
       <table id="pageTable"  class="category-list-table table">
         <thead class="thead-light">
           <tr>
+            <th>Profile</th>
+            <th>Name</th>
+            <th>Gender</th>
             <th>Position</th>
-            <th>Number of Posisions</th>
-            <th>Experience</th>
+            <th>Category</th>
             <th>Deadline</th>
-            <th>Created At</th>
             <th>Score</th>
             <th>Action</th>
           </tr>

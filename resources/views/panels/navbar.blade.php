@@ -27,9 +27,13 @@
         <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style"><i class="ficon"
                     data-feather="{{ $configData['theme'] === 'dark' ? 'sun' : 'moon' }}"></i></a>
         </li>
-        <li class="nav-item dropdown dropdown-notification mr-25"><a class="nav-link" href="javascript:void(0);"
-                data-toggle="dropdown"><i class="ficon" data-feather="bell"></i><span
-                    class="badge badge-pill badge-danger badge-up">{{$notification_count}}</span></a>
+        <li class="nav-item dropdown dropdown-notification mr-25">
+            <a class="nav-link" href="javascript:void(0);" data-toggle="dropdown">
+                <i class="ficon" data-feather="bell"></i>
+                @if ($notification_count > 0)
+                    <span class="badge badge-pill badge-danger badge-up">{{$notification_count}}</span>                    
+                @endif
+            </a>
             <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
                 <li class="dropdown-menu-header">
                     <div class="dropdown-header d-flex">

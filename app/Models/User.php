@@ -60,4 +60,9 @@ class User extends Authenticatable implements MustVerifyEmail
     public function recruiter() {
         return $this->hasOne(Recruiter::class)->latest()->with('package')->with('attachments');
     }
+
+    public function getFullNameAttribute()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
 }

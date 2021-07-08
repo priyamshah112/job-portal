@@ -8,7 +8,7 @@ let type = 0;
 let mode = $('#pcs').attr('mode')
 
 //initial
-$('#qualification_id').select2();
+let qualifications = $("#qualification_id").select2();
 $('#skills').select2();
 
 $.ajax({
@@ -20,7 +20,7 @@ $.ajax({
             $("#qualification_id").append('<option value="' + item.id + '">' + item.name + '</option>');
         });
         let qualification_id = $("#qualification_id").attr('previous-selected');
-        $("#qualification_id").find('option[value=' + qualification_id + ']').prop('selected',true);
+        qualifications.select2('val',JSON.parse(qualification_id));            
     },
     failure: function(err){
         console.log(err);
@@ -51,7 +51,26 @@ $.ajax({
         res.data.forEach(item => {
             $("#state").append('<option value="' + item
                 .id + '">' + item.name + '</option>');
-        });  
+        }); 
+        
+        let state = $("#state").attr('previous-selected');
+        $("#state").find('option[value=' + state + ']').prop('selected',true);
+
+        $.ajax({
+            url: `${assetPath}api/v1/cities/${state}`,
+            type: "GET",
+            dataType: 'json',
+            success: function (res) {
+                $('#city').html('<option value="">Select City</option>');
+                res.data.forEach(item => {
+                    $("#city").append('<option value="' + item
+                        .id + '">' + item.name + '</option>');
+                });
+
+                let city = $("#city").attr('previous-selected');
+                $("#city").find('option[value=' + city + ']').prop('selected',true);
+            }
+        });
     }
 });
 
@@ -76,21 +95,24 @@ $('#state').on('change', function () {
 let validator = jobform.validate({
     rules: {
         position: { required: true},
-        noOfPosts: { required: true },
+        num_position: { required: true },
         state: { required: { depends: function () { return !type;}} },
         city: { required: { depends: function () { return !type;}} },
-        minAge: { required: { depends: function () { return !type;}}},
-        maxAge: { required: { depends: function () { return !type;}}, min: function() {
-                return parseInt($('#min_age').val());
-            }},
+        age_min: { required: { depends: function () { return !type;}}},
+        age_max: { 
+            required: { depends: function () { return !type;}}, 
+            min: function() {
+                return parseInt($('#age_min').val());
+            }
+        },
         gender: {required: true},
-        minSalary: { required: { depends: function () { return !type;}}},
-        maxSalary: { required: { depends: function () { return !type;}}, min: function() {
-            return parseInt($('#minsal').val());
+        salary_min: { required: { depends: function () { return !type;}}},
+        salary_max: { required: { depends: function () { return !type;}}, min: function() {
+            return parseInt($('#salary_min').val());
         }},
         experience: { required: { depends: function () { return !type;}}},
         maxexperience: { required: { depends: function () { return !type;}}, min: function() {
-            return parseInt($('#minexp').val());
+            return parseInt($('#experience').val());
         }},
         deadline: { required: { depends: function () { return !type;}} },
         qualification_id: { required: { depends: function () { return !type;}} },
@@ -98,16 +120,16 @@ let validator = jobform.validate({
         description: { required: { depends: function () { return !type;}} },
     },
     messages: {
-        minAge: {
+        age_min: {
             max: 'Age is greater than Max Age'
         },
-        maxAge: {
+        age_max: {
             min: 'Age is lesser than Min Age'
         },
-        minSalary: {
+        salary_min: {
             max: 'Salary is greater than Max Salary'
         },
-        maxSalary: {
+        salary_max: {
             min: 'Salary is lesser than Min Salary'
         },
         experience: {
@@ -170,13 +192,9 @@ function execreate() {
                 } else {
                     disableSubmitButtonDraft(true);
                 }
-                let url = "".concat(assetPath, "api/v1/recruiter/jobs/create-job");
-                if (mode == 'edit') {
-                    url = "".concat(assetPath, "api/v1/recruiter/jobs/update");
-                }
                 $.ajax({
                     method: "POST",
-                    url: url,
+                    url: `${assetPath}api/v1/recruiter/jobs/update`,
                     data: params,
                 })
                     .done(function(response) {

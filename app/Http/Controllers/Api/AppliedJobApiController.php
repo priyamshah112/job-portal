@@ -6,6 +6,7 @@ use App\Http\Controllers\AppBaseController;
 use App\Models\Applied_job;
 use App\Traits\JobTrait;
 use App\Models\Job;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -23,18 +24,34 @@ class AppliedJobApiController extends AppBaseController
         if($role === 'recruiter'){
             $applied_jobs = Applied_job::where('applied_jobs.recruiter_id', $user->id)
             ->leftJoin('jobs','jobs.id','=','applied_jobs.job_id')
-            ->select('jobs.*','applied_jobs.*')
+            ->leftJoin('candidates','candidates.user_id','=','applied_jobs.candidate_id')
+            ->leftJoin('users','users.id','=','applied_jobs.candidate_id')
+            ->select(
+            'candidates.gender',
+            'candidates.category',
+            'users.first_name',
+            'users.last_name',
+            'users.img_path',
+            'jobs.*',
+            'applied_jobs.*'
+            )
+            ->orderBy('applied_jobs.updated_at','Desc')
             ->get();
+
+            foreach($applied_jobs as $job)
+            {   
+                $job['full_name'] = $user->first_name . ' ' . $user->last_name;
+                $job['score'] = $this->score($job, $job->candidate_id);
+            }
+
         }
         else if($role === 'candidate'){
             $applied_jobs = Applied_job::where('applied_jobs.candidate_id', $user->id)
             ->leftJoin('jobs','jobs.id','=','applied_jobs.job_id')
+            ->leftJoin('recruiters','recruiters.user_id','=','jobs.recruiter_id')
+            ->select('jobs.*','applied_jobs.*','recruiters.user_id','recruiters.company_name')
+            ->orderBy('applied_jobs.updated_at','Desc')
             ->get();
-        }
-
-        foreach($applied_jobs as $job)
-        {   
-            $job['score'] = $this->score($job, $job->candidate_id);
         }
 
         return $this->sendResponse($applied_jobs, "Applied Jobs Retreived Successfully");
@@ -76,7 +93,8 @@ class AppliedJobApiController extends AppBaseController
         $applied_job = Applied_job::findOrFail($id);
 
         $applied_job->update([
-            'job_status' => $request->status
+            'job_status' => $request->status,
+            'updated_at' => Carbon::now(),
         ]);
 
         return $this->sendResponse($applied_job, 'Successfully Updated Successfully');

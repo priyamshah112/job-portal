@@ -195,5 +195,5 @@
 @endsection
 @section('page-script')
     <script src="{{asset(mix('js/main/config.js'))}}"></script>
-    <script id="pcs" mode="create" src="{{asset(mix('js/main/recruiter-create-job.js'))}}"></script>
+    <script id="pcs" mode="create" src="{{asset(mix('js/main/recruiter/job-create.js'))}}"></script>
 @endsection

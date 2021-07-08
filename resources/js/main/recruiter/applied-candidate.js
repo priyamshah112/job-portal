@@ -21,27 +21,32 @@ $(window).on('load', function () {
         },
         columns: [
             {
+                data: 'img_path',
+                orderable: false,
+                render: function(data, type, full, meta){
+                    return data !== null ? `<div class="candidate-profile avatar">
+                   <a href="${data}" target="_blank"><img class="round" src="${data}" /></a>
+                    </div>` : '<div class="candidate-profile avatar"><img class="round" src="http://127.0.0.1:8000/images/portrait/small/avatar-s-11.jpg" /></div>';
+                }
+            },
+            {
+                data: 'full_name',
+                orderable: false,
+            },
+            {
+                data: 'gender',
+                orderable: false,
+            },
+            {
                 data: 'position',
                 orderable: false,
             },
             {
-                data: 'num_position',
-                orderable: false,
-            },
-            {
-                data: 'experience',
+                data: 'category',
                 orderable: false,
             },
             {
                 data: 'deadline',
-                orderable: false,
-                searchable: false,
-            },
-            {
-                data: 'created_at',
-                render:(data, type, full,meta)=>{
-                    return new Date(data).toLocaleDateString("en-US");
-                }
             },
             {
                 data: 'score',
