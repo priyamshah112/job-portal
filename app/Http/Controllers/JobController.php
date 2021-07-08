@@ -3,16 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\AppBaseController;
+use App\Models\Candidate;
 use App\Models\Job;
+use App\Traits\JobTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class JobController extends AppBaseController
 {
+    use JobTrait;
 
     public function index()
     {
-        $role = Auth::user()->user_type; 
+        $user = Auth::user();
+        $role = $user->user_type; 
     
         if($role === 'admin' || $role === 'recruiter')
         {
@@ -20,7 +24,19 @@ class JobController extends AppBaseController
         }
         else if($role === 'candidate')
         {
-            return view('candidate.jobs');
+            $jobs = Job::leftJoin('applied_jobs','applied_jobs.job_id','=','jobs.id')
+            ->whereNull('jobs.deleted_at')
+            ->where(['jobs.draft' => '0'])
+            ->whereNull('applied_jobs.job_id')
+            ->orderBy('jobs.updated_at')
+            ->select('applied_jobs.job_id','jobs.*')
+            ->get(); 
+            $candidate = Candidate::where('user_id', $user->id)->first();
+            foreach($jobs as $job)
+            {
+               $job['score'] = $this->score($job, $candidate->id);
+            }
+            return view('candidate.jobs')->with('jobs', $jobs);
         }
     }
 
@@ -57,18 +73,15 @@ class JobController extends AppBaseController
     }
 
 
-    public function edit(Request $request)
+    public function edit($id)
     {
         $breadcrumbs = [
             ['link' => "jobs", 'name' => "Job List"],
             ['name' => "Create Job"],
         ];
-        $id = $request->id;
-        $job = Job::where('id', $id)->first();
-        $skills = json_decode($job->skills);
-        $qualification = json_decode($job->qualification_id);
 
-        return view('job.edit', compact('job', 'skills', 'qualification',
-        'breadcrumbs'));
+        $job = Job::findOrFail($id);
+
+        return view('job.edit', compact('job','breadcrumbs'));
     }
 }

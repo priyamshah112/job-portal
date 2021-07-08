@@ -173,21 +173,17 @@ class JobApiController extends AppBaseController
 
     public function update(Request $request)
     {
-        $job = Job::find($request->id);
-        if(!isset($job))
-        {
-            return collect(["status" => 0, "msg" => "Invalid Job "])->toJson();
-        }
+        $input = $request->all();
         $validator  = Validator::make($request->all(),[
             'position' => 'required',
             'description' => 'required',
-            'noOfPosts' => 'required',
+            'num_position' => 'required',
             'state' => 'required',
             'city' => 'required',
-            'minAge' => 'required',
-            'maxAge' => 'required',
-            'minSalary' => 'required',
-            'maxSalary' => 'required',
+            'age_min' => 'required',
+            'age_max' => 'required',
+            'salary_min' => 'required',
+            'salary_max' => 'required',
             'experience' => 'required',
             'qualification_id' => 'required',
             'skills' => 'required',
@@ -195,53 +191,22 @@ class JobApiController extends AppBaseController
 
             ]);
         if($validator->fails()){
-            $response['response'] = $validator->messages();
-            return  collect(["status" => 0, $response]);
+            return  $this->sendError($validator->errors());
         }
-
-        $qualification_id = json_encode($request->qualification_id);
-        $skills = json_encode($request->skills);
+        
+        $job = Job::find($request->id);
+        if(!isset($job))
+        {
+            return $this->sendError('Job Not Found');
+        }
+        
         if ($request->draft == 1) {
-            Job::find($request->id)->update([
-                'position' => $request->position,
-                'description' => $request->description,
-                'num_position' => $request->noOfPosts,
-                'state' => $request->state,
-                'city' => $request->city,
-                'age_min' => $request->minAge,
-                'age_max' => $request->maxAge,
-                'qualification_id' => $qualification_id,
-                'experience' => $request->experience,
-                'maxexperience' => $request->maxexperience,
-                'salary_min' => $request->minSalary,
-                'salary_max' => $request->maxSalary,
-                'skills' => $skills,
-                'status' => '1',
-                'deadline' => $request->deadline,
-                'draft' => '1',
-            ]);
+            $input['status'] = 1;
         } else {
-            Job::find($request->id)->update([
-                'position' => $request->position,
-                'description' => $request->description,
-                'num_position' => $request->noOfPosts,
-                'state' => $request->state,
-                'city' => $request->city,
-                'age_min' => $request->minAge,
-                'age_max' => $request->maxAge,
-                'qualification_id' => $qualification_id,
-                'experience' => $request->experience,
-                'maxexperience' => $request->maxexperience,
-                'salary_min' => $request->minSalary,
-                'salary_max' => $request->maxSalary,
-                'skills' => $skills,
-                'status' => '1',
-                'deadline' => $request->deadline,
-                'draft' => '0',
-            ]);
+            $input['status'] = 0;
         }
-        $message = 'Job Updated Successfully';
-        return collect(["status" => 1, "msg" =>  $message])->toJson();
+        $job = Job::find($request->id)->update($input);
+        return $this->sendResponse($job, 'Job Updated Successfully');
 
     }
 

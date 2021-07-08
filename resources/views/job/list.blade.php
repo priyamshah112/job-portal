@@ -42,7 +42,6 @@
             <th>Number of Posisions</th>
             <th>Experience</th>
             <th>Deadline</th>
-            <th>Created At</th>
             <th>Status</th>
             <th>Action</th>
           </tr>

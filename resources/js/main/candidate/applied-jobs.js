@@ -21,16 +21,8 @@ $(window).on('load', function () {
         },
         columns: [
             {
-                data: 'position',
-                orderable: false,
-            },
-            {
-                data: 'num_position',
-                orderable: false,
-            },
-            {
-                data: 'experience',
-                orderable: false,
+                data: 'posting_date',
+                orderable: true,
             },
             {
                 data: 'deadline',
@@ -38,17 +30,12 @@ $(window).on('load', function () {
                 searchable: false,
             },
             {
-                data: 'created_at',
-                render:(data, type, full,meta)=>{
-                    return new Date(data).toLocaleDateString("en-US");
-                }
+                data: 'position',
+                orderable: false,
             },
             {
-                data: 'score',
+                data: 'company_name',
                 orderable: false,
-                render: (data, type, full, meta) => {
-                    return data + '%';
-                }
             },
             {
                 data: 'job_status',

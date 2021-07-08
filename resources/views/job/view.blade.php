@@ -112,12 +112,10 @@
                             <div class="col-lg-12 text-left mt-1">
                                 <div class="row">
                                     <div class="col-lg-12 col-md-12 text-left rounded rounded-2 m-0 p-0">
-                                        @if($skills)
-                                            @foreach ($qualification_id as $qual)
-                                            <h5 class="badgeNew ml-1">{{ $qual }}
-                                            </h5>
-                                            @endforeach
-                                        @endif
+                                        @foreach (json_decode($job->qualification_id) as $qual)
+                                        <h5 class="badgeNew ml-1">{{ $qual }}
+                                        </h5>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>

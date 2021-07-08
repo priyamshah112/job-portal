@@ -165,12 +165,6 @@ $(window).on('load', function () {
                 searchable: false,
             },
             {
-                data: 'created_at',
-                render:(data, type, full,meta)=>{
-                    return new Date(data).toLocaleDateString("en-US");
-                }
-            },
-            {
                 data: 'draft',
                 orderable: false,
                 render: (data, type, full, meta) => {
@@ -187,8 +181,8 @@ $(window).on('load', function () {
             feather.replace();
         },
         columnDefs: [
-            {className: 'status-cell', targets: [5]},
-            {className: 'action-cell', targets: [6]}
+            {className: 'status-cell', targets: [4]},
+            {className: 'action-cell', targets: [5]}
         ]
     });
 });

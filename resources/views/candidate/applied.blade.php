@@ -35,12 +35,10 @@
       <table id="pageTable"  class="category-list-table table">
         <thead class="thead-light">
           <tr>
-            <th>Position</th>
-            <th>Number of Posisions</th>
-            <th>Experience</th>
-            <th>Deadline</th>
-            <th>Created At</th>
-            <th>Score</th>
+            <th>Posting Date</th>
+            <th>Closing Date</th>
+            <th>Job Title</th>
+            <th>Employer</th>
             <th>Status</th>
           </tr>
         </thead>

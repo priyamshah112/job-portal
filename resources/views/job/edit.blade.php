@@ -1,6 +1,3 @@
-<script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
-
 @extends('layouts.contentLayoutMaster')
 
 @section('title', 'Edit Job')
@@ -8,11 +5,10 @@
 @section('vendor-style')
     <!-- vendor css files -->
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/forms/wizard/bs-stepper.min.css')) }}">
-    <link rel="stylesheet" href="{{ asset(mix('vendors/css/file-uploaders/dropzone.min.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/forms/select/select2.min.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/pickers/pickadate/pickadate.css')) }}">
-<link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/toastr.min.css')) }}">
-<link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/sweetalert2.min.css')) }}">
+    <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/toastr.min.css')) }}">
+    <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/sweetalert2.min.css')) }}">
 @endsection
 
 @section('page-style')
@@ -20,7 +16,6 @@
     <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-validation.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-wizard.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-pickadate.css')) }}">
-    <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-file-uploader.css')) }}">
 
 <link rel="stylesheet" href="{{ asset(mix('css/base/pages/app-user.css')) }}">
 <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/extensions/ext-component-toastr.css')) }}">
@@ -32,155 +27,160 @@
     <div class="container">
         <div class="card">
             <div class="card-body">
-                @if(session()->has('message'))
-                <div class="alert-box alert-success" id="success">
-                    <strong> {{ session()->get('message') }} </strong>
-                </div>
-                @endif
 
                 @if($job->draft == 1)
-                <form class="auth-login-form mt-2" method="POST" id="job-form">
-                    @csrf
-                    <div class="row mt-2">
-                        <div class="col-lg-3 col-md-6">
-                            <div class="form-group">
-                                <label for="position">Job Post</label><span class="invalid-feedback">*</span>
-                                <input type="text" class="form-control" value="{{ $job->position }}" name="position"
-                                    placeholder="Position" />
+                    <form class="auth-login-form mt-2" method="POST" id="job-form">
+                        @csrf
+                        <div class="row mt-2">
+                            <div class="col-lg-3 col-md-6">
+                                <div class="form-group">
+                                    <label for="position">Job Post</label><span class="invalid-feedback">*</span>
+                                    <input type="text" class="form-control" name="position"
+                                        placeholder="Position" value="{{ $job->position}}"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="form-group">
+                                    <label for="num_position">Number of Positions</label><span class="invalid-feedback">*</span>
+                                    <input type="number" class="form-control" name="num_position"
+                                        placeholder="Number of Positions" value="{{ $job->num_position}}"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="form-group">
+                                    <label for="state">{{ __('State') }}<span class="invalid-feedback">*</span></label>
+                                    <select name="state" id="state" class="form-control" previous-selected={{$job->state}}>
+                                        <option value="">Select State</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="form-group">
+                                    <label for="city">{{ __('City') }}<span class="invalid-feedback">*</span></label>
+                                    <select name="city" id="city" class="form-control" previous-selected={{$job->city}}>
+                                        <option value="">Select City</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="form-group">
-                                <label for="firstName">Number of Positions</label><span class="invalid-feedback">*</span>
-                                <input type="number" class="form-control" value="{{ $job->num_position }}" name="noOfPosts"
-                                    placeholder="Number of Positions" />
+                        <div class="row mt-2">
+                            <div class="col-lg-3 col-md-6">
+                                <div class="form-group">
+                                    <label for="age_min">Minimum Age</label><span class="invalid-feedback">*</span>
+                                    <input type="number" class="form-control" name="age_min" id="age_min"
+                                        placeholder="Minimum Age" value="{{$job->age_min}}"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="form-group">
+                                    <label for="age_max">Maximum Age</label><span class="invalid-feedback">*</span>
+                                    <input type="number" class="form-control" name="age_max" id="age_max"
+                                        placeholder="Maximum Age" value="{{$job->age_max}}"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="form-group">
+                                    <label for="gender">preferred Gender<span class="invalid-feedback">*</span></label>
+                                    <select name="gender" id="gender" class="form-control">
+                                        <option value="">Select Gender</option>
+                                        <option value="male" @if ($job->gender == 'male') selected="selected" @endif>Male</option>
+                                        <option value="female" @if ($job->gender == 'female') selected="selected" @endif>Female</option>
+                                        <option value="transgender" @if ($job->gender == 'transgender') selected="selected" @endif>Transgender</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="form-group">
+                                    <label for="firstName">{{ __('Min. Salary P/Month') }}</label><span class="invalid-feedback">*</span>
+                                    <input type="number" class="form-control" name="salary_min" id="salary_min"
+                                        placeholder="Minimum Salary" value="{{ $job->salary_min}}"/>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="form-group">
-                                <label for="firstName">{{ __('State') }}<span class="invalid-feedback">*</span></label>
-                                <select name="state" id="state" class="form-control">
-                                    <option value="">Select State</option>
-                                </select>
+                        <div class="row mt-2">
+                            <div class="col-lg-3 col-md-6">
+                                <div class="form-group">
+                                    <label for="firstName">{{ __(' Max. Salary P/Month') }}</label><span class="invalid-feedback">*</span>
+                                    <input type="number" class="form-control" name="salary_max" id="salary_max"
+                                        placeholder="Maximum Salary" value="{{ $job->salary_max }}"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="form-group">
+                                    <label for="experience">{{ __(' Min. Exp In Yrs') }}</label><span class="invalid-feedback">*</span>
+                                    <input type="number" class="form-control" value="{{ $job->experience }}" name="experience" id="experience"
+                                        placeholder="Experience" />
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="form-group">
+                                    <label for="maxexperience">{{ __(' Max. Exp In Yrs') }}<span class="invalid-feedback">*</span></label>
+                                    <input type="number" class="form-control" id="maxexperience" value="{{ $job->maxexperience }}"
+                                        name="maxexperience" placeholder="Experience" />
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="form-group">
+                                    <label for="firstName">Deadline</label><span class="invalid-feedback">*</span>
+                                    <input type="date" class="form-control" value="{{ $job->deadline }}" name="deadline" />
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="form-group">
-                                <label for="firstName">{{ __('City') }}<span class="invalid-feedback">*</span></label>
-                                <select name="city" id="city" class="form-control"></select>
+                        <div class="row mt-2">
+                            <div class="col-lg-3 col-md-6">
+                                <div class="form-group">
+                                    <label for="firstName">Qualification</label><span class="invalid-feedback">*</span>
+                                    <select id="qualification_id"  class="form-control" size="1" placeholder="Select Qualification" name="qualification_id" previous-selected="{{$job->qualification_id}}"
+                                            multiple>
+                                        <option value="">Select Qualification</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="form-group">
+                                    <label for="firstName">Skills</label><span class="invalid-feedback">*</span>
+                                    <select id="skills" class="form-control" size="1" name="skills" multiple }}>
+                                        @php
+                                            if($job->skills !== null)
+                                            {
+                                                $skills = json_decode($job->skills);
+                                            }
+                                            else
+                                            {
+                                                $skills = [];
+                                            }                                           
+                                        @endphp
+                                        <option value="Codeigniter" {{in_array('Codeigniter', $skills) ? 'selected' : ''}}>Codeigniter</option>
+                                        <option value="CakePHP" {{in_array('CakePHP', $skills) ? 'selected' : ''}}>CakePHP</option>
+                                        <option value="Laravel" {{in_array('Laravel', $skills) ? 'selected' : ''}}>Laravel</option>
+                                        <option value="YII" {{in_array('YII', $skills) ? 'selected' : ''}}>YII</option>
+                                        <option value="Zend" {{in_array('Zend', $skills) ? 'selected' : ''}}>Zend</option>
+                                        <option value="Symfony" {{in_array('Symfony', $skills) ? 'selected' : ''}}>Symfony</option>
+                                        <option value="Phalcon" {{in_array('Phalcon', $skills) ? 'selected' : ''}}>Phalcon</option>
+                                        <option value="Slim" {{in_array('Slim', $skills) ? 'selected' : ''}}>Slim</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-12 col-md-12">
+                                <div class="form-group">
+                                    <label for="description">Description</label><span class="invalid-feedback">*</span>
+                                    <textarea
+                                            class="form-control"
+                                            id="exampleFormControlTextarea1"
+                                            rows="4"
+                                            placeholder="Description" name="description"
+                                    >{{ $job->description }}</textarea>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-lg-3 col-md-6">
-                            <div class="form-group">
-                                <label for="firstName">Minimum Age</label><span class="invalid-feedback">*</span>
-                                <input type="number" class="form-control" value="{{ $job->age_min }}" name="minAge" id="min_age"
-                                    placeholder="Minimum Age" />
-                            </div>
+                        <div class="text-right mt-2">
+                            <input type="hidden" name="id" value="{{$job->id}}">
+                            <button type="button" id="saveForLater" class="btn btn-primary">Save as Draft</button>
+                            <button type="button" id="save" class="btn btn-primary">Submit</button>
                         </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="form-group">
-                                <label for="firstName">Maximum Age</label><span class="invalid-feedback">*</span>
-                                <input type="number" class="form-control" value="{{ $job->age_max }}" name="maxAge" id="max_age"
-                                    placeholder="Maximum Age" />
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="form-group">
-                                <label for="gender">preferred Gender<span class="invalid-feedback">*</span></label>
-                                <select name="gender" id="gender" class="form-control">
-                                    <option value="">Select Gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="transgender">Transgender</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="form-group">
-                                <label for="firstName">{{ __('Min. Salary P/Month') }}</label><span class="invalid-feedback">*</span>
-                                <input type="number" class="form-control" value="{{ $job->salary_min }}" name="minSalary" id="minsal"
-                                    placeholder="Minimum Salary" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-lg-3 col-md-6">
-                            <div class="form-group">
-                                <label for="firstName">{{ __(' Max. Salary P/Month') }}</label><span class="invalid-feedback">*</span>
-                                <input type="number" class="form-control" value="{{ $job->salary_max }}" name="maxSalary" id="maxsal"
-                                       placeholder="Maximum Salary" />
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="form-group">
-                                <label for="firstName">{{ __(' Min. Exp In Yrs') }}</label><span class="invalid-feedback">*</span>
-                                <input type="number" class="form-control" value="{{ $job->experience }}" name="experience" id="minexp"
-                                    placeholder="Experience" />
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="form-group">
-                                <label for="firstName">{{ __(' Max. Exp In Yrs') }}<span class="invalid-feedback">*</span></label>
-                                <input type="number" class="form-control" id="maxexp" value="{{ $job->maxexperience }}"
-                                       name="maxexperience" placeholder="Experience" />
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="form-group">
-                                <label for="firstName">Deadline</label><span class="invalid-feedback">*</span>
-                                <input type="date" class="form-control" value="{{ $job->deadline }}" name="deadline" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-lg-3 col-md-6">
-                            <div class="form-group">
-                                <label for="firstName">Qualification</label><span class="invalid-feedback">*</span>
-                                <select id="qualification_id"  class="form-control" size="1" placeholder="Select Qualification" name="qualification_id"
-                                        multiple>
-                                    <option value="BCA">BCA</option>
-                                    <option value="IT">IT</option>
-                                    <option value="BE">BE</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="form-group">
-                                <label for="firstName">Skills</label><span class="invalid-feedback">*</span>
-                                <select id="skills" class="form-control" size="1" name="skills" multiple>
-                                    <option value="Codeigniter">Codeigniter</option>
-                                    <option value="CakePHP">CakePHP</option>
-                                    <option value="Laravel">Laravel</option>
-                                    <option value="YII">YII</option>
-                                    <option value="Zend">Zend</option>
-                                    <option value="Symfony">Symfony</option>
-                                    <option value="Phalcon">Phalcon</option>
-                                    <option value="Slim">Slim</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-12 col-md-12">
-                            <div class="form-group">
-                                <label for="description">Description</label><span class="invalid-feedback">*</span>
-                                <textarea
-                                        class="form-control"
-                                        id="exampleFormControlTextarea1"
-                                        rows="4"
-                                        placeholder="Description" name="description"
-                                >{{ $job->description }}</textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="text-right mt-2">
-                        <input type="hidden" name="id" value="{{$job->id}}">
-                        <button type="button" id="saveForLater" class="btn btn-primary">Save as Draft</button>
-                        <button type="button" id="save" class="btn btn-primary">Submit</button>
-                    </div>
-                </form>
+                    </form>
                 @else
-                <h2>Submitted Jobs can't be edited...!</h2>
+                    <h2>Submitted Jobs can't be edited...!</h2>
                 @endif
             </div>
         </div>
@@ -196,61 +196,5 @@
 @endsection
 @section('page-script')
 <script src="{{asset(mix('js/main/config.js'))}}"></script>
-    <script type="text/javascript">
-        var state = '{!! $job->state !!}';
-        var city = '{!! $job->city !!}';
-        var skills = {!! $job->skills !!};
-        var qualification_id = {!! $job->qualification_id !!};
-        var assetPath1 = $('body').attr('data-asset-path');
-        $('#skills').select2().val(skills ? skills : []).trigger('change');
-        $('#qualification_id').select2().val(qualification_id ? qualification_id : []).trigger('change');
-
-        $.ajax({
-            url: `${assetPath1}api/v1/states/101`,
-            type: "GET",
-            dataType: 'json',
-            success: function (res) {
-                $('#state').html('<option value="">Select State</option>');
-                res.data.forEach(item => {
-                    $("#state").append('<option value="' + item
-                        .id + '">' + item.name + '</option>');
-                });
-                
-
-                $.ajax({
-                    url: `${assetPath1}api/v1/cities/${res.data[0].id}`,
-                    type: "GET",
-                    dataType: 'json',
-                    success: function (res) {
-                        $('#city').html('<option value="">Select City</option>');
-                        res.data.forEach(item => {
-                            $("#city").append('<option value="' + item
-                                .id + '">' + item.name + '</option>');
-                        });
-
-                    }
-                });
-
-            }
-        });
-        
-        $('#state').on('change', function () {
-            var id = this.value;
-            $("#city").html('');
-            $.ajax({
-                url: `${assetPath1}api/v1/cities/${id}`,
-                type: "GET",
-                dataType: 'json',
-                success: function (res) {
-                    $('#city').html('<option value="">Select City</option>');
-                    res.data.forEach(item => {
-                        $("#city").append('<option value="' + item
-                            .id + '">' + item.name + '</option>');
-                    });
-
-                }
-            });
-        });
-    </script>
-<script id="pcs" mode="edit" src="{{asset(mix('js/main/recruiter-create-job.js'))}}"></script>
+<script src="{{asset(mix('js/main/recruiter/job-edit.js'))}}"></script>
 @endsection
