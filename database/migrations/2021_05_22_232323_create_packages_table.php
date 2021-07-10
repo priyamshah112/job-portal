@@ -16,7 +16,8 @@ class CreatePackagesTable extends Migration
         Schema::create('packages', function (Blueprint $table) {
             $table->id();
             $table->string('plan_name')->unique();
-            $table->bigInteger('post_quota');
+            $table->string('post_quota');
+            $table->bigInteger('location_quota');
             $table->bigInteger('duration');
             $table->bigInteger('amount');
             $table->timestamps();

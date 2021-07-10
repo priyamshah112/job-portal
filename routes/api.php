@@ -44,6 +44,8 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('changeAdminPassword', [UserAccountController::class, 'changeAdminPassword']);
             Route::post('changeAdminInfo', [UserAccountController::class, 'changeAdminInfo']);
     
+            Route::get('payments', [PaymentApiController::class, 'index']);
+            
             Route::get('/recruiters', [RecruitersApiController::class, 'index']);
             Route::post('/recruiters/view/{id}', [RecruitersApiController::class, 'view']);
             Route::post('/recruiters/delete', [RecruitersApiController::class, 'delete']);

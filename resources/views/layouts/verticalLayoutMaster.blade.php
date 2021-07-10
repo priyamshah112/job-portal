@@ -16,6 +16,7 @@
 
      <!-- BEGIN: Content-->
      <div class="app-content content {{ $configData['pageClass'] }}">
+          @include('flash::message')
           <!-- BEGIN: Header-->
           <div class="content-overlay"></div>
           <div class="header-navbar-shadow"></div>
@@ -113,6 +114,10 @@
           }
      })
      </script>
+     
+     <script>
+          $('#flash-overlay-modal').modal();
+      </script>
 </body>
 
 </html>

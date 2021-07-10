@@ -14,6 +14,7 @@ class Payment extends Model
         'razorpay_payment_id',
         'razorpay_order_id',
         'razorpay_signature',
+        'package_id',
         'amount',
         'status',
         'created_by',

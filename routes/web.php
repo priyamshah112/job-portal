@@ -112,7 +112,7 @@ Route::group(['middleware' => ['prevent-back-history','active_user','auth']], fu
     // For Recruiters
     Route::group(['middleware' => 'role:recruiter'], function () {
         
-        Route::get('jobs/create', [JobController::class, 'createForm'])->name('jobs-create');
+        Route::get('jobs/create', [JobController::class, 'createForm'])->name('jobs-create')->middleware('check-plan');
         Route::get('jobs/view/{id}', [JobController::class, 'show'])->name('jobs-view');
         Route::get('jobs/edit/{id}', [JobController::class, 'edit'])->name('jobs-edit');   
 

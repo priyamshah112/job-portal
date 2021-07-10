@@ -20,6 +20,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "infyomlabs/laravel-generator": "8.0.x-dev",
         "infyomlabs/swagger-generator": "dev-master",
+        "laracasts/flash": "^3.2",
         "laravel/framework": "^8.26.1",
         "laravel/passport": "^10.1",
         "laravel/sanctum": "^2.9",

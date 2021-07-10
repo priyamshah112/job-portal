@@ -45,4 +45,14 @@ class AppBaseController extends Controller
             'message' => $message,
         ], 200);
     }
+
+    public function sendExpired($error, $code = 410)
+    {
+        return Response::json(ResponseUtil::makeError($error), $code);
+    }
+
+    public function sendErrorWithCode($error, $code)
+    {
+        return Response::json(ResponseUtil::makeError($error), $code);
+    }
 }

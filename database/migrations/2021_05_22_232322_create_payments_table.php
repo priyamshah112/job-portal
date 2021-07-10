@@ -19,6 +19,7 @@ class CreatePaymentsTable extends Migration
             $table->string('razorpay_order_id')->nullable();
             $table->string('razorpay_signature')->nullable();
             $table->string('amount');
+            $table->foreignId('package_id')->constrained();
             $table->enum('status', ['initial','success','failed'])->default('initial');
             $table->foreignId('created_by')->references('id')->on('users');
             $table->foreignId('updated_by')->references('id')->on('users'); 

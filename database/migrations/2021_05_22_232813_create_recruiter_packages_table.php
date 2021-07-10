@@ -15,13 +15,12 @@ class CreateRecruiterPackagesTable extends Migration
     {
         Schema::create('recruiter_packages', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('recruiter_id');
-            $table->foreign('recruiter_id')->references('id')->on('recruiters');
+            $table->foreignId('recruiter_id')->references('id')->on('users');
             $table->date('from_date')->nullable();
             $table->date('to_date')->nullable();
-            $table->unsignedBigInteger('package_id');
-            $table->foreign('package_id')->references('id')->on('packages');
+            $table->foreignId('package_id')->references('id')->on('packages');
             $table->bigInteger('post_quota_used')->nullable();
+            $table->enum('status', ['expired','active']);
             $table->timestamps();
             $table->softDeletes();
         });

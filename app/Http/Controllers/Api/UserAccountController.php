@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Events\SendNotification;
 use App\Models\Attachments;
 use App\Models\Candidate;
 use Exception;
@@ -80,31 +79,23 @@ class UserAccountController extends Controller
             'job_location_city' => $request->job_city,
         ]);
 
-        // Notifications To Candidate
-        $notification_data = [
+        // Notifications To Candidate;
+        $this->notification([
             "title" => 'Welcome to our Job Portal',
             "description" => 'We welcome you to our family',
             "receiver_id" => $user->id,
             "sender_id" => $user->id,
-        ];
-
-        $this->notification($notification_data);
-
-        broadcast(new SendNotification($notification_data, $notification_data['receiver_id']));
+        ]);
 
         // Notifications To Admin
         $admin_id = User::role('admin')->first()->id;
 
-        $admin_notification_data = [
+        $this->notification([
             "title" => 'New Candidate ' . $user->first_name . ' ' . $user->last_name . ' has registered on the platform.',
             "description" => 'We welcome him/her to our family',
             "receiver_id" => $admin_id,
             "sender_id" => $user->id,
-        ];
-
-        $this->notification($admin_notification_data);
-
-        broadcast(new SendNotification($admin_notification_data, $admin_notification_data['receiver_id']));
+        ]);
 
         if (!$candidate) {
             DB::rollback();
@@ -163,31 +154,24 @@ class UserAccountController extends Controller
         ]);
 
         // Notifications To Recruiter
-        $notification_data = [
+
+        $this->notification([
             "title" => 'Welcome to our Job Portal',
             "description" => 'We welcome you to our family',
             "receiver_id" => $user->id,
             "sender_id" => $user->id,
-        ];
-
-        $this->notification($notification_data);
-
-        broadcast(new SendNotification($notification_data, $notification_data['receiver_id']));
+        ]);
 
         // Notifications To Admin
         $admin_id = User::role('admin')->first()->id;
 
-        $admin_notification_data = [
+        $this->notification([
             "title" => 'New Recruiter ' . $user->first_name . ' ' . $user->last_name . ' has registered on the platform.',
             "description" => 'We welcome him/her to our family',
             "receiver_id" => $admin_id,
             "sender_id" => $user->id,
-        ];
-
-        $this->notification($admin_notification_data);
-
-        broadcast(new SendNotification($admin_notification_data, $admin_notification_data['receiver_id']));
-
+        ]);
+        
         if (!$user || !$recruiter) {
             DB::rollback();
         } else {
