@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Models\Job;
+use App\Models\Applied_job;
 use App\Models\Package;
+use App\Models\Payment;
+use App\Models\RecruiterPackage;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -17,12 +22,26 @@ class DashboardController extends Controller
     
     if($role === 'admin')
     {
-      return view('admin.index', ['pageConfigs' => $pageConfigs]);
+      $recruiters_count = User::role('recruiter')->count();
+      $candidates_count = User::role('candidate')->count();
+      $jobs_count = Job::whereNull('deleted_at')->where(['draft' => '0'])->count();
+      $total_hired_count = Applied_job::where('job_status','hire')->count();
+      return view('admin.dashboard', ['pageConfigs' => $pageConfigs])->with(compact(['recruiters_count','candidates_count','jobs_count','total_hired_count']));
     }
     else if($role === 'recruiter')
     {
+      $candidates_count = Applied_job::distinct('candidate_id')->count();
+      $jobs_count = Job::whereNull('deleted_at')->where(['draft' => '0','recruiter_id'=>auth()->user()->id])->count();
+      $total_hired_count = Applied_job::where('job_status','hire')->count();
+      $amount_spent = Payment::where([
+        'status' => 'success',
+        'created_by' => auth()->user()->id
+        ])->sum('amount');
+
       $packages = Package::all();
-      return view('recruiter.dashboard', ['pageConfigs' => $pageConfigs])->with('packages', $packages);
+
+      $active_plan = RecruiterPackage::with('package')->where(['recruiter_id'=>auth()->user()->id,'status' => 'active'])->first();
+      return view('recruiter.dashboard', ['pageConfigs' => $pageConfigs])->with(compact(['packages','active_plan','candidates_count','jobs_count','total_hired_count','amount_spent']));
     }
   }
 }

@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Events\SendNotification;
 use App\Http\Controllers\Controller;
 use App\Models\Candidate;
 use App\Models\Cities;
 use App\Models\Recruiter;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
-use App\Traits\NotificationTraits;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -29,7 +27,7 @@ class RegisterController extends Controller
     |
      */
 
-    use RegistersUsers, NotificationTraits;
+    use RegistersUsers;
 
     /**
      * Where to redirect users after registration.

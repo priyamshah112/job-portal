@@ -14,11 +14,11 @@ class RecruiterPackageSeeder extends Seeder
      */
     public function run()
     {
-        RecruiterPackage::create([
-            "id"=>1,
-            "recruiter_id"=>1,
-            "package_id"=>1,
-            "post_quota_used"=>0
-        ]);
+        // RecruiterPackage::create([
+        //     "id"=>1,
+        //     "recruiter_id"=>2,
+        //     "package_id"=>1,
+        //     "post_quota_used"=>0
+        // ]);
     }
 }

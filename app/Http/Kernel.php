@@ -73,5 +73,6 @@ class Kernel extends HttpKernel
         'active_user' => \App\Http\Middleware\CheckUserActiveMiddleware::class,
         'redirectlogin' => \App\Http\Middleware\CheckUserActiveMiddleware::class,
         'prevent-back-history' => \App\Http\Middleware\PreventBackHistory::class,
+        'check-plan' => \App\Http\Middleware\CheckPlan::class,
     ];
 }

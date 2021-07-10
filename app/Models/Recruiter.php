@@ -23,7 +23,7 @@ class Recruiter extends Model
     }
     public function package()
     {
-        return $this->hasOne(RecruiterPackage::class)->latest()->join('packages', 'recruiter_packages.package_id', '=', 'packages.id')
+        return $this->hasOne(RecruiterPackage::class,'recruiter_id','user_id')->latest()->join('packages', 'recruiter_packages.package_id', '=', 'packages.id')
             ->select('recruiter_packages.*', 'packages.plan_name', 'packages.post_quota', 'packages.amount');
     }
     public function attachments()

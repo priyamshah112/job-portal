@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Events\SendNotification;
 use App\Models\Notification;
 
 trait NotificationTraits
@@ -17,6 +18,9 @@ trait NotificationTraits
             'sender_id'=>$data['sender_id'],
             'updated_by'=>$data['sender_id']
         ]);
+        
+
+        broadcast(new SendNotification($data, $data['receiver_id']));
 
         return $notification;
     }

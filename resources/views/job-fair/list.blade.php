@@ -170,85 +170,89 @@
   </div>
   @endif
 
-  <div class="row match-height job-fair-list">
-      @foreach ($job_fairs as $job)
-          <div class="col-sm-4 col-md-4 col-lg-3">            
-            <!-- Modal -->
-            <div class="modal fade" id="view-job-fair-modal-{{ $job->id}}" tabindex="-1" role="dialog" aria-hidden="true">
-              <div class="modal-dialog modal-md modal-dialog-scrollable" role="document">
-                  <div class="modal-content">
-                      <div class="modal-header">
-                          <h5 class="modal-title">Job Fair Details - {{ $job->name}}</h5>
-                          <button type="button" class="close modal-close-button" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                          </button>
-                      </div>
-                      <div class="modal-body">
-                        <p>{{$job->organizer_name}} - {{$job->department['name']}} - {{$job->type}}</p>
-                        <p>{{$job->description}}</p>
-                        <p>
-                          <i data-feather='map-pin'></i>
-                          <span>{{$job->address}}</span>
-                        </p>
-                        <p>
-                          <i data-feather='mail'></i>
-                          <span>{{$job->email}}</span>
-                        </p>
-                        <p>
-                          <i data-feather='phone-call'></i>
-                          <span>{{$job->mobile_number}}</span>
-                        </p>
-                        <p>
-                            <i data-feather='clock'></i>
-                            <span>{{$job->start}} To {{$job->end}}</span>
-                        </p>
-                      </div>
-                  </div>
-              </div>
-            </div>
-
-            <div class="card job-fair-item">
-                @if(auth()->user()->user_type === 'admin')
-                <div class="btn-group more-icon">
-                    <a class="btn btn-sm dropdown-toggle hide-arrow" data-toggle="dropdown"><i data-feather='more-vertical'></i></a>
-                    <div class="dropdown-menu dropdown-menu-right">                           
-                        <a href="javascript:;" class="dropdown-item job-fair-edit" job_fair_id='{{$job->id}}'>Edit</a>
-                        <a href="javascript:;" class="dropdown-item job-fair-delete" job_fair_id="{{$job->id}}"> Delete</a>
+  @if(count($job_fairs) > 0)
+    <div class="row match-height job-fair-list">
+        @foreach ($job_fairs as $job)
+            <div class="col-sm-4 col-md-4 col-lg-3">            
+                <!-- Modal -->
+                <div class="modal fade" id="view-job-fair-modal-{{ $job->id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-md modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Job Fair Details - {{ $job->name}}</h5>
+                            <button type="button" class="close modal-close-button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>{{$job->organizer_name}} - {{$job->department['name']}} - {{$job->type}}</p>
+                            <p>{{$job->description}}</p>
+                            <p>
+                            <i data-feather='map-pin'></i>
+                            <span>{{$job->address}}</span>
+                            </p>
+                            <p>
+                            <i data-feather='mail'></i>
+                            <span>{{$job->email}}</span>
+                            </p>
+                            <p>
+                            <i data-feather='phone-call'></i>
+                            <span>{{$job->mobile_number}}</span>
+                            </p>
+                            <p>
+                                <i data-feather='clock'></i>
+                                <span>{{$job->start}} To {{$job->end}}</span>
+                            </p>
+                        </div>
                     </div>
                 </div>
-                @endif
-                <div>
-                  <img class="card-img-top" src="{{$job->img_path}}" alt="Card image cap" />
                 </div>
-                <div class="card-body job-card-body">
-                    <h4 class="card-title mb-1 text-center">
-                        {{$job->name}}
-                    </h4>
-                    <div class="job-fair-details">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="media">
-                                <div class="media-body">
-                                    <p class="card-text">{{$job->organizer_name}} - {{$job->department['name']}} - {{$job->type}}</p>
-                                    <p class="card-text">
-                                      <i data-feather='map-pin'></i>
-                                      <small>{{$job->address}}</small>
-                                    </p>
-                                    <p>
-                                        <i data-feather='clock'></i>
-                                        <small>{{$job->start}} To {{$job->end}}</small>
-                                    </p>
-                                    <button type="button" class="btn btn-primary btn-block mt-2" data-toggle="modal" data-target="#view-job-fair-modal-{{ $job->id}}">
-                                      View Details
-                                    </button>
+
+                <div class="card job-fair-item">
+                    @if(auth()->user()->user_type === 'admin')
+                    <div class="btn-group more-icon">
+                        <a class="btn btn-sm dropdown-toggle hide-arrow" data-toggle="dropdown"><i data-feather='more-vertical'></i></a>
+                        <div class="dropdown-menu dropdown-menu-right">                           
+                            <a href="javascript:;" class="dropdown-item job-fair-edit" job_fair_id='{{$job->id}}'>Edit</a>
+                            <a href="javascript:;" class="dropdown-item job-fair-delete" job_fair_id="{{$job->id}}"> Delete</a>
+                        </div>
+                    </div>
+                    @endif
+                    <div>
+                    <img class="card-img-top" src="{{$job->img_path}}" alt="Card image cap" />
+                    </div>
+                    <div class="card-body job-card-body">
+                        <h4 class="card-title mb-1 text-center">
+                            {{$job->name}}
+                        </h4>
+                        <div class="job-fair-details">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <p class="card-text">{{$job->organizer_name}} - {{$job->department['name']}} - {{$job->type}}</p>
+                                        <p class="card-text">
+                                        <i data-feather='map-pin'></i>
+                                        <small>{{$job->address}}</small>
+                                        </p>
+                                        <p>
+                                            <i data-feather='clock'></i>
+                                            <small>{{$job->start}} To {{$job->end}}</small>
+                                        </p>
+                                        <button type="button" class="btn btn-primary btn-block mt-2" data-toggle="modal" data-target="#view-job-fair-modal-{{ $job->id}}">
+                                        View Details
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-          </div>            
-      @endforeach
-  </div>  
+            </div>            
+        @endforeach  
+    </div>        
+  @else
+      <div class="text-center mt-3">No Jobs Fair Found</div>
+  @endif 
 </section>
 @endsection
 

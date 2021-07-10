@@ -16,20 +16,48 @@ class PackageSeeder extends Seeder
     {
         Package::create([
             "plan_name" => "Basic Plan",
-            "post_quota" => 10,
-            "duration" => 30,
-            "amount" => 1000
+            "post_quota" => 12,
+            "location_quota" => 1,
+            "duration" => 12,
+            "amount" => 4000
         ]);
         Package::create([
-            "plan_name" => "Premium Plan",
-            "post_quota" => 30,
-            "duration" => 90,
-            "amount" => 2000
+            "plan_name" => "Bronze Plan",
+            "post_quota" => 24,
+            "location_quota" => 3,
+            "duration" => 12,
+            "amount" => 7000
         ]);
+
         Package::create([
-            "plan_name" => "Free Plan",
-            "post_quota" => 5,
-            "duration" => 10,
+            "plan_name" => "Silver Plan",
+            "post_quota" => 60,
+            "location_quota" => 3,
+            "duration" => 12,
+            "amount" => 12000
+        ]);
+
+        Package::create([
+            "plan_name" => "Golden Plan",
+            "post_quota" => "unlimited",
+            "location_quota" => 3,
+            "duration" => 12,
+            "amount" => 12000
+        ]);
+
+        Package::create([
+            "plan_name" => "Free Trial Plan",
+            "post_quota" => 4,
+            "location_quota" => 1,
+            "duration" => 1,
+            "amount" => 0
+        ]);
+        
+        Package::create([
+            "plan_name" => "Free Promotion Plan",
+            "post_quota" => 12,
+            "location_quota" => 1,
+            "duration" => 3,
             "amount" => 0
         ]);
     }
