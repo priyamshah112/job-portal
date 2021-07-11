@@ -18,19 +18,20 @@ class Candidate extends Model
         'skills',
         'dateOfBirth', 
         'gender',
-        'mobile_number', 
+        'alt_mobile_number', 
         'alt_email',
         'permanent_address', 
         'category',
         'department_id', 
         'category_work',
-        'current_location_state',
-        'current_location_city',  
-        'job_location_state',
-        'job_location_city',
+        'state',
+        'city', 
+        'preferred_state',
+        'preferred_city', 
         'resume_path',
         'video_resume_name',
-        'video_resume_path'];
+        'video_resume_path'
+    ];
 
     public function user(){
         return $this->belongsTo(User::class)->whereNull('deleted_at');
@@ -38,5 +39,13 @@ class Candidate extends Model
 
     public function qualification(){
         return $this->belongsTo(Qualification::class,'qualification_id','id');
+    }
+
+    public function state_detail(){
+        return $this->belongsTo(State::class,'state','id');
+    }
+
+    public function city_detail(){
+        return $this->belongsTo(City::class,'city','id');
     }
 }

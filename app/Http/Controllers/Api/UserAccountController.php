@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\AppBaseController;
 use App\Models\Attachments;
 use App\Models\Candidate;
 use Exception;
-use App\Http\Controllers\Controller;
 use App\Models\Recruiter;
 use App\Models\User;
 use App\Traits\NotificationTraits;
@@ -17,43 +17,36 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
-class UserAccountController extends Controller
+class UserAccountController extends AppBaseController
 {
 
     use NotificationTraits;
 
     public function registerafterotpcandidate(Request $request)
     {
-        $request->validate([
+        $input = $request->all();
+
+        $validator  = Validator::make($input,[
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'about' => 'required',
-            'qualification_id' => 'required',
-            'dateOfBirth' => 'required',
-            'gender' => 'required',
-            'permanent_address' => 'required',
-            'state' => 'required',
-            'city' => 'required',
-            'company_mobile_1' => 'required',
+            'mobile_number' => 'required',
             'email' => ['required', Rule::unique('users')],
             'password' => 'required|string|min:8|confirmed',
-            'category' => 'required',
-            'department_id' => 'required',
-            'skills' => 'required|array',
-            'job_state' => 'required',
-            'job_city' => 'required',
         ]);
-        if($request->category == 'experienced'){
-            $arr['category_type'] = 'required';
+
+        if($validator->fails())
+        {
+            return $this->sendValidationError($validator->errors());
         }
+
         DB::beginTransaction();
-        $skills = json_encode($request->skills);
+
         $user = User::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'password' => Hash::make($request->password),
-            'email' => $request->email,
-            'mobile_number' => $request->company_mobile_1,
+            'first_name' => $input['first_name'],
+            'last_name' => $input['last_name'],
+            'password' => Hash::make($input['password']),
+            'email' => $input['email'],
+            'mobile_number' => $input['mobile_number'],
             'user_type' => 'candidate',
             'active' => '1',
         ]);
@@ -62,21 +55,6 @@ class UserAccountController extends Controller
 
         $candidate = Candidate::create([
             'user_id' => $user->id,
-            'about' => $request->about,
-            'qualification_id' => $request->qualification_id,
-            'skills' => $skills,
-            'dateOfBirth' => $request->dateOfBirth,
-            'gender' => $request->gender,
-            'mobile_number' => $request->company_mobile_2,
-            'alt_email' => $request->alt_email,
-            'permanent_address' => $request->permanent_address,
-            'category' => $request->category,
-            'department_id' => $request->department_id,
-            'category_work' => $request->company_type,
-            'current_location_state' => $request->state,
-            'current_location_city' => $request->city,
-            'job_location_state' => $request->job_state,
-            'job_location_city' => $request->job_city,
         ]);
 
         // Notifications To Candidate;
@@ -115,7 +93,7 @@ class UserAccountController extends Controller
             'company_address' => ['required', 'string', 'max:255'],
             'company_landline_1' => [],
             'company_landline_2' => [],
-            'company_mobile_1' => ['required', 'string', 'max:255'],
+            'mobile_number' => ['required', 'string', 'max:255'],
             'company_mobile_2' => [],
             'industry_segment' => ['required', 'string', 'max:255'],
             'department_id' => ['required', 'string', 'max:255'],
@@ -133,7 +111,7 @@ class UserAccountController extends Controller
             'last_name' => $request['last_name'],
             'password' => Hash::make($request['password']),
             'email' => $request['email'],
-            'mobile_number' => $request['company_mobile_1'],
+            'mobile_number' => $request['mobile_number'],
             'user_type' => 'recruiter',
         ]);
         $user->assignRole('recruiter');
@@ -143,7 +121,7 @@ class UserAccountController extends Controller
             'company_address' => $request['company_address'],
             'company_landline_1' => $request['company_landline_1'],
             'company_landline_2' => $request['company_landline_2'],
-            'company_mobile_1' => $request['company_mobile_1'],
+            'company_mobile_1' => $request['mobile_number'],
             'company_mobile_2' => $request['company_mobile_2'],
             'industry_segment' => $request['industry_segment'],
             'department_id' => $request['department_id'],
@@ -180,11 +158,12 @@ class UserAccountController extends Controller
         $user->sendEmailVerificationNotification();
         return collect(["status" => 1, "msg" => "Registered Successfully."])->toJson();
     }
+
     public function verifyemailphone(Request $request) {
 
         $request->validate([
             'email' => 'required|email',
-            'company_mobile_1' => 'required|min:10'
+            'mobile_number' => 'required|min:10'
         ]);
         $user = User::where('email', $request->email)->first();
         if ($user) {

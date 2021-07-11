@@ -61,5 +61,5 @@
 @section('page-script')
 {{-- Page js files --}}
 
-<script src="{{asset(mix('js/main/admin-recruiter.js'))}}"></script>
+<script src="{{asset(mix('js/main/admin/recruiter.js'))}}"></script>
 @endsection

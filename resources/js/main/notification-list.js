@@ -26,7 +26,6 @@ $(function () {
         // columns according to JSON
         { data: null },
         { data: null },
-        { data: 'notification_type' },
         { data: 'title' },
         { data: 'description'},
         { data: 'created_at' },
@@ -52,17 +51,15 @@ $(function () {
           }
         },
         {
+          searchable: true,
           orderable: false,
           responsivePriority: 1,
           targets: 2,
           render: function (data, type, full, meta) {
-            return (
-              '<img class="img-fluid img-rounded notification_type_image" src='+ data.image_path +' />'
-            );
+            return data
           }
         },
         {
-          searchable: true,
           orderable: false,
           responsivePriority: 1,
           targets: 3,
@@ -74,14 +71,6 @@ $(function () {
           orderable: false,
           responsivePriority: 1,
           targets: 4,
-          render: function (data, type, full, meta) {
-            return data
-          }
-        },
-        {
-          orderable: false,
-          responsivePriority: 1,
-          targets: 5,
           render: function (data, type, full, meta) {
             const months = ["JAN", "FEB", "MAR","APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
             let date = new Date(data);

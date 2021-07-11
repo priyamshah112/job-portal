@@ -59,5 +59,5 @@
 
 @section('page-script')
   {{-- Page js files --}}
-<script src="{{asset(mix('js/main/admin-candidate.js'))}}"></script>
+<script src="{{asset(mix('js/main/admin/candidate.js'))}}"></script>
 @endsection

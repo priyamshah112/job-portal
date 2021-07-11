@@ -119,8 +119,7 @@ Route::group(['prefix' => 'design'], function () {
 
     /* Route Page Layouts */
     Route::group(['prefix' => 'page-layouts'], function () {
-        Route::get('collapsed-menu',
-            [PageLayoutController::class, 'layout_collapsed_menu'])->name('layout-collapsed-menu');
+        Route::get('collapsed-menu', [PageLayoutController::class, 'layout_collapsed_menu'])->name('layout-collapsed-menu');
         Route::get('boxed', [PageLayoutController::class, 'layout_boxed'])->name('layout-boxed');
         Route::get('without-menu', [PageLayoutController::class, 'layout_without_menu'])->name('layout-without-menu');
         Route::get('empty', [PageLayoutController::class, 'layout_empty'])->name('layout-empty');

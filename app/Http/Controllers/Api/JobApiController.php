@@ -50,70 +50,113 @@ class JobApiController extends AppBaseController
 
     public function store(Request $request)
     {
+        $input = $request->all();
 
-        if ($request->draft == 0) {
-            $validator = Validator::make($request->all(), [
-                'position' => 'required',
-                'description' => 'required',
-                'noOfPosts' => 'required',
-                'state' => 'required',
-                'city' => 'required|not_in:0',
-                'minAge' => 'required|not_in:0',
-                'maxAge' => 'required|not_in:0|gt:minAge',
-                'gender' => 'required',
-                'minSalary' => 'required|not_in:0',
-                'maxSalary' => 'required|not_in:0|gt:minSalary',
-                'experience' => 'required|not_in:0',
-                'maxexperience' => 'required|not_in:0|gt:experience',
-                'deadline' => 'required',
-                'skills' => 'required',
-                'qualification_id' => 'required',
-            ]);
-
-            if ($validator->fails()) {
-                $response['response'] = $validator->messages();
-                return collect(["status" => 0, $response]);
-            }
-        } else {
-            $validator = Validator::make($request->all(), [
-                'position' => 'required',
-                'noOfPosts' => 'required',
-            ]);
-            if ($validator->fails()) {
-                $response['response'] = $validator->messages();
-                return collect(["status" => 0, $response]);
-            }
-        }
-        $qualification_id = json_encode($request->qualification_id);
-        $skills = json_encode($request->skills);
-        // dd($request); die();
-        $createJob = Job::create([
-            'recruiter_id' => auth()->user()->id,
-            'position' => $request->position,
-            'description' => $request->description,
-            'num_position' => $request->noOfPosts,
-            'state' => $request->state,
-            'city' => $request->city,
-            'age_min' => $request->minAge,
-            'age_max' => $request->maxAge,
-            'gender' => $request->gender,
-            'qualification_id' => $qualification_id,
-            'experience' => $request->experience,
-            'maxexperience' => $request->maxexperience,
-            'salary_min' => $request->minSalary,
-            'salary_max' => $request->maxSalary,
-            'skills' => $skills,
-            'status' => '1',
-            'deadline' => $request->deadline,
-            'draft' => $request->draft,
+        $validator = Validator::make($input, [
+            'position' => 'required',
+            'description' => 'required',
+            'num_position' => 'required',
+            'salary_min' => 'required|not_in:0',
+            'salary_max' => 'required|not_in:0|gt:salary_min',
         ]);
-        if ($request->draft == "0") {
-            $message = 'Created Successfully';
-        } else {
-            $message = 'Saved as Draft';
+
+        if ($validator->fails()) {
+            return $this->sendValidationError($validator->errors());
+        }
+        
+        $input['recruiter_id'] = auth()->user()->id;
+
+        $createJob = Job::create($input);
+
+        return $this->sendResponse($createJob, 'Job Created Successfully');
+    }
+
+    public function jobDetailUpdate($id, Request $request)
+    {
+        $input = $request->all();
+
+        $validator = Validator::make($input, [
+            'position' => 'required',
+            'description' => 'required',
+            'num_position' => 'required',
+            'salary_min' => 'required|not_in:0',
+            'salary_max' => 'required|not_in:0|gt:salary_min',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendValidationError($validator->errors());
         }
 
-        return collect(["status" => 1, 'msg' => $message])->toJson();
+        $job = Job::findOrFail($id);
+
+        $job->update($input);
+
+        return $this->sendResponse($job, 'Job Created Successfully');
+    }
+    
+    public function jobCriteriaUpdate($id, Request $request)
+    {
+        $input = $request->all();
+
+        $validator = Validator::make($input, [
+            'age_min' => 'required|not_in:0',
+            'age_max' => 'required|not_in:0|gt:age_min',
+            'gender' => 'required',
+            'experience' => 'required|not_in:0',
+            'maxexperience' => 'required|not_in:0|gt:experience',
+            'deadline' => 'required',
+            'skills' => 'required|array',
+            'qualification_id' => 'required|array',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendValidationError($validator->errors());
+        }
+
+        $job = Job::findOrFail($id);
+        $job->update($input);
+
+        return $this->sendResponse($job, 'Job Created Successfully');
+    }
+
+    public function jobLocationUpdate($id, Request $request)
+    {
+        $input = $request->all();
+
+        $validator = Validator::make($input, [
+            'state' => 'required|array',
+            'city' => 'required|array',
+            'draft' => 'required',
+        ]);
+
+        $removedNullValueState = [];
+        $removedNullValueCity = [];
+
+        foreach ($input['state'] as $s) {
+            if($s !== null)
+            {
+                $removedNullValueState[] = $s;
+            }
+        }
+
+        foreach ($input['city'] as $c) {
+            if($c !== null)
+            {
+                $removedNullValueCity[] = $c;
+            }
+        }
+        
+        $input['state'] = $removedNullValueState;
+        $input['city'] = $removedNullValueCity;
+
+        if ($validator->fails()) {
+            return $this->sendValidationError($validator->errors());
+        }
+
+        $job = Job::findOrFail($id);
+        $job->update($input);
+
+        return $this->sendResponse($job, 'Job Created Successfully');
     }
 
     public function status($id, Request $request)

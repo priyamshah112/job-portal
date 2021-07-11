@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\AppBaseController;
 use App\Models\Candidate;
 use App\Models\Cities;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class CandidateResumeController extends Controller
+class CandidateResumeController extends AppBaseController
 {
     public function index()
     {
@@ -37,100 +38,140 @@ class CandidateResumeController extends Controller
         ])->toJson();
     }
 
-    public function update(Request $request)
+    public function personalInfoUpdate(Request $request)
     {
-        DB::beginTransaction();
-        $validatorArray = [
+        $validator  = Validator::make($request->all(), [
             "first_name" => 'required',
             "last_name" => 'required',
             "dateOfBirth" => 'required',
             "gender" => 'required',
-            "permanent_address" => 'required',
-            "current_location_city" => "required",
-            "current_location_state" =>'required',
-            "company_mobile_1" => "required",
-            "email" => 'required',
-            "category" => 'required',
-            "department_id" => 'required',
-            "qualification_id" => 'required',
             "about" => 'required',
-            "skills" => 'required',
-        ];
-
-        if($request->category == 'experienced'){
-            $validatorArray['category_type'] = 'required';
-        }
-
-        $validator  = Validator::make($request->all(), $validatorArray);
-//        $validator = Validator::make($request->all(), [
-//            "first_name" => 'required',
-//            "last_name" => 'required',
-//            "dateOfBirth" => 'required',
-//            "permanent_address" => 'required',
-//            "current_location_city" => "required",
-//            "current_location_state" => 'required',
-//            "company_mobile_1" => "required",
-//            "email" => 'required',
-//            "category" => 'required',
-//            "department_id" => 'required',
-//            "skills" => 'required',
-//            "qualification_id" => 'required',
-//            "about" => 'required',
-//        ]);
-//        if ($request->category == 'experienced') {
-//            $arr['category_type'] = 'required';
-//        }
+        ]);
 
         if ($validator->fails()) {
-            return collect(["status" => 0, "msg" => $validator->errors()])->toJson();
+            return $this->sendValidationError($validator->errors());
         }
 
-        $userID = User::where('email', $request->email)->value('id');
-        if (!isset($userID)) {
-            return collect(["status" => 0, "msg" => "Candidate not found"])->toJson();
+        DB::beginTransaction();
+        try{
+            $user_id = auth()->user()->id;
+
+            if ($request->file('img_name')) {
+                $image = $request->file('img_name');
+                $path = 'storage/profile_pic';
+                $filename = uniqid() . time() . '.' . $image->getClientOriginalExtension();
+                $image->move($path, $filename);
+                User::where('id', $user_id)->update(["img_path" => $path, "image_name" => $filename]);
+            }
+
+            $updatedUser = User::where('id', $user_id)->first();
+
+            $updatedUser->update([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+            ]);
+
+            $updatedCandidate = Candidate::where('user_id', $user_id)->update([
+                'dateOfBirth' => $request->dateOfBirth,
+                'gender' => $request->gender,
+                'about' => $request->about,
+            ]);
+
+            DB::commit();
+
+            return $this->sendResponse($updatedUser, 'Candidate Personal Information Updated Successfully');
         }
-
-        if ($request->file('img_name')) {
-            $image = $request->file('img_name');
-            $path = 'storage/profile_pic';
-            $filename = uniqid() . time() . '.' . $image->getClientOriginalExtension();
-            $image->move($path, $filename);
-            User::where('id', $userID)->update(["img_path" => $path, "image_name" => $filename]);
-        }
-
-        $updatedUser = User::where('id', $userID)->update([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'mobile_number' => $request->company_mobile_1
-        ]);
-        $candidate_id = Candidate::where('user_id', $userID)->value('id');
-        $skills = json_encode($request->skills);
-        $updatedCandidate = Candidate::where('id', $candidate_id)->update([
-            'about' => $request->about,
-            'qualification_id' => $request->qualification_id,
-            'current_location_state' => $request->current_location_state,
-            'current_location_city' => $request->current_location_city,
-            'skills' => $skills,
-            'dateOfBirth' => $request->dateOfBirth,
-            'gender' => $request->gender,
-            'mobile_number' => $request->company_mobile_2,
-            'alt_email' => $request->alt_email,
-            'permanent_address' => $request->permanent_address,
-            'category' => $request->category,
-            'department_id' => $request->department_id,
-            'category_work' => $request->category_type,
-            'job_location_state' => $request->job_location_state,
-            'job_location_city' => $request->job_location_city,
-
-        ]);
-
-        if(!isset($updatedUser) || !isset($updatedUser)){
+        catch(Exception $err)
+        {
             DB::rollBack();
-            return collect(["status" => 1, "msg" => "Date not updated"])->toJson();
+            return $this->sendError($err->getMessage());
         }
-        DB::commit();
-        $user = User::where('id', $userID)->first();
-        $imagePath = $user->img_path ? '/'.$user->img_path .'/'.$user->image_name : "/images/portrait/small/avatar-s-11.jpg";
-        return collect(["status" => 1, "msg" => "Candidate Resume Updated Successfully", 'imagePath' => $imagePath])->toJson();
+
+    }
+
+    public function addressUpdate(Request $request)
+    {
+        $input = $request->all();
+
+        $validator  = Validator::make($input, [
+            "permanent_address" => 'required',
+            "state" => 'required',
+            "city" => 'required',
+            "preferred_state_1" => 'required',
+            "preferred_city_1" => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendValidationError($validator->errors());
+        }
+
+        $input['preferred_state'] = [$input['preferred_state_1']];
+        $input['preferred_city'] = [$input['preferred_city_1']];
+
+        if(isset($request->preferred_state_2))
+        {
+            $input['preferred_state'][] = $input['preferred_state_2'];    
+        }
+
+        if(isset($request->preferred_city_2))
+        {
+            $input['preferred_city'][] = $input['preferred_city_2'];    
+        }
+
+        if(isset($request->preferred_state_3))
+        {
+            $input['preferred_state'][] = $input['preferred_state_3'];    
+        }
+
+        if(isset($request->preferred_city_3))
+        {
+            $input['preferred_city'][] = $input['preferred_city_3'];    
+        }
+
+        $user_id = auth()->user()->id;
+
+        $candidate = Candidate::where('user_id', $user_id)->first();
+        
+        $candidate->update($input);
+
+        return $this->sendResponse($candidate, 'Candidate Address Updated Successfully'); 
+    }
+
+    public function contactUpdate(Request $request)
+    {
+        $user_id = auth()->user()->id;
+
+        $candidate = Candidate::where('user_id', $user_id)->first();
+        
+        $candidate->update([
+            'alt_email' => isset($request->alt_email) ? $request->alt_email : null,
+            'alt_mobile_number' => isset($request->alt_mobile_number) ? $request->alt_mobile_number : null,
+        ]);
+
+        return $this->sendResponse($candidate, 'Candidate Personal Information Updated Successfully');
+    }
+
+    public function qualificationUpdate(Request $request)
+    {
+        $input = $request->all();
+
+        $validator  = Validator::make($input, [
+            "category" => 'required',
+            "department_id" => 'required',
+            "skills" => 'required|array',
+            "qualification_id" => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendValidationError($validator->errors());
+        }
+
+        $user_id = auth()->user()->id;
+
+        $candidate = Candidate::where('user_id', $user_id)->first();
+        
+        $candidate->update($input);
+
+        return $this->sendResponse($candidate, 'Candidate Qualification Updated Successfully');
     }
 }

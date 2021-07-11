@@ -267,7 +267,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 @php
-                                $skills = json_decode($candidate->skills);
+                                    $skills = $candidate->skills !== null ? json_decode($candidate->skills) : [];
                                 @endphp
                                 @foreach($skills as $skill)
                                 <h4 class="badgeNew ml-4"> {{$skill}} </h4>
@@ -277,7 +277,9 @@
                         <hr class="p-0 text-primary mt-2">
                         <h6><strong>Qualification</strong></h6>
                         <div>
-                            <h4 class="badgeNew ml-4"> {{$candidate->qualification->name}} </h4>
+                            @if ($candidate->qualification !== null)
+                                <h4 class="badgeNew ml-4"> {{$candidate->qualification->name}} </h4>                                
+                            @endif
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -320,8 +322,8 @@
                                 <div class="pb-1 font-weight-bold"><i data-feather="phone"></i> Phone 2</div>
                             </div>
                             <div class="col-sm-8">
-                                @if(!($candidate->mobile_number == null))
-                                <div class="pb-1 text-secondary">{{$candidate->mobile_number}}</div>
+                                @if(!($candidate->alt_mobile_number == null))
+                                <div class="pb-1 text-secondary">{{$candidate->alt_mobile_number}}</div>
                                 @else
                                 <div class="pb-1 text-secondary"> -</div>
                                 @endif
@@ -336,13 +338,13 @@
                                 <div class="pb-1 font-weight-bold"><i data-feather="map-pin"></i> State</div>
                             </div>
                             <div class="col-sm-8">
-                                <div class="pb-1 text-secondary">{{$candidate->current_location_state}}</div>
+                                <div class="pb-1 text-secondary">{{$candidate->state_detail ? $candidate->state_detail->name : ''}}</div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="pb-1 font-weight-bold"><i data-feather="map-pin"></i> City</div>
                             </div>
                             <div class="col-sm-8">
-                                <div class="pb-1 text-secondary">{{$candidate->current_location_city}}</div>
+                                <div class="pb-1 text-secondary">{{$candidate->city_detail ? $candidate->city_detail->name : ''}}</div>
                             </div>
                         </div>
                     </div>

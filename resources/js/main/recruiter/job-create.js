@@ -1,15 +1,17 @@
-'use strict';
-const isRtl = $("html").attr("data-textdirection") === "rtl";
-const assetPath = $("body").attr("data-asset-path");
-let jobform = $('#job-form');
-let draft = $('#saveForLater');
-let save = $('#save');
-let type = 0;
-let mode = $('#pcs').attr('mode')
+const isRtl = $("html").attr("data-textdirection") === "rtl",
+    horizontalWizard = document.querySelector('.horizontal-wizard-job-create'),
+    assetPath = $("body").attr("data-asset-path"),
+    jobDetailForm = $('.job-detail-form'),
+    criteriaForm = $('.criteria-form'),
+    locationForm = $('.location-form'),
+    jobNextButton = $('.btn-next'),
+    jobSubmitButton = $('.btn-submit');
+
+var createdJobId = null,
+    type = 1;
 
 //initial
-$('#qualification_id').select2();
-$('#skills').select2();
+$('.select2').select2();
 
 $.ajax({
     url: `${assetPath}api/v1/qualifications`,
@@ -45,23 +47,24 @@ $.ajax({
     dataType: 'json',
     success: function (res) {
         res.data.forEach(item => {
-            $("#state").append('<option value="' + item
+            $(".state").append('<option value="' + item
                 .id + '">' + item.name + '</option>');
         });  
     }
 });
 
-$('#state').on('change', function () {
+$('.state').on('change', function () {
     var id = this.value;
-    $("#city").html('');
+    let $this = $(this);
+    $this.parents('.row').find('.city').html('');
     $.ajax({
         url: `${assetPath}api/v1/cities/${id}`,
         type: "GET",
         dataType: 'json',
         success: function (res) {
-            $('#city').html('<option value="">Select City</option>');
+            $this.parents('.row').find('.city').html('<option value="">Select City</option>');
             res.data.forEach(item => {
-                $("#city").append('<option value="' + item
+                $this.parents('.row').find('.city').append('<option value="' + item
                     .id + '">' + item.name + '</option>');
             });
 
@@ -69,29 +72,55 @@ $('#state').on('change', function () {
     });
 });
 
-let validator = jobform.validate({
+var numberedStepper = new Stepper(horizontalWizard);
+
+$(horizontalWizard)
+    .find('.btn-prev')
+    .on('click', function () {
+        numberedStepper.previous();
+    });
+
+let jobDetailValidator = jobDetailForm.validate({
     rules: {
         position: { required: true},
-        noOfPosts: { required: true },
-        state: { required: { depends: function () { return !type;}} },
-        city: { required: { depends: function () { return !type;}} },
-        minAge: { required: { depends: function () { return !type;}}},
-        maxAge: { required: { depends: function () { return !type;}}, min: function() {
-                return parseInt($('#min_age').val());
-            }},
-        gender: {required: true},
-        minSalary: { required: { depends: function () { return !type;}}},
-        maxSalary: { required: { depends: function () { return !type;}}, min: function() {
-            return parseInt($('#minsal').val());
-        }},
-        experience: { required: { depends: function () { return !type;}}},
-        maxexperience: { required: { depends: function () { return !type;}}, min: function() {
-            return parseInt($('#minexp').val());
-        }},
-        deadline: { required: { depends: function () { return !type;}} },
-        qualification_id: { required: { depends: function () { return !type;}} },
-        skills: { required: { depends: function () { return !type;}} },
-        description: { required: { depends: function () { return !type;}} },
+        num_position: { required: true },
+        salary_min: { required: true },
+        salary_max: { 
+            required: true, 
+            min: function() {
+                return parseInt($('#salary_min').val());
+            }
+        },
+        description: { required: true },
+    },
+    messages: {
+        minSalary: {
+            max: 'Salary is greater than Max Salary'
+        },
+        maxSalary: {
+            min: 'Salary is lesser than Min Salary'
+        }
+    }
+});
+
+let criteriaValidator = criteriaForm.validate({
+    rules: {
+        age_min: { required: true },
+        age_max: { required: true, min: function() {
+                return parseInt($('#age_min').val());
+            }
+        },
+        experience: { required: true },
+        maxexperience: { 
+            required: true, 
+            min: function() {
+                return parseInt($('#maxexperience').val());
+            }
+        },
+        deadline: { required: true },
+        'qualification_id[]': { required: true },
+        'skills[]': { required: true },
+        gender: { required: true },
     },
     messages: {
         minAge: {
@@ -99,12 +128,6 @@ let validator = jobform.validate({
         },
         maxAge: {
             min: 'Age is lesser than Min Age'
-        },
-        minSalary: {
-            max: 'Salary is greater than Max Salary'
-        },
-        maxSalary: {
-            min: 'Salary is lesser than Min Salary'
         },
         experience: {
             max: 'Experience is greater than Max Experience'
@@ -115,140 +138,193 @@ let validator = jobform.validate({
     }
 });
 
-draft.on('click', function (e) {
-    type = 1;
-    execreate();
+let locationValidator = locationForm.validate({
+    rules: {
+        'state[]': { required: true },
+        'city[]': { required: true },
+    }
 });
 
-save.on('click', function (e) {
-    type = 0;
-    execreate();
-});
+jobDetailForm.on('submit', function (e){
+    e.preventDefault();
+    let isValid = jobDetailValidator.valid();
+    let formData = new FormData(this);
+    if(isValid && createdJobId === null)
+    {
+        $.ajax({
+            method: "POST",
+            url: `${assetPath}api/v1/recruiter/jobs/create-job`,
+            data: formData,            
+            processData: false,
+            contentType: false,
+        })
+        .done(function(res) {
+            createdJobId = res.data.id;
 
-function execreate() {
-    var params = {};
-    jobform.serializeArray().map(function(item) {
-        if ( params[item.name] ) {
-            if ( typeof(params[item.name]) === "string" ) {
-                params[item.name] = [params[item.name]];
+            // toastr['info']('👋 Job updated Successfully', {
+            //     closeButton: true,
+            //     tapToDismiss: false,
+            //     rtl: isRtl
+            // });  
+
+            numberedStepper.next();
+            disableNextButton(false);   
+        })
+        .fail(function(error) {
+            if (error.status === 422) {
+                let errors = error.responseJSON.message;
+                let showErrors = {}
+                Object.keys(errors).forEach((key) => {
+                    showErrors = {
+                        ...showErrors,
+                        [key]: errors[key]
+                    }
+                });
+                jobDetailValidator.showErrors(showErrors);
             }
-            params[item.name].push(item.value);
-        } else {
-            params[item.name] = item.value;
-        }
-    });
-    params['draft'] = type;
-    let isvalid = jobform.valid()
-    if(isvalid){
-        Swal.fire({
-            title: 'Are you sure?',
-            text: '',
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#DD6B55',
-            confirmButtonText: 'Yes!',
-            cancelButtonText: 'No.'
-        }).then((result) => {
-            if (result.value) {
-                if (!params.qualification_id) {
-                    params['qualification_id'] = [];
-                }
-                if (!params.skills) {
-                    params['skills'] = [];
-                }
-                if (params.qualification_id && typeof params.qualification_id === 'string') {
-                    params['qualification_id'] = [params.qualification_id];
-                }
-                if (params.skills && typeof params.skills === 'string') {
-                    params['skills'] = [params.skills];
-                }
-                if (type === 0) {
-                    disableSubmitButton(true);
-                } else {
-                    disableSubmitButtonDraft(true);
-                }
-                let url = "".concat(assetPath, "api/v1/recruiter/jobs/create-job");
-                if (mode == 'edit') {
-                    url = "".concat(assetPath, "api/v1/recruiter/jobs/update");
-                }
-                $.ajax({
-                    method: "POST",
-                    url: url,
-                    data: params,
-                })
-                    .done(function(response) {
-                        let msg = 'Created Successfully.';
-                        if (mode == 'edit') {
-                            msg = 'Updated Successfully.';
-                        }
-                        toastr['info']('👋 ' + msg +' Redirecting to Job Page', mode == 'edit' ? 'Update!' : 'New!', {
-                            closeButton: true,
-                            tapToDismiss: false,
-                            rtl: isRtl
-                        });
-                        if (type === 0) {
-                            disableSubmitButton(false);
-                        } else {
-                            disableSubmitButtonDraft(false);
-                        }
-                        setTimeout(()=>{
-                            window.location.href = '/jobs';
-                        }, 2000)
-                    })
-                    .fail(function(error) {
-                        if (error.status === 422) {
-                            let errors = error.responseJSON.message;
-                            let showErrors = {}
-                            Object.keys(errors).forEach((key) => {
-                                showErrors = {
-                                    ...showErrors,
-                                    [key]: errors[key]
-                                }
-                            });
-                            validator.showErrors(showErrors);
-                        }
-                        else {
-                            toastr["error"]("", "Something wrong, Please try again!", {
-                                closeButton: true,
-                                tapToDismiss: false,
-                                rtl: isRtl,
-                            });
-                        }
-                        if (type === 0) {
-                            disableSubmitButton(false);
-                        } else {
-                            disableSubmitButtonDraft(false);
-                        }
-                    })
-            }else{
-                result.dismiss;
+            else {
+                toastr["error"]("", "Something wrong, Please try again!", {
+                    closeButton: true,
+                    tapToDismiss: false,
+                    rtl: isRtl,
+                });
             }
-        });
+            disableNextButton(false);  
+        })
     }
-}
-function disableSubmitButton(status){
-    if(status){
-        draft.attr('disabled', 'disabled');
-        save.attr('disabled', 'disabled');
-        save.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="ml-25 align-middle">Loading</span>');
+    else if(isValid){
+        numberedStepper.next();
     }
-    else{
-        draft.removeAttr('disabled');
-        save.removeAttr('disabled');
-        save.html('Save');
+})
+
+criteriaForm.on('submit', function (e){
+    e.preventDefault();
+    let isValid = criteriaValidator.valid();
+    let formData = new FormData(this);
+    if(isValid)
+    {
+        disableNextButton(true);
+        $.ajax({
+            method: "POST",
+            url: `${assetPath}api/v1/recruiter/jobs/criteria-update/${createdJobId}`,
+            data: formData,
+            processData: false,
+            contentType: false,
+        })
+        .done(function(res) {
+            // toastr['info']('👋 Job Updated Successfully', {
+            //     closeButton: true,
+            //     tapToDismiss: false,
+            //     rtl: isRtl
+            // });    
+            numberedStepper.next();
+            disableNextButton(false);   
+        })
+        .fail(function(error) {
+            if (error.status === 422) {
+                let errors = error.responseJSON.message;
+                let showErrors = {}
+                Object.keys(errors).forEach((key) => {
+                    showErrors = {
+                        ...showErrors,
+                        [key]: errors[key]
+                    }
+                });
+                criteriaValidator.showErrors(showErrors);
+            }
+            else {
+                toastr["error"]("", "Something wrong, Please try again!", {
+                    closeButton: true,
+                    tapToDismiss: false,
+                    rtl: isRtl,
+                });
+            }
+            disableNextButton(false);
+        })
+    }
+})
+
+$('.btn-submit').on('click', function (){
+    type = $(this).attr('data-type');
+    locationForm.trigger('submit');
+})
+
+locationForm.on('submit', function (e){
+    e.preventDefault();
+    let isValid = locationValidator.valid();
+    let formData = new FormData(this);
+    formData.append('draft', type)
+    if(isValid)
+    {
+        disableSubmitButton(true);
+        $.ajax({
+            method: "POST",
+            url: `${assetPath}api/v1/recruiter/jobs/location-update/${createdJobId}`,
+            data: formData,
+            processData: false,
+            contentType: false,
+        })
+        .done(function(res) {
+            if(res.data.draft === 0)
+            {
+                toastr['success']('👋 Job Created Successfully', {
+                    closeButton: true,
+                    tapToDismiss: false,
+                    rtl: isRtl
+                });  
+
+            }
+            else{
+                toastr['info']('👋 Job Updated Successfully', {
+                    closeButton: true,
+                    tapToDismiss: false,
+                    rtl: isRtl
+                });    
+            }
+            window.location.href = '/jobs';
+            disableSubmitButton(false);   
+        })
+        .fail(function(error) {
+            if (error.status === 422) {
+                let errors = error.responseJSON.message;
+                let showErrors = {}
+                Object.keys(errors).forEach((key) => {
+                    showErrors = {
+                        ...showErrors,
+                        [key]: errors[key]
+                    }
+                });
+                criteriaValidator.showErrors(showErrors);
+            }
+            else {
+                toastr["error"]("", "Something wrong, Please try again!", {
+                    closeButton: true,
+                    tapToDismiss: false,
+                    rtl: isRtl,
+                });
+            }
+            disableSubmitButton(false);
+        })
+    }
+})
+
+function disableNextButton(status) {
+    if (status) {
+        jobNextButton.attr('disabled', 'disabled');
+        jobNextButton.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="ml-25 align-middle">Loading</span>');
+    } else {
+        jobNextButton.removeAttr('disabled');
+        jobNextButton.html('Next');
     }
 }
 
-function disableSubmitButtonDraft(status){
-    if(status){
-        draft.attr('disabled', 'disabled');
-        save.attr('disabled', 'disabled');
-        draft.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="ml-25 align-middle">Loading</span>');
-    }
-    else{
-        draft.removeAttr('disabled');
-        save.removeAttr('disabled');
-        draft.html('Save as Draft');
+function disableSubmitButton(status) {
+    if (status) {
+        jobSubmitButton.attr('disabled', 'disabled');
+        jobSubmitButton.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="ml-25 align-middle">Loading</span>');
+    } else {
+        jobSubmitButton.removeAttr('disabled');
+        $('.btn-submit[data-type="1"]').html('Save As Draft');
+        $('.btn-submit[data-type="0"]').html('Submit');
     }
 }
-
