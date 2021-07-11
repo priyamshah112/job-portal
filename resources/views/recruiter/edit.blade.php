@@ -428,5 +428,5 @@
         });
     }
 </script>
-<script id="psc" data-id="{{$user->recruiter->id}}" src="{{asset(mix('js/main/admin-recruiter-edit.js'))}}">
+<script id="psc" data-id="{{$user->recruiter->id}}" src="{{asset(mix('js/main/admin/recruiter-edit.js'))}}">
     @endsection

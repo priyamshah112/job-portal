@@ -483,5 +483,5 @@
             });
         }
     </script>
-<script src="{{ asset(mix('js/main/recruiter-profile.js')) }}"></script>
+<script src="{{ asset(mix('js/main/recruiter/profile.js')) }}"></script>
 @endsection

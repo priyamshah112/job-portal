@@ -425,5 +425,5 @@
             });
         }
     </script>
-<script src="{{asset(mix('js/main/admin-candidate-edit.js'))}}">
+<script src="{{asset(mix('js/main/admin/candidate-edit.js'))}}">
 @endsection

@@ -67,6 +67,35 @@ $.ajax({
     }
 });
 
+$.ajax({
+    url: `${assetPath}api/v1/states/101`,
+    type: "GET",
+    dataType: 'json',
+    success: function (res) {
+        res.data.forEach(item => {
+            $("#state").append('<option value="' + item
+                .id + '">' + item.name + '</option>');
+        });  
+    }
+});
+
+$('#state').on('change', function () {
+    var id = this.value;
+    $('#city').html('');
+    $.ajax({
+        url: `${assetPath}api/v1/cities/${id}`,
+        type: "GET",
+        dataType: 'json',
+        success: function (res) {
+            $('#city').html('<option value="">Select City</option>');
+            res.data.forEach(item => {
+                $('#city').append('<option value="' + item
+                    .id + '">' + item.name + '</option>');
+            });
+
+        }
+    });
+});
 
 let validator = registerform.validate({
     rules: {
@@ -78,14 +107,14 @@ let validator = registerform.validate({
         city: {required: true},
         company_landline_1: {required: false},
         company_landline_2: {required: false},
-        company_mobile_1: {
+        mobile_number: {
             required: true, 
             minlength: 10
         },
         company_mobile_2: {
             required: false,
             minlength: 10,
-            notEqualMobile: "#company_mobile_1",
+            notEqualMobile: "#mobile_number",
         },
         email: {required: true, validate_email: true},
         industry_segment: {required: true},
@@ -103,7 +132,7 @@ let validator = registerform.validate({
         policy: {
             required: 'Please accept!'
         },
-        company_mobile_1: {
+        mobile_number: {
             minlength: 'Please enter valid mobile number.'
         }
     }
@@ -132,7 +161,7 @@ registerform.on('submit', function (e) {
         method: "POST",
         url: url,
         data: {
-            company_mobile_1: params.company_mobile_1,
+            mobile_number: params.mobile_number,
             email: params.email
         }
     }).done(function (response) {
@@ -230,7 +259,7 @@ $('#goback').on('click', () => {
     submitBtn.prop('disabled', true);
 });
 function sendOTP() {
-    firebase.auth().signInWithPhoneNumber('+91' + params.company_mobile_1, window.recaptchaVerifier).then(function (confirmationResult) {
+    firebase.auth().signInWithPhoneNumber('+91' + params.mobile_number, window.recaptchaVerifier).then(function (confirmationResult) {
         window.confirmationResult = confirmationResult;
         coderesult = confirmationResult;
         console.log(coderesult);

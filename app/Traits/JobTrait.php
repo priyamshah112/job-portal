@@ -5,6 +5,7 @@ namespace App\Traits;
 
 use App\Models\Candidate;
 use App\Models\Recruiter;
+use App\Models\User;
 use Carbon\Carbon;
 
 /*
@@ -44,12 +45,12 @@ trait JobTrait
             $score++;
         }
 
-        if($candidate->skills === $job->skills)
+        if(count(array_intersect(json_decode($candidate->skills),json_decode($job->skills))) > 0)
         {
             $score++;
         }
 
-        if($candidate->job_location_state === $job->state && $candidate->job_location_city === $job->city )
+        if(count(array_intersect(json_decode($candidate->preferred_state),json_decode($job->state))) > 0)
         {
             $score++;
         }
@@ -58,16 +59,35 @@ trait JobTrait
         {
             $score++;
         }
+        else if($candidate->category === 'experience')
+        {
+            $score++;
+        }
 
+        // candidate not expected salaray. have to add
         if($candidate->category === 'experience')
         {
             $score++;
         }
+
+
 
         return (int)(($score/8)*100);
     }
 
     public function age_by_dob($dob){
         return Carbon::parse($dob)->age;
+    }
+
+    public function checkCandidateProfileCompleted($id){
+        $user = User::with('candidate')->where('id',$id)->first();
+        if($user->candidate['gender'] === null || $user->candidate['qualification_id'] === null || $user->candidate['dateOfBirth'] === null || $user->candidate['department_id'] === null || $user->candidate['skills'] === null || $user->candidate['preferred_state'] === null || 
+        $user->candidate['preferred_city'] === null || $user->candidate['category'] === null || $user->candidate['about'] === null)
+        {
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 }

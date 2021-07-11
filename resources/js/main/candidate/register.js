@@ -34,155 +34,15 @@ jQuery.validator.addMethod("validate_email", function(value, element) {
 
 }, "Please enter a valid email address.");
 
-jQuery.validator.addMethod("notEqualEmail", function(value, element, param) {
-    return this.optional(element) || value != $(param).val();
-}, "This field should not be same as email.");
-
-jQuery.validator.addMethod(
-    "validDOB",
-    function(value, element) {  
-
-        var currdate = new Date();
-        var d = new Date(value);
-        var setDate = new Date(d.getFullYear() + 18, d.getMonth(), d.getDate());
-        if (currdate >= setDate){
-            return true;
-        }else{
-            return false;
-        }
-    },
-    "Sorry, you must be 18 years of age to apply"
-);
-
-//initial
-
-$('#skills').select2();
-
-$('input[name="category"]').on('change', function() {
-    let category = $(this).val();
-    if (category === "experienced") {
-        $("#companyCategory").show();
-        $("#department_id").show();
-    } else {
-        $("#companyCategory").hide();
-    }
-})
-
-$.ajax({
-    url: `${assetPath}api/v1/qualifications`,
-    type: "GET",
-    dataType: 'json',
-    success: function(res) {
-        res.data.forEach(item => {
-            $("#qualification_id").append('<option value="' + item.id + '">' + item.name + '</option>');
-        });
-    },
-    failure: function(err){
-        console.log(err);
-    }
-});
-
-$.ajax({
-    url: `${assetPath}api/v1/departments`,
-    type: "GET",
-    dataType: 'json',
-    success: function(res) {
-        res.data.forEach(item => {
-            $("#department_id").append('<option value="' + item.id + '">' + item.name + '</option>');
-        });
-    },
-    failure: function(err){
-        console.log(err);
-    }
-});
-
-$.ajax({
-    url: `${assetPath}api/v1/states/101`,
-    type: "GET",
-    dataType: 'json',
-    success: function (res) {
-        res.data.forEach(item => {
-            $("#state").append('<option value="' + item
-                .id + '">' + item.name + '</option>');
-            $("#job_state").append('<option value="' + item
-                .id + '">' + item.name + '</option>');
-        });   
-    }
-});
-
-$('#state').on('change', function () {
-    var id = this.value;
-    $("#city").html('');
-    $.ajax({
-        url: `${assetPath}api/v1/cities/${id}`,
-        type: "GET",
-        dataType: 'json',
-        success: function (res) {
-            $('#city').html('<option value="">Select City</option>');
-            res.data.forEach(item => {
-                $("#city").append('<option value="' + item
-                    .id + '">' + item.name + '</option>');
-            });
-
-        }
-    });
-});
-
-$('#job_state').on('change', function () {
-    var id = this.value;
-    $("#job_city").html('');
-    $.ajax({
-        url: `${assetPath}api/v1/cities/${id}`,
-        type: "GET",
-        dataType: 'json',
-        success: function (res) {
-            $('#job_city').html('<option value="">Select City</option>');
-            res.data.forEach(item => {
-                $("#job_city").append('<option value="' + item
-                    .id + '">' + item.name + '</option>');
-            });
-
-        }
-    });
-});
-
 let validator = registerform.validate({
     rules: {
         first_name: {required: true},
         last_name: {required: true},
-        dateOfBirth: {
-            required: true,
-            validDOB : true
-        },
-        gender: {required: true},
-        permanent_address: {required: true},
-        state: {required: true},
-        city: {required: true},
-        company_mobile_1: {required: true, minlength: 10},
-        company_mobile_2: {required: false, minlength: 10},
+        mobile_number: {required: true, minlength: 10},
         email: {
             required: true, 
             validate_email: true
         },
-        alt_email: {
-            required: false, 
-            validate_email: true,
-            notEqualEmail: "#alt_email"
-        },
-        qualification_id: {required: true},
-        category: {required: true},
-        department_id: {required: true},
-        company_type: {required: { depends: function () {
-            let value = $("input[name='category']:checked").val();
-            if (value === "experienced") {
-                return true;
-            }
-            return false;
-        }} },
-        skills: {required: true},
-        job_state: {required: true},
-        job_city: {required: true},
-        about: {required: true},
         password: { required: true, minlength: 8 },
         password_confirmation: { required: true, minlength: 8, equalTo: '#register-password' },
         policy: { required: true }
@@ -194,7 +54,7 @@ let validator = registerform.validate({
         policy: {
             required: 'Please accept!'
         },
-        company_mobile_1: {
+        mobile_number: {
             minlength: 'Please enter valid mobile number.'
         }
     }
@@ -224,7 +84,7 @@ registerform.on('submit', function (e) {
         method: "POST",
         url: url,
         data: {
-            company_mobile_1: params.company_mobile_1,
+            mobile_number: params.mobile_number,
             email: params.email
         }
     }).done(function (response) {
@@ -329,7 +189,7 @@ function disableOTPButton(status) {
 }
 
 function sendOTP() {
-    firebase.auth().signInWithPhoneNumber('+91' + params.company_mobile_1, window.recaptchaVerifier).then(function (confirmationResult) {
+    firebase.auth().signInWithPhoneNumber('+91' + params.mobile_number, window.recaptchaVerifier).then(function (confirmationResult) {
         window.confirmationResult = confirmationResult;
         coderesult = confirmationResult;
         console.log(coderesult);

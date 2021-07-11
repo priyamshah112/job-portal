@@ -12,12 +12,6 @@
 
 @section('page-style')
   {{-- Page Css files --}}
-  <style>
-    .notification_type_image{
-      width: 100%;
-      height: 100px;
-    }
-  </style>
 @endsection
 
 @section('content')
@@ -31,7 +25,6 @@
           <tr>
             <th></th>
             <th>Sr.No</th>
-            <th width="100px">Image</th>
             <th>Title</th>
             <th>Description</th>
             <th>Date</th>

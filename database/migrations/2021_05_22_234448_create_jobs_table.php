@@ -20,8 +20,8 @@ class CreateJobsTable extends Migration
             $table->string('position')->nullable();
             $table->longText('description')->nullable();
             $table->integer('num_position')->nullable();
-            $table->string('state')->nullable();
-            $table->string('city')->nullable();
+            $table->jsonb('state')->nullable();
+            $table->jsonb('city')->nullable();
             $table->integer('age_min')->nullable();
             $table->integer('age_max')->nullable();
             $table->string('gender')->nullable();
@@ -31,9 +31,9 @@ class CreateJobsTable extends Migration
             $table->bigInteger('salary_min')->nullable();
             $table->bigInteger('salary_max')->nullable();
             $table->json('skills')->nullable();
-            $table->enum('status',array('0','1'))->nullable();
+            $table->enum('status',array(0,1))->default(1)->nullable();
             $table->date('deadline')->nullable();
-            $table->enum('draft',array('0','1'))->nullable();
+            $table->enum('draft',array(0,1))->default(1)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

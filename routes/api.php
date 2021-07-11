@@ -94,6 +94,9 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('payments', [PaymentApiController::class, 'store']);
 
             Route::post('/jobs/create-job', [JobApiController::class, 'store']);
+            Route::post('/jobs/job-detail-update/{id}', [JobApiController::class, 'jobDetailUpdate']);
+            Route::post('/jobs/criteria-update/{id}', [JobApiController::class, 'jobCriteriaUpdate']);
+            Route::post('/jobs/location-update/{id}', [JobApiController::class, 'jobLocationUpdate']);
             
             Route::get('/job/view/{id}' , [JobApiController::class, 'view']);
             Route::post('/jobs/enable', [JobApiController::class, 'enable']);
@@ -112,7 +115,10 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('candidate-account-settings', [UserAccountController::class, 'showCandidateAccountSettings']);
             Route::post('changeCandidatePassword', [UserAccountController::class, 'changeCandidatePassword']);
             Route::post('changeCandidateInfo', [UserAccountController::class, 'changeCandidateInfo']);    
-            Route::post('/candidate-resume-update', [CandidateResumeController::class, 'update']);
+            Route::post('/personal-info-update', [CandidateResumeController::class, 'personalInfoUpdate']);
+            Route::post('/address-update', [CandidateResumeController::class, 'addressUpdate']);
+            Route::post('/contact-update', [CandidateResumeController::class, 'contactUpdate']);
+            Route::post('/qualification-update', [CandidateResumeController::class, 'qualificationUpdate']);
 
             Route::post('/job-apply/{id}', [AppliedJobApiController::class, 'store'])->name('job-apply');
             Route::get('/applied-jobs', [AppliedJobApiController::class, 'index'])->name('applied-jobs');

@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\AppBaseController;
 use App\Models\Candidate;
 use App\Models\Job;
+use App\Models\RecruiterPackage;
 use App\Traits\JobTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,9 +26,16 @@ class JobController extends AppBaseController
         }
         else if($role === 'candidate')
         {
+            $isCompleted = $this->checkCandidateProfileCompleted($user->id);
+            if(!$isCompleted)
+            {
+                flash()->overlay('Complete Your Profile','profile');
+                return redirect(route('candidate-resume-edit'));
+            }
             $jobs = Job::leftJoin('applied_jobs','applied_jobs.job_id','=','jobs.id')
             ->whereNull('jobs.deleted_at')
-            ->where(['jobs.draft' => '0'])
+            ->where(['jobs.draft' => '0','jobs.status' => '1'])
+            ->whereDate('jobs.deadline','>=',Carbon::now())
             ->whereNull('applied_jobs.job_id')
             ->orderBy('jobs.updated_at')
             ->select('applied_jobs.job_id','jobs.*')
@@ -68,8 +77,14 @@ class JobController extends AppBaseController
         $breadcrumbs = [
             ['link' => "jobs", 'name' => "Job List"],
             ['name' => "Create Job"],
-        ];
-        return view('job.create', ['breadcrumbs' => $breadcrumbs]);
+        ];        
+
+        $recruiter_package = RecruiterPackage::with('package')->where([
+            'recruiter_id' => auth()->user()->id,
+            'status' => 'active'
+        ])->first();
+
+        return view('job.create', ['breadcrumbs' => $breadcrumbs])->with(compact('recruiter_package'));
     }
 
 
@@ -82,6 +97,11 @@ class JobController extends AppBaseController
 
         $job = Job::findOrFail($id);
 
-        return view('job.edit', compact('job','breadcrumbs'));
+        $recruiter_package = RecruiterPackage::with('package')->where([
+            'recruiter_id' => auth()->user()->id,
+            'status' => 'active'
+        ])->first();
+
+        return view('job.edit', compact('job','breadcrumbs','recruiter_package'));
     }
 }

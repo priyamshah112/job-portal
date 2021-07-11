@@ -34,7 +34,7 @@ class ResumeController extends Controller
     {
         $user_id = auth()->user()->id;
 
-        $candidate = Candidate::with('user')->where('user_id', $user_id)->first();
+        $candidate = Candidate::with('user','state_detail','city_detail')->where('user_id', $user_id)->first();
         $userType = 'candidate';
         $candidateData = Candidate::where('user_id', $user_id)->first();
 

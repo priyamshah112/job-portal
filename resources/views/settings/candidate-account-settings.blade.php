@@ -190,5 +190,5 @@
 @endsection
 @section('page-script')
 <!-- Page js files -->
-<script src="{{ asset(mix('js/main/candidate-settings.js')) }}"></script>
+<script src="{{ asset(mix('js/main/candidate/settings.js')) }}"></script>
 @endsection
