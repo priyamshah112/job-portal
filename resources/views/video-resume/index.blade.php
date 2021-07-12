@@ -4,9 +4,6 @@
 
 @section('vendor-style')
     {{-- Page Css files --}}
-    <link rel="stylesheet" href="{{ asset(mix('vendors/css/tables/datatable/dataTables.bootstrap4.min.css')) }}">
-    <link rel="stylesheet" href="{{ asset(mix('vendors/css/tables/datatable/responsive.bootstrap4.min.css')) }}">
-    <link rel="stylesheet" href="{{ asset(mix('vendors/css/tables/datatable/buttons.bootstrap4.min.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/toastr.min.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/animate/animate.min.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/sweetalert2.min.css')) }}">
@@ -39,36 +36,28 @@
         <!-- list section start -->
         <div class="card p-2">
             <div class="row justify-content-center">
-                <div class="col-md-12" id="capturedVideo"
-                    style="display: {{ $capturedVideo ? 'block' : 'none' }};text-align: center">
-                    <div class="float-right">
-                        <div id="editButton" class="btn btn-success rounded-lg m-1">Record again</div>
-                    </div>
-                    <video width="600" height="500" controls>
-                        <source
-                            src="{{ URL::asset($candidate->video_resume_path . '/' . $candidate->video_resume_name) }}"
-                            type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-                <div id="afterRecorded" style="display: none;text-align: center">
-                    <div class="text-center">
-                        <p>Preparing video resume. please wait...</p>
-                        <div class="col-md-12 text-center">
-                            <progress value="0" max="60" id="pageBeginCountdownVideo"></progress><br/>
-                            <p><span id="pageBeginCountdownTextVideo"> </span> seconds</p>
-                        </div>
+                <div class="col-md-12 text-center capturedVideo {{ $capturedVideo ? '' : 'd-none' }}">
+                    <div class="d-flex justify-content-center">
+                        <video height="500" controls>
+                            <source
+                                src="{{ URL::asset($candidate->video_resume_path . '/' . $candidate->video_resume_name) }}"
+                                type="video/mp4">
+                                Your browser does not support the video tag.
+                        </video>  
+                    </div> 
+                    <div class="d-flex justify-content-center mt-3">
+                        <button class="btn btn-success rounded-lg mr-1 record-again">Record again</button>
                     </div>
                 </div>
-                <div id="newVideo" style="display: {{ $capturedVideo ? 'none' : 'block' }};text-align: center">
-                    <div class="col-md-12 text-center" id="videoPreview" style="text-align: center">
-                        <h2 class="text-primary">Capture Video Resume</h2>
-                        <div id="textPreview" style="display: block;" class="text-center mt-1">
+                <div class="col-md-12 newVideo {{ $capturedVideo ? 'd-none' : '' }}">
+                    <div class="col-md-12 videoPreview text-center">
+                        <h2 class="text-primary">Capture Video</h2>
+                        <div class="textPreview mt-1">
                             <h4 class="text-dark">Tell us something about you, Remember your first Impression must be
                                 impactful!</h4>
                             <br>
                             <h4 class="text-dark">Here are something hints that might help you!</h4>
-                            <div class="text-left text-black">
+                            <div class="text-black">
                                 <p>1) Give a short introduction about yourself</p>
                                 <p>2) Show case any project or internship experience. Explain what it was and how it
                                     helped
@@ -77,31 +66,29 @@
                                 <p>4) Narrate any leadership or management scenario.</p>
                             </div>
                             <p class="text-danger">*The recoding will automatically stop after 60 seconds</p>
+                            <div class="btn btn-success rounded-lg m-1 startButton"> Start</div>
                         </div>
-                        <div id="preVideo" style="display: none; text-align: center">
+                        <div class="preVideo d-none">
                             <video id="preview" width="600" height="500" autoplay muted></video>
                             <br />
-                            <div class="row begin-countdown">
+                            <div class="row">
                                 <div class="col-md-12 text-center">
-                                    <progress value="120" max="60" id="pageBeginCountdown"></progress><br/>
-                                    <p> Video end in <span id="pageBeginCountdownText"> </span> seconds</p>
+                                    <progress value="120" max="60" class="countDownProgress"></progress><br/>
+                                    <p> Video end in <span class="countDown"> </span> seconds</p>
                                 </div>
                             </div>
-                        </div>
-                        <br /><br />
-                        <div class="btn-group">
-                            <div id="startButton" class="btn btn-success rounded-lg m-1"> Start</div>
-                            <div id="stopButton" class="btn btn-danger rounded-lg m-1" style="display:none;"> Stop</div>
+                            <div class="btn-group">
+                                <div class="btn btn-danger rounded-lg m-1 stopButton"> Stop</div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-12 text-center" id="recorded" style="display:none">
+                    <div class="col-md-12 recorded text-center d-none">
                         <h2>Recorded Video Resume</h2>
                         <video id="recording" width="600" height="500" controls></video>
                         <br /><br />
-                        <a id="downloadButton" class="btn btn-primary"
-                            data-url="{{ route('candidate-video-resume-store') }}">save</a>
-                        <a id="resetButton" class="btn btn-danger">Record again</a>
-                        <a id="downloadLocalButton" class="btn btn-primary" hidden>Download</a>
+                        <button id="saveVideo" class="btn btn-primary"
+                            data-url="{{ route('candidate-video-resume-store') }}">save</button>
+                        <a class="btn btn-danger record-again">Record again</a>
                     </div>
                 </div>
             </div>
@@ -113,217 +100,131 @@
 
 @section('vendor-script')
     {{-- Vendor js files --}}
-    <script src="{{ asset(mix('vendors/js/tables/datatable/jquery.dataTables.min.js')) }}"></script>
-    <script src="{{ asset(mix('vendors/js/tables/datatable/datatables.bootstrap4.min.js')) }}"></script>
-    <script src="{{ asset(mix('vendors/js/tables/datatable/dataTables.responsive.min.js')) }}"></script>
-    <script src="{{ asset(mix('vendors/js/tables/datatable/responsive.bootstrap4.js')) }}"></script>
-    <script src="{{ asset(mix('vendors/js/tables/datatable/datatables.buttons.min.js')) }}"></script>
-    <script src="{{ asset(mix('vendors/js/tables/datatable/buttons.bootstrap4.min.js')) }}"></script>
     <script src="{{ asset(mix('vendors/js/forms/validation/jquery.validate.min.js')) }}"></script>
     <script src="{{ asset(mix('vendors/js/extensions/toastr.min.js')) }}"></script>
     <script src="{{ asset(mix('vendors/js/extensions/sweetalert2.all.min.js')) }}"></script>
 @endsection
 
 @section('page-script')
-    <script>
-        let preview = document.getElementById("preview");
-        let videoPreview = document.getElementById("videoPreview");
-        let recording = document.getElementById("recording");
-        let startButton = document.getElementById("startButton");
-        let stopButton = document.getElementById("stopButton");
-        let downloadButton = document.getElementById("downloadButton");
-        let logElement = document.getElementById("log");
-        let recorded = document.getElementById("recorded");
-        let downloadLocalButton = document.getElementById("downloadLocalButton");
-        let resetButton = document.getElementById("resetButton");
-        let preVideo = document.getElementById("preVideo");
-        let textPreview = document.getElementById("textPreview");
-        let editButton = document.getElementById("editButton");
-        let afterRecorded = document.getElementById("afterRecorded");
-        let newVideo = document.getElementById("newVideo");
+<script src="{{asset(mix('js/main/config.js'))}}"></script>
+<script>
+    var preview = document.getElementById('preview'),
+        recording = document.getElementById("recording"),
+        capturedVideo = $('.capturedVideo'),
+        newVideo = $('.newVideo'),
+        startButton = $('.startButton'),
+        stopButton = $('.stopButton'),
+        recordAgain = $('.record-again');
+        videoPreview = $('.videoPreview'),
+        textPreview = $('.textPreview');
+        preVideo = $('.preVideo'),
+        recorded = $('.recorded'),
+        countDown = $('.countDown'),
+        countDownProgress = $('.countDownProgress'),
+        saveButton = $('#saveVideo');
 
-        let recordingTimeMS = 60000; //video limit 60 sec
-        var localstream;
+    window.stop = function(stream) {
+        stream.getTracks().forEach(track => track.stop());
+    }
 
-        window.log = function(msg) {
-            //logElement.innerHTML += msg + "\n";
-            console.log(msg);
-        }
+    let formData = new FormData();
 
-        window.wait = function(delayInMS) {
-            return new Promise(resolve => setTimeout(resolve, delayInMS));
-        }
+    startButton.on('click', function(){
+        textPreview.addClass('d-none');
+        preVideo.removeClass('d-none');
+        navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: true
+        }).then(stream => {
+            preview.srcObject = stream;
+            let chunks = [];
+            let stopped = false;
 
-        window.startRecording = function(stream, lengthInMS) {
-            ProgressCountdown(60, 'pageBeginCountdown', 'pageBeginCountdownText').then(value => {
+            const mediaRecorder = new MediaRecorder(stream, {mimeType: 'video/webm'});
+            
+            mediaRecorder.start();
+
+            stopButton.on('click', function() {
+                stopRecording();
             });
 
-            let recorder = new MediaRecorder(stream);
-            let data = [];
+            progressCountdown(60);
 
-            recorder.ondataavailable = event => data.push(event.data);
-            recorder.start();
-            log(recorder.state + " for " + (lengthInMS / 1000) + " seconds...");
+            var videoTimer = setInterval(() => {
+                stopRecording();
+                clearInterval(videoTimer);
+            }, 60000);
 
-            let stopped = new Promise((resolve, reject) => {
-                recorder.onstop = resolve;
-                recorder.onerror = event => reject(event.name);
-            });
-
-            let recorded = wait(lengthInMS).then(
-                () => {
-                    recorder.state == "recording" && recorder.stop();
+            function stopRecording()
+            { 
+                if(!stopped){
+                    mediaRecorder.stop();
+                    stop(preview.srcObject);
+                    preVideo.addClass('d-none');
+                    recorded.removeClass('d-none');
+                    stopped = true;
                 }
-            );
+            }
 
-            return Promise.all([
-                    stopped,
-                    recorded
-                ])
-                .then(() => data);
-        }
-
-        window.stop = function(stream) {
-            stream.getTracks().forEach(track => track.stop());
-        }
-        var formData = new FormData();
-        if (startButton) {
-            startButton.addEventListener("click", function() {
-                preVideo.style.display = "block";
-                textPreview.style.display = "none";
-                startButton.innerHTML = "recording...";
-                recorded.style.display = "none";
-                stopButton.style.display = "inline-block";
-                downloadButton.innerHTML = "rendering..";
-                navigator.mediaDevices.getUserMedia({
-                        video: true,
-                        audio: true
-                    }).then(stream => {
-                        preview.srcObject = stream;
-                        localstream = stream;
-                        //downloadButton.href = stream;
-                        preview.captureStream = preview.captureStream || preview.mozCaptureStream;
-                        return new Promise(resolve => preview.onplaying = resolve);
-                    }).then(() => startRecording(preview.captureStream(), recordingTimeMS))
-                    .then(recordedChunks => {
-                        let recordedBlob = new Blob(recordedChunks, {
-                            type: "video/webm"
-                        });
-                        recording.src = URL.createObjectURL(recordedBlob);
-
-                        formData.append('_token', document.querySelector('meta[name="csrf-token"]')
-                            .getAttribute('content'));
-                        formData.append('video', recordedBlob);
-
-                        downloadLocalButton.href = recording.src;
-                        downloadLocalButton.download = "RecordedVideo.webm";
-                        log("Successfully recorded " + recordedBlob.size + " bytes of " +
-                            recordedBlob.type + " media.");
-                        startButton.innerHTML = "Start";
-                        stopButton.style.display = "none";
-                        recorded.style.display = "block";
-                        downloadButton.innerHTML = "Save";
-                        preVideo.style.display = "none";
-                        videoPreview.style.display = "none";
-                        afterRecorded.style.display = "none";
-                        newVideo.style.display = "block";
-                        stop(preview.srcObject);
-                        localstream.getTracks()[0].stop();
-                    })
-                    .catch(log);
-            }, false);
-        }
-        if (downloadButton) {
-            downloadButton.addEventListener("click", function() {
-                $.ajax({
-                    url: this.getAttribute('data-url'),
-                    method: 'POST',
-                    data: formData,
-                    cache: false,
-                    processData: false,
-                    contentType: false,
-                    success: function(res) {
-                        location.reload();
-                        if (res.success) {
-                            
-                        }
-                    }
+            mediaRecorder.onstop = function(e) {
+                recording.src = URL.createObjectURL(new Blob(chunks));
+                let recordedBlob = new Blob(chunks, {
+                    type: "video/webm"
                 });
-            }, false);
-        }
-        if (stopButton) {
-            stopButton.addEventListener("click", function() {
-                stop(preview.srcObject);
-                startButton.innerHTML = "Start";
-                stopButton.style.display = "none";
-                recorded.style.display = "block";
-                downloadButton.innerHTML = "Save";
-                textPreview.style.display = "none";
-                preVideo.style.display = "none";
-                videoPreview.style.display = "none";
-                recorded.style.display = "display";
-                afterRecorded.style.display = "block";
-                newVideo.style.display = "none";
-                localstream.getTracks()[0].stop();
-                $('#pageBeginCountdownVideo').attr('value', $('#pageBeginCountdown').val());
-                ProgressCountdownForVideo($('#pageBeginCountdown').val(), 'pageBeginCountdownVideo', 'pageBeginCountdownTextVideo').then(value => {
-            });
+                formData.append('video', recordedBlob);
+            }
 
-            }, false);
-        }
-        if (resetButton) {
-            resetButton.addEventListener("click", function() {
-                // stop(preview.srcObject);
-                startButton.innerHTML = "Start";
-                stopButton.style.display = "none";
-                recorded.style.display = "block";
-                downloadButton.innerHTML = "Save";
-                textPreview.style.display = "block";
-                preVideo.style.display = "none";
-                videoPreview.style.display = "block";
-                recorded.style.display = "none";
-                localstream.getTracks().forEach(track => track.stop());
-            }, false);
-        }
-        if (editButton) {
-            editButton.addEventListener("click", function() {
-                $('#preVideo').hide();
-                $('#newVideo').show();
-                $('#capturedVideo').hide();
-            }, false);
-        }
+            mediaRecorder.ondataavailable = function(e) {
+                chunks.push(e.data);
+            }            
+        })
+    })
 
-        function ProgressCountdown(timeleft, bar, text) {
-            return new Promise((resolve, reject) => {
-                var countdownTimer = setInterval(() => {
-                    timeleft--;
-                    document.getElementById(bar).value = timeleft;
-                    document.getElementById(text).textContent = timeleft;
-                    if (timeleft <= 0) {
-                        clearInterval(countdownTimer);
-                        resolve(true);
-                    }
-                }, 1000);
-            });
-        }
-        function ProgressCountdownForVideo(timeleft, bar, text) {
-            return new Promise((resolve, reject) => {
-                var countdownTimer = setInterval(() => {
-                    timeleft--;
-                    document.getElementById(bar).value = timeleft;
-                    document.getElementById(text).textContent = timeleft;
-                    if (timeleft <= 0) {
-                        clearInterval(countdownTimer);
-                        resolve(true);
-                    }
-                }, 1000);
-            });
-        }
+    recordAgain.on('click', function(){
+        capturedVideo.addClass('d-none');
+        newVideo.removeClass('d-none');
+        recorded.addClass('d-none');
+        textPreview.removeClass('d-none');
+    });
 
-        $(document).ready(function() {
-            $("#success").delay(5000).slideUp(300);
+    saveButton.on('click', function(){
+        disableSaveButton(true);
+        $.ajax({
+            url: this.getAttribute('data-url'),
+            method: 'POST',
+            data: formData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function(res) {
+                location.reload();
+            },
+            failure: function(err)
+            {
+                disableSaveButton(false);
+            }
         });
+    });
 
-    </script>
-    {{-- <script src="{{ asset(mix('js/user-list.js')) }}"></script> --}}
+    function progressCountdown(timeleft) {
+        var countdownTimer = setInterval(() => {
+            timeleft--;
+            countDown.html(timeleft);
+            countDownProgress.val(timeleft);
+            if (timeleft <= 0) {
+                clearInterval(countdownTimer);
+            }
+        }, 1000);
+    }
+
+    function disableSaveButton(status) {
+        if (status) {
+            saveButton.attr('disabled', 'disabled');
+            saveButton.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="ml-25 align-middle">Loading</span>');
+        } else {
+            saveButton.removeAttr('disabled');
+            saveButton.html('Save');
+        }
+    }
+</script>
 @endsection
