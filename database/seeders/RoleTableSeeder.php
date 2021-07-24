@@ -32,6 +32,7 @@ class RoleTableSeeder extends Seeder
             'dashboard',
             'job',
             'applied-candidate',
+            'future-event',
             'jobfair',
             'feedback'
         ]);

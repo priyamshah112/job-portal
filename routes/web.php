@@ -98,6 +98,7 @@ Route::group(['middleware' => ['prevent-back-history','active_user','auth']], fu
         Route::get('/candidates/edit/{id}', [CandidatesController::class, 'edit'])->name('candidates-edit');
 
         Route::get('job-fair/create', [JobFairController::class, 'createForm'])->name('job-fair-store');
+        Route::get('job-fair/edit/{id}', [JobFairController::class, 'editForm'])->name('job-fair-edit');
 
         Route::group(['prefix' => 'admin'], function () {
 
@@ -112,6 +113,8 @@ Route::group(['middleware' => ['prevent-back-history','active_user','auth']], fu
     // For Recruiters
     Route::group(['middleware' => 'role:recruiter'], function () {
         
+        Route::get('/future-events', [JobFairController::class, 'futureEvents'])->name('future-events');    
+
         Route::get('jobs/create', [JobController::class, 'createForm'])->name('jobs-create')->middleware('check-plan');
         Route::get('jobs/view/{id}', [JobController::class, 'show'])->name('jobs-view');
         Route::get('jobs/edit/{id}', [JobController::class, 'edit'])->name('jobs-edit');   

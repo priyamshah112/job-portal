@@ -169,7 +169,7 @@ registerform.on('submit', function (e) {
             response = JSON.parse(response);
         }
         if (!response.status) {
-            toastr["error"]("", response.msg, {
+            toastr["error"]("", response.message, {
                 closeButton: true,
                 tapToDismiss: false,
                 rtl: isRtl,

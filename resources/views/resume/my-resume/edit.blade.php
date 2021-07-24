@@ -328,9 +328,9 @@
                         <div class="col-lg-12 col-md-12">
                             <div class="form-group">
                                 <label for="category" class="form-label mr-2">Category <span class="invalid-feedback">*</span> </label>
-                                @php  $cat = old('category',$candidate->category) @endphp
-                                <input type="radio" name="category" id="fresher"  value="fresher"{{ ($cat == "fresher")? "checked" : "" }}  > <label for="fresher" class="mr-1"> Fresher </label>
-                                <input type="radio" name="category"  id="experience" value="experienced" {{ ($cat == "experienced")? "checked" : "" }}/> <label for="experience"> Experienced </label>                                
+                                @php  $cat = $candidate->category @endphp
+                                <input type="radio" name="category" id="fresher"  value="fresher"{{ $cat == "fresher" ? "checked" : "" }}  > <label for="fresher" class="mr-1"> Fresher </label>
+                                <input type="radio" name="category"  id="experience" value="experience" {{ $cat == "experience" ? "checked" : "" }}/> <label for="experience"> Experienced </label>                                
                             </div>
                         </div>
                     </div>

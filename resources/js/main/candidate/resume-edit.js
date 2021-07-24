@@ -12,9 +12,10 @@ var modernVerticalWizard = document.querySelector('.modern-vertical-wizard-resum
     isRtl = $("html").attr("data-textdirection") === "rtl",
     assetPath = $("body").attr("data-asset-path");
 
-    select.each(function () {
-        $(this).select2();
-    })
+let qualification = $("#qualification_id").select2(),
+    skills = $("#skills").select2(),
+    department = $("#department_id").select2();
+
 // custom validator
 jQuery.validator.addMethod("validate_email", function(value, element) {
     if (value.length > 1) {
@@ -72,7 +73,9 @@ $.ajax({
             $("#qualification_id").append('<option value="' + item.id + '">' + item.name + '</option>');
         });
         let qualification_id = $("#qualification_id").attr('previous-selected');
-        $("#qualification_id").find('option[value=' + qualification_id !== "" ? qualification_id : ""  + ']').prop('selected',true);
+        if(qualification_id !== ""){
+            qualification.select2('val',[qualification_id]);
+        }
     },
     failure: function(err){
         console.log(err);
@@ -88,7 +91,10 @@ $.ajax({
             $("#department_id").append('<option value="' + item.id + '">' + item.name + '</option>');
         });
         let department_id = $("#department_id").attr('previous-selected');
-        $("#department_id").find('option[value=' + department_id !== "" ? department_id : "" +']').prop("selected",true);
+        if(department_id !== "")
+        {
+            department.select2('val', [department_id]);
+        }
     },
     failure: function(err){
         console.log(err);

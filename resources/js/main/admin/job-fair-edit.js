@@ -7,8 +7,9 @@ const isRtl = $("html").attr("data-textdirection") === "rtl",
     jobNextButton = $('.btn-next'),
     jobSubmitButton = $('.btn-submit');
 
-var createdJobFairId = null,
+var selectedJobFairId = $('input[name="job_fair_id"]').val(),
     type = 1;
+
 
 //initial
 $('.select2').select2();
@@ -43,7 +44,10 @@ $.ajax({
             $("#department_id").append('<option value="' + item.id + '">' + item.name + '</option>');
         });
         let department_id = $("#department_id").attr('previous-selected');
-        $("#department_id").find('option[value=' + department_id + ']').prop('selected',true);
+        if(department_id !== '')
+        {
+            $("#department_id").find('option[value=' + department_id + ']').prop('selected',true);
+        }
     },
     failure: function(err){
         console.log(err);
@@ -61,7 +65,8 @@ $('#price').on('change', function(){
         $('#amount').val("");
         $('.amount-box').addClass('d-none');
     }
-})
+});
+
 var numberedStepper = new Stepper(horizontalWizard);
 
 $(horizontalWizard)
@@ -75,7 +80,6 @@ let jobFairDetailValidator = jobFairDetailForm.validate({
     rules: {
         name: {required: true},
         description: {required: true},
-        img_name: {required: true},
         organizer_name: {required: true},
         department_id: {required: true},
         type: {required: true},
@@ -113,18 +117,18 @@ jobFairDetailForm.on('submit', function (e){
     e.preventDefault();
     let isValid = jobFairDetailValidator.valid();
     let formData = new FormData(this);
-    if(isValid && createdJobFairId === null)
+    if(isValid)
     {
         disableNextButton(true);
         $.ajax({
             method: "POST",
-            url: `${assetPath}api/v1/admin/job-fair/create`,
+            url: `${assetPath}api/v1/admin/job-fair/details-update/${selectedJobFairId}`,
             data: formData,            
             processData: false,
             contentType: false,
         })
         .done(function(res) {
-            createdJobFairId = res.data.id;
+            selectedJobFairId = res.data.id;
             numberedStepper.next();
             disableNextButton(false);   
         })
@@ -150,10 +154,7 @@ jobFairDetailForm.on('submit', function (e){
             disableNextButton(false);  
         })
     }
-    else if(isValid){
-        numberedStepper.next();
-    }
-})
+});
 
 contactForm.on('submit', function (e){
     e.preventDefault();
@@ -164,7 +165,7 @@ contactForm.on('submit', function (e){
         disableNextButton(true);
         $.ajax({
             method: "POST",
-            url: `${assetPath}api/v1/admin/job-fair/contact-update/${createdJobFairId}`,
+            url: `${assetPath}api/v1/admin/job-fair/contact-update/${selectedJobFairId}`,
             data: formData,
             processData: false,
             contentType: false,
@@ -217,7 +218,7 @@ dateTimeForm.on('submit', function (e){
         disableSubmitButton(true);
         $.ajax({
             method: "POST",
-            url: `${assetPath}api/v1/admin/job-fair/event-date-time-update/${createdJobFairId}`,
+            url: `${assetPath}api/v1/admin/job-fair/event-date-time-update/${selectedJobFairId}`,
             data: formData,
             processData: false,
             contentType: false,
@@ -225,7 +226,7 @@ dateTimeForm.on('submit', function (e){
         .done(function(res) {
             if(res.data.draft === 0)
             {
-                toastr['success']('👋 Job Created Successfully', {
+                toastr['success']('👋 Job Fair Created Successfully', {
                     closeButton: true,
                     tapToDismiss: false,
                     rtl: isRtl
@@ -233,7 +234,7 @@ dateTimeForm.on('submit', function (e){
 
             }
             else{
-                toastr['info']('👋 Job Updated Successfully', {
+                toastr['info']('👋 Job Fair Updated Successfully', {
                     closeButton: true,
                     tapToDismiss: false,
                     rtl: isRtl

@@ -34,6 +34,9 @@ class PermissionTableSeeder extends Seeder
             'name' => 'job'
         ]);
         Permission::create([
+            'name' => 'future-event'
+        ]);
+        Permission::create([
             'name' => 'jobfair'
         ]);
         Permission::create([

@@ -92,7 +92,7 @@ registerform.on('submit', function (e) {
             response = JSON.parse(response);
         }
         if (!response.status) {
-            toastr["error"]("", response.msg, {
+            toastr["error"]("", response.message, {
                 closeButton: true,
                 tapToDismiss: false,
                 rtl: isRtl,
@@ -263,6 +263,7 @@ function verify() {
     var code = $("#otp").val();
     disableOTPButton(true);
     coderesult.confirm(code).then(function (result) {
+        $("#otp").val("");
         var user = result.user;
         console.log(user);
         register();
