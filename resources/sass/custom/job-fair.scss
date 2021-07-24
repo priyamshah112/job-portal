@@ -33,3 +33,27 @@
   margin-left: 5px;
   font-size: 14px;
 }
+
+.job-fair-item{
+  position: relative;
+}
+
+.job-fair-item .mb-media-body{
+  margin-bottom: 50px;
+}
+
+.job-fair-item .media-body .card-text{
+  font-size: 16px;
+}
+
+.job-fair-item .media-body span{
+  font-size: 14px;
+}
+
+.status-btn{
+  position: absolute;
+  left: 21px;
+  bottom: 21px;
+  height: 38px;
+  width: calc(100% - 42px);
+}

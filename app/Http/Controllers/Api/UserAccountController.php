@@ -81,7 +81,7 @@ class UserAccountController extends AppBaseController
             DB::commit();
         }
         $user->sendEmailVerificationNotification();
-        return collect(["status" => 1, "msg" => "Registered Successfully."])->toJson();
+        return $this->sendSuccess('Registered Successfully.');
     }
 
     public function registerafterotp(Request $request) {
@@ -156,24 +156,31 @@ class UserAccountController extends AppBaseController
             DB::commit();
         }
         $user->sendEmailVerificationNotification();
-        return collect(["status" => 1, "msg" => "Registered Successfully."])->toJson();
+        return $this->sendSuccess('Registered Successfully.');
     }
 
     public function verifyemailphone(Request $request) {
-
-        $request->validate([
+        
+        $validator = Validator::make($request->all(),[
             'email' => 'required|email',
             'mobile_number' => 'required|min:10'
         ]);
+
+        if($validator->fails())
+        {            
+            return $this->sendValidationError($validator->errors());
+        }
+
         $user = User::where('email', $request->email)->first();
         if ($user) {
-            return collect(["status" => 0, "msg" => "Email already exist."])->toJson();
+            return $this->sendError('Email already exist.');
         }
         $userphone = User::where('mobile_number', $request->company_mobile_1)->first();
         if ($userphone) {
-            return collect(["status" => 0, "msg" => "Mobile number already exist."])->toJson();
+            return $this->sendError('Mobile number already exist.');
         }
-        return collect(["status" => 1, "msg" => "Validation Success."])->toJson();
+
+        return $this->sendSuccess('Validation Success.');
     }
 
     public function showAdminAccountSettings()
@@ -268,7 +275,7 @@ class UserAccountController extends AppBaseController
             ['name' => "Account Settings"],
         ];
         $recruiterInfo = Recruiter::where('user_id', 2)->first();
-        return collect(["status" => 1, $recruiterInfo])->toJson();
+        return $this->sendResponse($recruiterInfo,"Recruiter Account Settings");
 
     }
     public function attachmentDeleteById(Request $request) {

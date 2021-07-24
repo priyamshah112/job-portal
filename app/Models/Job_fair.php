@@ -21,6 +21,7 @@ class Job_fair extends Model
         'email',
         'type',
         'price',
+        'amount',
         'number_of_days',
         'start_date',
         'end_date',
@@ -28,6 +29,8 @@ class Job_fair extends Model
         'end_time',
         'additional_info',
         'department_id',
+        'status',
+        'draft',
     ];
 
     protected $appends = [

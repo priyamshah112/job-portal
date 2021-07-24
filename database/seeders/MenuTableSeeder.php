@@ -77,42 +77,52 @@ class MenuTableSeeder extends Seeder
 
         Menu::create([
             "id"=> 7,
+            'url'=> "future-events",
+            'name'=> "Future Event",
+            'icon'=> "calendar",
+            'slug'=> "future-events",
+            'order'=> 7,
+            'permission_id'=> Permission::where('name','future-event')->first()->id,
+        ]);
+        
+        Menu::create([
+            "id"=> 8,
             'url'=> "job-fair",
             'name'=> "Job Fair",
             'icon'=> "book",
             'slug'=> "job-fairs",
-            'order'=> 7,
+            'order'=> 8,
             'permission_id'=> Permission::where('name','jobfair')->first()->id,
         ]);
 
 
         Menu::create([
-            "id"=> 8,
+            "id"=> 9,
             'url'=> "list-resume",
             'name'=> "My Resume",
             'icon'=> "file",
             'slug'=> "resume",
-            'order'=> 8,
+            'order'=> 9,
             'permission_id'=> Permission::where('name','resume')->first()->id,
         ]);
 
         Menu::create([
-            "id"=> 9,
+            "id"=> 10,
             'url'=> "video-resume",
             'name'=> "My Video CV",
             'icon'=> "film",
             'slug'=> "video-resume",
-            'order'=> 9,
+            'order'=> 10,
             'permission_id'=> Permission::where('name','video-resume')->first()->id,
         ]);
 
         Menu::create([
-            "id"=> 10,
+            "id"=> 11,
             'url'=> "feedback",
             'name'=> "Feedback",
             'icon'=> "file-text",
             'slug'=> "feedbacks",
-            'order'=> 10,
+            'order'=> 11,
             'permission_id'=> Permission::where('name','feedback')->first()->id,
         ]);
 

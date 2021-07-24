@@ -115,7 +115,7 @@
                                         @endif
                                     @elseif(auth()->user()->user_type === 'recruiter')
                                         <button type="button" class="btn btn-primary btn-block mt-2 status-btn">
-                                            View
+                                            Participate
                                         </button>
                                     @else
                                         <button type="button" class="btn btn-primary btn-block mt-2 status-btn">
