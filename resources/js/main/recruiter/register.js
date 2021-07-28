@@ -165,22 +165,10 @@ registerform.on('submit', function (e) {
             email: params.email
         }
     }).done(function (response) {
-        if (typeof response == 'string') {
-            response = JSON.parse(response);
-        }
-        if (!response.status) {
-            toastr["error"]("", response.message, {
-                closeButton: true,
-                tapToDismiss: false,
-                rtl: isRtl,
-            });
-            disableSubmitButton(false)
-            return;
-        }
         sendOTP();
     }).fail(function (err) {
             if (err.status === 422) {
-                let errors = err.responseJSON.errors;
+                let errors = err.responseJSON.message;
                 console.log(errors, err)
                 let showErrors = {}
                 Object.keys(errors).forEach((key) => {
