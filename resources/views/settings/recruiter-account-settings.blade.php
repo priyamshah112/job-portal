@@ -188,7 +188,7 @@
                                                     <span class="invalid-feedback">*</span>
                                                 </label>
                                                 <select class="select2-size-lg form-control" id="department_id"
-                                                    name="department_id">
+                                                    name="department_id" previous-selected="{{$recruiterInfo->department_id}}">
                                                     <option value="">Select Option</option>
                                                 </select>
                                             </div>

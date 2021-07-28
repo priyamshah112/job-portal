@@ -1,4 +1,4 @@
-# JOB PORTAL
+# NaukriWala
 
 - git clone git@gitlab.com:Priyam112/job-portal.git
 - git branch <branch-name>

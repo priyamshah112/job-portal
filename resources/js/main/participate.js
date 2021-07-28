@@ -183,8 +183,8 @@ function paymentGateWay(order)
         "key": "rzp_test_rlSV1yn8HI0l2u",
         "amount": order.amount,
         "currency": "INR",
-        "name": "Job Portal",
-        "description": "Job Portal to lead you to your success and dream job.",
+        "name": "NaukriWala",
+        "description": "NaukriWala to lead you to your success and dream job.",
         "image": "https://naukriwala.co.in/images/logo/job_portal_logo.png",
         "order_id": order.id, 
         "handler": function (response){

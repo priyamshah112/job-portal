@@ -59,7 +59,7 @@ class UserAccountController extends AppBaseController
 
         // Notifications To Candidate;
         $this->notification([
-            "title" => 'Welcome to our Job Portal',
+            "title" => 'Welcome to our NaukriWala',
             "description" => 'We welcome you to our family',
             "receiver_id" => $user->id,
             "sender_id" => $user->id,
@@ -134,7 +134,7 @@ class UserAccountController extends AppBaseController
         // Notifications To Recruiter
 
         $this->notification([
-            "title" => 'Welcome to our Job Portal',
+            "title" => 'Welcome to our NaukriWala',
             "description" => 'We welcome you to our family',
             "receiver_id" => $user->id,
             "sender_id" => $user->id,

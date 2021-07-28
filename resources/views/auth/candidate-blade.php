@@ -65,9 +65,9 @@
                        <label for="gender" class="form-label">Gender</label>
                         <select name="gender" id="gender" class="form-control">
                             <option value="">Select Gender</option>
-                            <option value="">Male</option>
-                            <option value="">Female</option>
-                            <option value="">Transgender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="any">Any</option>
                         </select>
                        @error('gender')
                        <span class="invalid-feedback" role="alert">
