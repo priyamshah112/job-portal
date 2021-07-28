@@ -19,6 +19,7 @@ class CreateRecruiterJobFairsTable extends Migration
             $table->foreignId('job_fair_id')->references('id')->on('job_fairs');
             $table->timestamps();
             $table->softDeletes();
+            
         });
     }
 
