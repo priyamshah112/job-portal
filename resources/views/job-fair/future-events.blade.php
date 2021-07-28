@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Job Fair')
+@section('title', 'Future Events')
 
 @section('vendor-style')
 <!-- vendor css files -->
@@ -17,12 +17,6 @@
 @endsection
 
 @section('content')
-
-@if(auth()->user()->user_type === 'admin')
-<div class="float-right" style="margin-top: -50px">
-    <a href="{{route('job-fair-store')}}" class="btn btn-primary">Add Job Fair</a>
-</div>
-@endif
 <section>
   @if(count($job_fairs) > 0)
     <div class="row match-height job-fair-list">
@@ -64,22 +58,14 @@
                 </div>
 
                 <div class="card job-fair-item">
-                    @if(auth()->user()->user_type === 'admin')
                     <div class="btn-group more-icon">
                         <a class="btn btn-sm dropdown-toggle hide-arrow" data-toggle="dropdown"><i data-feather='more-vertical'></i></a>
                         <div class="dropdown-menu dropdown-menu-right">  
-                            @if ($job->draft === '1')
-                                <a href="{{route('job-fair-edit', $job->id)}}" class="dropdown-item">Edit</a>                                
-                            @endif                         
-                            @if ($job->draft === '0')
-                                <a href="javascript:;" class="dropdown-item job-fair-view" data-toggle="modal" data-target="#view-job-fair-modal-{{ $job->id}}">View</a>                                
-                            @endif                         
-                            <a href="javascript:;" class="dropdown-item job-fair-delete" job_fair_id="{{$job->id}}"> Delete</a>
+                            <a href="javascript:;" class="dropdown-item job-fair-view" data-toggle="modal" data-target="#view-job-fair-modal-{{ $job->id}}">View</a>                                
                         </div>
                     </div>
-                    @endif
                     <div>
-                    <img class="card-img-top" src="{{$job->img_path}}" alt="Card image cap" />
+                        <img class="card-img-top" src="{{$job->img_path}}" alt="Card image cap" />
                     </div>
                     <div class="card-body job-card-body">
                         <h4 class="card-title mb-1 text-center">
@@ -102,26 +88,9 @@
                                             <span>{{$job->start}} To {{$job->end}}</span>
                                         </p>
                                     </div>
-                                    @if(auth()->user()->user_type === 'admin')
-                                        @if ($job->draft === '1')
-                                            <button type="button" class="btn btn-primary btn-block mt-2 status-btn">
-                                                Draft
-                                            </button>
-                                        @endif
-                                        @if ($job->draft === '0')
-                                            <button type="button" class="btn btn-success btn-block mt-2 status-btn">
-                                                Published
-                                            </button>
-                                        @endif
-                                    @elseif(auth()->user()->user_type === 'recruiter')
-                                        <button type="button" class="btn btn-primary btn-block mt-2 status-btn">
-                                            Participate
-                                        </button>
-                                    @else
-                                        <button type="button" class="btn btn-primary btn-block mt-2 status-btn">
-                                            Apply
-                                        </button>
-                                    @endif
+                                    <a href="{{route('participate',$job->id)}}" class="btn btn-primary btn-block mt-2 status-btn">
+                                        Participate
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -146,5 +115,4 @@
 <!-- Page js files -->
 <script src="{{ asset(mix('js/main/config.js')) }}"></script>
 <script src="{{ asset(mix('js/scripts/forms/form-select2.js')) }}"></script>
-<script src="{{ asset(mix('js/main/job-fair.js')) }}"></script>
 @endsection

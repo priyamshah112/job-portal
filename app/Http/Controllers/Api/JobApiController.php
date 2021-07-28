@@ -6,6 +6,7 @@ use App\Http\Controllers\AppBaseController;
 use App\Models\Candidate;
 use App\Models\Cities;
 use App\Models\Job;
+use App\Models\Job_fair;
 use App\Models\Recruiter;
 use App\Models\State;
 use App\Models\States;
@@ -15,6 +16,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\URL;
 
 class JobApiController extends AppBaseController
 {
@@ -88,7 +91,10 @@ class JobApiController extends AppBaseController
         }
 
         $job = Job::findOrFail($id);
-
+        if($job->draft === '0')
+        {
+            return $this->sendError('Cannot edit published data');
+        }
         $job->update($input);
 
         return $this->sendResponse($job, 'Job Created Successfully');
@@ -156,7 +162,10 @@ class JobApiController extends AppBaseController
         $job = Job::findOrFail($id);
         $job->update($input);
 
-        return $this->sendResponse($job, 'Job Created Successfully');
+        return $this->sendResponse([
+            $job,
+            'redirectURL' => URL::previous()
+        ], 'Job Created Successfully');
     }
 
     public function status($id, Request $request)
@@ -246,6 +255,22 @@ class JobApiController extends AppBaseController
         $job = Job::find($request->id)->update($input);
         return $this->sendResponse($job, 'Job Updated Successfully');
 
+    }
+    
+    public function participate($job_fair_id)
+    {
+        $job_fair = Job_Fair::findOrFail($job_fair_id);
+        return DataTables::of(Job::whereNull('deleted_at')
+        ->where('recruiter_id', auth()->user()->id)
+        ->where('draft','0')
+        ->whereBetween('deadline',[Carbon::parse($job_fair->start_date)->format('Y-m-d'),Carbon::parse($job_fair->end_date)->format('Y-m-d')])
+        ->orderBy('updated_at','DESC'))
+        ->addColumn('action', function ($data) {
+            $menu = '<a href="' . route('jobs-view', ['id' => $data->id]) . '" class="btn p-0 m-0"><i data-feather="eye" class="text-primary font-medium-5"></i></a>';
+            return $menu;
+        })
+        ->rawColumns(['action'])
+        ->make(true);
     }
 
     public function destroy(Request $request)
