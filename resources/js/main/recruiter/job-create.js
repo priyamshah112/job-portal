@@ -281,7 +281,7 @@ locationForm.on('submit', function (e){
                     rtl: isRtl
                 });    
             }
-            window.location.href = '/jobs';
+            window.location.href = res.data.redirectURL;
             disableSubmitButton(false);   
         })
         .fail(function(error) {

@@ -223,7 +223,7 @@ jobDetailForm.on('submit', function (e){
                 jobDetailValidator.showErrors(showErrors);
             }
             else {
-                toastr["error"]("", "Something wrong, Please try again!", {
+                toastr["error"]("", error.responseJSON.message, {
                     closeButton: true,
                     tapToDismiss: false,
                     rtl: isRtl,
@@ -270,7 +270,7 @@ criteriaForm.on('submit', function (e){
                 criteriaValidator.showErrors(showErrors);
             }
             else {
-                toastr["error"]("", "Something wrong, Please try again!", {
+                toastr["error"]("", error.responseJSON.message, {
                     closeButton: true,
                     tapToDismiss: false,
                     rtl: isRtl,
@@ -318,7 +318,7 @@ locationForm.on('submit', function (e){
                     rtl: isRtl
                 });    
             }
-            window.location.href = '/jobs';
+            window.location.href = res.data.redirectURL;
             disableSubmitButton(false);   
         })
         .fail(function(error) {
@@ -334,7 +334,7 @@ locationForm.on('submit', function (e){
                 criteriaValidator.showErrors(showErrors);
             }
             else {
-                toastr["error"]("", "Something wrong, Please try again!", {
+                toastr["error"]("", error.responseJSON.message, {
                     closeButton: true,
                     tapToDismiss: false,
                     rtl: isRtl,

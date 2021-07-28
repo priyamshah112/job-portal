@@ -20,7 +20,7 @@ $configData = Helper::applClasses();
           </ul>
      </div>
      <img src="{{ asset('images/logo/job_portal_logo.png') }}" alt="Logo"
-          style="width: 300px;height: 200px;padding-bottom: 13%;padding-right: 23%;margin-top: -25%;margin-bottom: -25%;margin-left: 0;">
+          style="width: 300px;padding-bottom: 13%;padding-right: 23%;margin-top: -25%;margin-bottom: -25%;margin-left: 0;">
      <div class="shadow-bottom"></div>
      <div class="main-menu-content">
           <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">

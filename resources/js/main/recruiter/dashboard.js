@@ -280,7 +280,7 @@ thirdChart.render();
 
 $('.buy-button').on('click', function() {
     disableBuyNowButton(true);
-    $id = $(this).attr('data-id');
+    let $id = $(this).attr('data-id');
     $.ajax({
         url: `${assetPath}api/v1/recruiter/order/${$id}`,
         type: 'POST',

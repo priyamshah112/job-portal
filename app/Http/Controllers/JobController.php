@@ -8,8 +8,8 @@ use App\Models\Job;
 use App\Models\RecruiterPackage;
 use App\Traits\JobTrait;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 
 class JobController extends AppBaseController
 {
@@ -65,7 +65,7 @@ class JobController extends AppBaseController
         $skills = json_decode($job->skills);
         $qualification = json_decode($job->qualification_id);
         $breadcrumbs = [
-            ['link' => "jobs", 'name' => "Job List"],
+            ['link' => URL::previous(), 'name' => app('router')->getRoutes()->match(app('request')->create(url()->previous()))->getName() === 'jobs' ? "Job List" : 'Future Event'],
             ['name' => "Create Job"],
         ];
 

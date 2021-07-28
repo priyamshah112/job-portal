@@ -195,4 +195,5 @@ class JobFairApiController extends AppBaseController
 
         return $this->sendResponse($job_fair, "Successfully Job Fair Deleted");
     }
+
 }

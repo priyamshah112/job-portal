@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\UserAccountController;
 use App\Http\Controllers\Api\CandidateResumeController;
 use App\Http\Controllers\Api\DepartmentApiController;
 use App\Http\Controllers\Api\JobFairApiController;
+use App\Http\Controllers\Api\JobFairPaymentApiController;
 use App\Http\Controllers\Api\NotificationApiController;
 use App\Http\Controllers\Api\PaymentApiController;
 use App\Http\Controllers\Api\QualificationApiController;
@@ -37,8 +38,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('jobs', [JobApiController::class, 'index']);
         
         Route::get('/notifications', [NotificationApiController::class, 'index']);
-        Route::get('/notifications/unread_count', [NotificationApiController::class, 'unread_notification_count']);
-        Route::put('/notifications/mark_all_unread_to_read', [NotificationApiController::class, 'mark_all_unread_to_read']);
+        Route::get('/notifications/unread-count', [NotificationApiController::class, 'unread_notification_count']);
+        Route::put('/notifications/mark-all-unread-to-read', [NotificationApiController::class, 'mark_all_unread_to_read']);
         Route::put('/notifications/{id}', [NotificationApiController::class, 'mark_read']);
 
         Route::group(['prefix' => 'admin'], function () {
@@ -108,7 +109,14 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('/jobs/disable', [JobApiController::class, 'disable']);
             Route::post('/jobs/delete', [JobApiController::class, 'destroy']);
             Route::get('/jobs/edit', [JobApiController::class, 'edit']);
-            Route::post('/jobs/update', [JobApiController::class, 'update']);    
+            Route::post('/jobs/update', [JobApiController::class, 'update']);  
+            
+            Route::get('/job/participate/{job_fair_id}', [JobApiController::class, 'participate']);
+
+            Route::group(['prefix' => 'job-fair'], function () {
+                Route::post('/order/{id}', [JobFairPaymentApiController::class, 'order']);
+                Route::post('payments', [JobFairPaymentApiController::class, 'store']);
+            });
 
             Route::put('apllied-jobs/status/{id}', [AppliedJobApiController::class,'status']);
 
@@ -138,8 +146,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('jobs', [JobApiController::class, 'index']);
 
         Route::get('/notifications', [NotificationApiController::class, 'index']);
-        Route::get('/notifications/unread_count', [NotificationApiController::class, 'unread_notification_count']);
-        Route::put('/notifications/mark_all_unread_to_read', [NotificationApiController::class, 'mark_all_unread_to_read']);
+        Route::get('/notifications/unread-count', [NotificationApiController::class, 'unread_notification_count']);
+        Route::put('/notifications/mark-all-unread-to-read', [NotificationApiController::class, 'mark_all_unread_to_read']);
         Route::put('/notifications/{id}', [NotificationApiController::class, 'mark_read']);
 
         Route::group(['prefix' => 'admin'], function () {
