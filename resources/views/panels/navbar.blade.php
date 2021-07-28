@@ -7,7 +7,7 @@
                     <a class="navbar-brand" href="{{ url('/') }}">
                         <span class="brand-logo">
                         </span>
-                        <h2 class="brand-text mb-0">Job Portal Admin</h2>
+                        <h2 class="brand-text mb-0">NaukriWala Admin</h2>
                     </a>
                 </li>
             </ul>

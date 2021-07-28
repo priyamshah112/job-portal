@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <head>
-    <title>Job Portal</title>
+    <title>NaukriWala</title>
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.6.22/dist/css/uikit.min.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,7 +29,7 @@
         <div class="uk-navbar-left">
 
             <ul class="uk-navbar-nav">
-                <li class="uk-active"><a href="#"><strong>Job Portal</strong></a></li>
+                <li class="uk-active"><a href="#"><strong>NaukriWala</strong></a></li>
             </ul>
 
         </div>

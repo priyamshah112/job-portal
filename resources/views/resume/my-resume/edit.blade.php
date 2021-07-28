@@ -131,7 +131,7 @@
                                     <option value="">Select Gender</option>
                                     <option value="male" @if ($candidate->gender == 'male') selected="selected" @endif>Male</option>
                                     <option value="female" @if ($candidate->gender == 'female') selected="selected" @endif>Female</option>
-                                    <option value="transgender" @if ($candidate->gender == 'transgender') selected="selected" @endif>Transgender</option>
+                                    <option value="any" @if ($candidate->gender == 'any') selected="selected" @endif>Any</option>
                                 </select>
                             </div>
                         </div>

@@ -21,7 +21,7 @@
   <div class="auth-inner row m-0">
     <!-- Brand logo-->
     <a class="brand-logo" href="javascript:void(0);">
-      <h2 class="brand-text text-primary ml-1">Job Portal</h2>
+      <h2 class="brand-text text-primary ml-1">NaukriWala</h2>
     </a>
     <!-- /Brand logo-->
     <!-- Left Text-->

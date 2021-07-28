@@ -1,7 +1,7 @@
 @component('mail::message')
 # Hii ,
 
-This is your credential for Job Portal.
+This is your credential for NaukriWala.
 {{config('app.url')}}/login
 
 Username: {{ $details['email'] }}<br>

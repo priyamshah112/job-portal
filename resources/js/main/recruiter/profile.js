@@ -1,5 +1,27 @@
 Dropzone.autoDiscover = false;
-var isRtl = $('html').attr('data-textdirection') === 'rtl';
+var isRtl = $('html').attr('data-textdirection') === 'rtl',
+assetPath = $("body").attr("data-asset-path")
+department = $("#department_id").select2();
+
+$.ajax({
+    url: `${assetPath}api/v1/departments`,
+    type: "GET",
+    dataType: 'json',
+    success: function(res) {
+        res.data.forEach(item => {
+            $("#department_id").append('<option value="' + item.id + '">' + item.name + '</option>');
+        });
+        let department_id = $("#department_id").attr('previous-selected');
+        if(department_id !== "")
+        {
+            department.select2('val', [department_id]);
+        }
+    },
+    failure: function(err){
+        console.log(err);
+    }
+});
+
 function preview(path, ex) {
     $("#previewHolder").html('');
     if (ex == 'pdf') {
@@ -9,6 +31,7 @@ function preview(path, ex) {
     }
     $("#previewmodal").modal('show');
 }
+
 function removeFile(id, dom) {
     Swal.fire({
         title: 'Do you want Delete?',
@@ -56,6 +79,7 @@ function removeFile(id, dom) {
         });
     });
 }
+
 $(function () {
     'use strict';
     var token = $('meta[name="csrf-token"]').attr('content');
