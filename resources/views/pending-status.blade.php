@@ -25,7 +25,7 @@
                 <div class="card-body">
                     <a href="javascript:void(0);" class="brand-logo">
                         <img src="{{ asset('images/logo/job_portal_logo.png') }}" alt="Logo"
-                            style="width: 300px; height: 200px;">
+                            style="width: 300px;">
                     </a>
                     <h1>Status Pending - Check your email and verify it's you.</h1>
                     <p>

@@ -29,7 +29,11 @@
         <div class="uk-navbar-left">
 
             <ul class="uk-navbar-nav">
-                <li class="uk-active"><a href="#"><strong>NaukriWala</strong></a></li>
+                <li class="uk-active">
+                    <a href="#">
+                        <img src="{{ asset('images/logo/job_portal_logo.png') }}" alt="Logo" style="width: 300px;">
+                    </a>
+                </li>
             </ul>
 
         </div>

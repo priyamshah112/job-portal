@@ -14,7 +14,7 @@
     <div class="card mb-0">
       <div class="card-body">
         <a href="javascript:void(0);" class="brand-logo">
-          <img src="{{ asset('images/logo/job_portal_logo.png') }}" alt="Logo" style="width: 300px; height: 200px;">
+          <img src="{{ asset('images/logo/job_portal_logo.png') }}" alt="Logo" style="width: 300px;">
         </a>
 
         <h4 class="card-title mb-1">Forgot Password? 🔒</h4>
