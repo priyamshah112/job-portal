@@ -20,7 +20,7 @@
 <div class="auth-wrapper auth-v2">
   <div class="auth-inner row m-0">
     <!-- Brand logo-->
-    <a class="brand-logo" href="javascript:void(0);">
+    <a class="d-none d-lg-block brand-logo" href="javascript:void(0);">
         <img src="{{ asset('images/logo/job_portal_logo.png') }}" alt="Logo" style="width: 220px;">
     </a>
     <!-- /Brand logo-->
@@ -33,7 +33,10 @@
       <!-- /Left Text-->
       <!-- Register-->
     <div class="d-flex col-lg-4 align-items-center auth-bg px-1 p-lg-2">
-      <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-1 mx-auto">
+      <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-1 mx-auto">          
+        <a class="d-lg-none align-items-center justify-content-center" href="javascript:void(0);">
+            <img class="w-100 p-2" src="{{ asset('images/logo/job_portal_logo1.png') }}" alt="Logo">
+        </a>
         <h2 class="card-title font-weight-bold mb-1">Recruiter SignUp 🚀</h2>
         <p class="card-text mb-2">Make your app management easy and fun!</p>
         <form id="recruiter-form">

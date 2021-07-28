@@ -162,22 +162,13 @@ class UserAccountController extends AppBaseController
     public function verifyemailphone(Request $request) {
         
         $validator = Validator::make($request->all(),[
-            'email' => 'required|email',
-            'mobile_number' => 'required|min:10'
+            'email' => 'required|unique:users|email',
+            'mobile_number' => 'required|unique:users|min:10'
         ]);
 
         if($validator->fails())
         {            
             return $this->sendValidationError($validator->errors());
-        }
-
-        $user = User::where('email', $request->email)->first();
-        if ($user) {
-            return $this->sendError('Email already exist.');
-        }
-        $userphone = User::where('mobile_number', $request->company_mobile_1)->first();
-        if ($userphone) {
-            return $this->sendError('Mobile number already exist.');
         }
 
         return $this->sendSuccess('Validation Success.');
