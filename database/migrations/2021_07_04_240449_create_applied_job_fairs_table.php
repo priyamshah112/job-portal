@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRecruiterJobFairsTable extends Migration
+class CreateAppliedJobFairsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,11 @@ class CreateRecruiterJobFairsTable extends Migration
      */
     public function up()
     {
-        Schema::create('recruiter_job_fairs', function (Blueprint $table) {
+        Schema::create('applied_job_fairs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('recruiter_id')->references('id')->on('users');
-            $table->foreignId('job_fair_id')->references('id')->on('job_fairs');
-            $table->jsonb('job_ids');
+            $table->foreignId('job_fair_id')->constrained();
+            $table->foreignId('candidate_id')->references('id')->on('users');
             $table->timestamps();
-            $table->softDeletes();
-            
         });
     }
 
@@ -31,6 +28,6 @@ class CreateRecruiterJobFairsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('recruiter_job_fairs');
+        Schema::dropIfExists('applied_job_fairs');
     }
 }

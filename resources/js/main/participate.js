@@ -88,22 +88,24 @@ let table = $('.job-list-table').DataTable({
           action: function (e, dt, button, config) {
             disableNextButton(true);
 
-            let job_fairs = [];  
-            let checkboxes = $('.select-box input'); 
-            checkboxes.each(function (){
-                if($(this).is(':checked'))
-                {
-                    console.log($(this).attr("job_fair_id"));
-                    job_fairs.push($(this).attr("job_fair_id"))
-                }
-            });
+            let job_ids = []; 
+            if($('input[name="price"]').val() === 'free') 
+            {
+                let checkboxes = $('.select-box input'); 
+                checkboxes.each(function (){
+                    if($(this).is(':checked'))
+                    {
+                        job_ids.push($(this).attr("job_fair_id"))
+                    }
+                });
+            }
 
             let id = $('input[name="job_fair_id"]').val();
             $.ajax({
                 url: `${assetPath}api/v1/recruiter/job-fair/order/${id}`,
                 type: 'POST',
                 data: {
-                    job_fairs
+                    job_ids
                 },               
                 success: function (res) {
                     if(res.data.id !== undefined)
@@ -203,6 +205,15 @@ function paymentGateWay(order)
 }
 
 function verifyPayment(res) {
+    let job_ids = []; 
+    let checkboxes = $('.select-box input'); 
+    checkboxes.each(function (){
+        if($(this).is(':checked'))
+        {
+            job_ids.push($(this).attr("job_fair_id"))
+        }
+    });
+    
     $.ajax({
         url: `${assetPath}api/v1/recruiter/job-fair/payments`,
         type: 'POST',
@@ -210,6 +221,7 @@ function verifyPayment(res) {
             razorpay_payment_id: res.razorpay_payment_id,
             razorpay_order_id: res.razorpay_order_id,
             razorpay_signature: res.razorpay_signature,
+            job_ids
         },
         success: function (res) {
             Swal.fire({                            

@@ -16,9 +16,12 @@
 <link rel="stylesheet" href="{{ asset(mix('css/custom/job-fair.css')) }}">
 @endsection
 
+@php
+    $role = auth()->user()->user_type;
+@endphp
 @section('content')
 
-@if(auth()->user()->user_type === 'admin')
+@if($role === 'admin')
 <div class="float-right" style="margin-top: -50px">
     <a href="{{route('job-fair-store')}}" class="btn btn-primary">Add Job Fair</a>
 </div>
@@ -27,7 +30,7 @@
   @if(count($job_fairs) > 0)
     <div class="row match-height job-fair-list">
         @foreach ($job_fairs as $job)
-            <div class="col-sm-4 col-md-4 col-lg-3">            
+            <div class="col-sm-4 col-md-4 col-lg-3 job-fair-item" data-id="{{$job->id}}">            
                 <!-- Modal -->
                 <div class="modal fade" id="view-job-fair-modal-{{ $job->id}}" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog modal-md modal-dialog-scrollable" role="document">
@@ -64,20 +67,23 @@
                 </div>
 
                 <div class="card job-fair-item">
-                    @if(auth()->user()->user_type === 'admin')
                     <div class="btn-group more-icon">
                         <a class="btn btn-sm dropdown-toggle hide-arrow" data-toggle="dropdown"><i data-feather='more-vertical'></i></a>
-                        <div class="dropdown-menu dropdown-menu-right">  
-                            @if ($job->draft === '1')
-                                <a href="{{route('job-fair-edit', $job->id)}}" class="dropdown-item">Edit</a>                                
-                            @endif                         
-                            @if ($job->draft === '0')
-                                <a href="javascript:;" class="dropdown-item job-fair-view" data-toggle="modal" data-target="#view-job-fair-modal-{{ $job->id}}">View</a>                                
-                            @endif                         
-                            <a href="javascript:;" class="dropdown-item job-fair-delete" job_fair_id="{{$job->id}}"> Delete</a>
+                        <div class="dropdown-menu dropdown-menu-right"> 
+                            
+                            @if($role === 'admin') 
+                                @if ($job->draft === '1')
+                                    <a href="{{route('job-fair-edit', $job->id)}}" class="dropdown-item">Edit</a>                                
+                                @endif                         
+                                @if ($job->draft === '0')
+                                    <a href="javascript:;" class="dropdown-item job-fair-view" data-toggle="modal" data-target="#view-job-fair-modal-{{ $job->id}}">View</a>                                
+                                @endif                         
+                                <a href="javascript:;" class="dropdown-item job-fair-delete" job_fair_id="{{$job->id}}"> Delete</a>
+                            @else
+                            <a href="javascript:;" class="dropdown-item job-fair-view" data-toggle="modal" data-target="#view-job-fair-modal-{{ $job->id}}">View</a>
+                            @endif
                         </div>
                     </div>
-                    @endif
                     <div>
                     <img class="card-img-top" src="{{$job->img_path}}" alt="Card image cap" />
                     </div>
@@ -102,23 +108,23 @@
                                             <span>{{$job->start}} To {{$job->end}}</span>
                                         </p>
                                     </div>
-                                    @if(auth()->user()->user_type === 'admin')
+                                    @if($role === 'admin')
                                         @if ($job->draft === '1')
                                             <button type="button" class="btn btn-primary btn-block mt-2 status-btn">
                                                 Draft
                                             </button>
                                         @endif
                                         @if ($job->draft === '0')
-                                            <button type="button" class="btn btn-success btn-block mt-2 status-btn">
+                                            <a href="{{route('job-fair.payments', $job->id)}}" class="btn btn-success btn-block mt-2 status-btn">
                                                 Published
-                                            </button>
+                                            </a>
                                         @endif
-                                    @elseif(auth()->user()->user_type === 'recruiter')
-                                        <button type="button" class="btn btn-primary btn-block mt-2 status-btn">
-                                            View
-                                        </button>
+                                    @elseif($role === 'recruiter')
+                                        <a href="{{route('job-fair.jobs',  $job->id)}}" class="btn btn-primary btn-block mt-2 status-btn">
+                                            Result
+                                        </a>
                                     @else
-                                        <button type="button" class="btn btn-primary btn-block mt-2 status-btn">
+                                        <button type="button" class="btn btn-primary btn-block mt-2 status-btn apply" data-id="{{$job->id}}">
                                             Apply
                                         </button>
                                     @endif
@@ -146,5 +152,9 @@
 <!-- Page js files -->
 <script src="{{ asset(mix('js/main/config.js')) }}"></script>
 <script src="{{ asset(mix('js/scripts/forms/form-select2.js')) }}"></script>
-<script src="{{ asset(mix('js/main/job-fair.js')) }}"></script>
+@if($role === 'admin' || $role === 'recruiter')
+    <script src="{{ asset(mix('js/main/job-fair.js')) }}"></script>
+@else
+    <script src="{{ asset(mix('js/main/candidate/job-fair.js')) }}"></script>
+@endif
 @endsection

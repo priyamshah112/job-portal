@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Job;
-use App\Models\Applied_job;
+use App\Models\AppliedJob;
 use App\Models\Package;
 use App\Models\Payment;
 use App\Models\RecruiterPackage;
@@ -25,14 +25,14 @@ class DashboardController extends Controller
       $recruiters_count = User::role('recruiter')->count();
       $candidates_count = User::role('candidate')->count();
       $jobs_count = Job::whereNull('deleted_at')->where(['draft' => '0'])->count();
-      $total_hired_count = Applied_job::where('job_status','hire')->count();
+      $total_hired_count = AppliedJob::where('job_status','hire')->count();
       return view('admin.dashboard', ['pageConfigs' => $pageConfigs])->with(compact(['recruiters_count','candidates_count','jobs_count','total_hired_count']));
     }
     else if($role === 'recruiter')
     {
-      $candidates_count = Applied_job::distinct('candidate_id')->count();
+      $candidates_count = AppliedJob::distinct('candidate_id')->count();
       $jobs_count = Job::whereNull('deleted_at')->where(['draft' => '0','recruiter_id'=>auth()->user()->id])->count();
-      $total_hired_count = Applied_job::where('job_status','hire')->count();
+      $total_hired_count = AppliedJob::where('job_status','hire')->count();
       $amount_spent = Payment::where([
         'status' => 'success',
         'created_by' => auth()->user()->id

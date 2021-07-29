@@ -13,5 +13,10 @@ class RecruiterJobFair extends Model
     protected $fillable = [
         'recruiter_id',
         'job_fair_id',
+        'job_ids',
+    ];
+    
+    protected $casts = [
+        'job_ids' => 'array'
     ];
 }

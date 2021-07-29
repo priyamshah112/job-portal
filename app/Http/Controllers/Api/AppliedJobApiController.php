@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\AppBaseController;
-use App\Models\Applied_job;
+use App\Models\AppliedJob;
 use App\Traits\JobTrait;
 use App\Models\Job;
 use Carbon\Carbon;
@@ -22,7 +22,7 @@ class AppliedJobApiController extends AppBaseController
         $applied_jobs = null;
 
         if($role === 'recruiter'){
-            $applied_jobs = Applied_job::where('applied_jobs.recruiter_id', $user->id)
+            $applied_jobs = AppliedJob::where('applied_jobs.recruiter_id', $user->id)
             ->leftJoin('jobs','jobs.id','=','applied_jobs.job_id')
             ->leftJoin('candidates','candidates.user_id','=','applied_jobs.candidate_id')
             ->leftJoin('users','users.id','=','applied_jobs.candidate_id')
@@ -46,7 +46,7 @@ class AppliedJobApiController extends AppBaseController
 
         }
         else if($role === 'candidate'){
-            $applied_jobs = Applied_job::where('applied_jobs.candidate_id', $user->id)
+            $applied_jobs = AppliedJob::where('applied_jobs.candidate_id', $user->id)
             ->leftJoin('jobs','jobs.id','=','applied_jobs.job_id')
             ->leftJoin('recruiters','recruiters.user_id','=','jobs.recruiter_id')
             ->select('jobs.*','applied_jobs.*','recruiters.user_id','recruiters.company_name')
@@ -71,12 +71,12 @@ class AppliedJobApiController extends AppBaseController
             'candidate_id' => auth()->user()->id,
         ];
 
-        $check = Applied_job::where($input)->first();
+        $check = AppliedJob::where($input)->first();
         if(!empty($check)){
             return $this->sendError("Already Applied For This Job !!");
         }
 
-        $applied_job = Applied_job::create($input);
+        $applied_job = AppliedJob::create($input);
         return $this->sendResponse($applied_job, "Successfully Applied For Job");
     }
 
@@ -90,7 +90,7 @@ class AppliedJobApiController extends AppBaseController
             return $this->sendError($validator->errors());
         }
 
-        $applied_job = Applied_job::findOrFail($id);
+        $applied_job = AppliedJob::findOrFail($id);
 
         $applied_job->update([
             'job_status' => $request->status,

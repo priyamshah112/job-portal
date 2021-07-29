@@ -99,7 +99,8 @@ Route::group(['middleware' => ['prevent-back-history','active_user','auth']], fu
 
         Route::get('job-fair/create', [JobFairController::class, 'createForm'])->name('job-fair-store');
         Route::get('job-fair/edit/{id}', [JobFairController::class, 'editForm'])->name('job-fair-edit');
-
+        Route::get('job-fair/{id}/payments', [JobFairController::class, 'payments'])->name('job-fair.payments');
+        
         Route::group(['prefix' => 'admin'], function () {
 
             Route::get('account-settings', [UserController::class, 'showUserAccountSettings'])->name('user-account-settings');
@@ -119,9 +120,10 @@ Route::group(['middleware' => ['prevent-back-history','active_user','auth']], fu
         Route::get('jobs/edit/{id}', [JobController::class, 'edit'])->name('jobs-edit');   
         Route::get('/future-events', [JobFairController::class, 'futureEvents'])->name('future-events');    
         Route::get('/participate/{id}', [JobFairController::class, 'participate'])->name('participate');    
-        
+        Route::get('/job-fair/{id}/jobs', [JobFairController::class, 'jobs'])->name('job-fair.jobs');
+        Route::get('/job-fair/{id}/applied-candidates', [JobFairController::class, 'appliedCandidates'])->name('job-fair.applied');
         Route::get('applied-candidates', [JobController::class, 'appliedCandidates'])->name('applied-candidates');
-
+        
         Route::group(['prefix' => 'recruiter'], function () {
 
             Route::get('recruiter-account-settings', [UserController::class, 'showRecruiterAccountSettings'])->name('recruiter-account-settings');

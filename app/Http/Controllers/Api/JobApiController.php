@@ -6,7 +6,7 @@ use App\Http\Controllers\AppBaseController;
 use App\Models\Candidate;
 use App\Models\Cities;
 use App\Models\Job;
-use App\Models\Job_fair;
+use App\Models\JobFair;
 use App\Models\Recruiter;
 use App\Models\State;
 use App\Models\States;
@@ -259,7 +259,7 @@ class JobApiController extends AppBaseController
     
     public function participate($job_fair_id)
     {
-        $job_fair = Job_Fair::findOrFail($job_fair_id);
+        $job_fair = JobFair::findOrFail($job_fair_id);
         return DataTables::of(Job::whereNull('deleted_at')
         ->where('recruiter_id', auth()->user()->id)
         ->where('draft','0')

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\AppBaseController;
-use App\Models\Job_fair;
+use App\Models\JobFair;
 use App\Models\JobFairPayment;
 use App\Models\RecruiterJobFair;
 use Illuminate\Http\Request;
@@ -36,21 +36,27 @@ class JobFairPaymentApiController extends AppBaseController
         return $this->sendResponse($payments, 'Payments retrieved successfully');
     }
 
+    public function show($id)
+    {        
+        $payments = JobFairPayment::leftJoin('job_fairs','job_fairs.id', '=','job_fair_payments.job_fair_id')
+        ->leftJoin('recruiters','recruiters.user_id','=','job_fair_payments.created_by')
+        ->where([
+            'job_fair_payments.job_fair_id' => $id,
+            'job_fair_payments.status' => 'success',
+        ])
+        ->select('recruiters.company_name','recruiters.user_id','job_fairs.name as job_fair_name','job_fairs.id','job_fair_payments.*')
+        ->orderBy('job_fair_payments.updated_at', 'DESC')
+        ->get();
+
+        return $this->sendResponse($payments, 'Job Fair Payment Retreived Successfully');
+    }
+
     public function order($id, Request $request)
     {
-        $input = $request->all();
-        $validator  = Validator::make($input,[
-            'job_fairs' => 'required|array',
-        ]);
-
-        if($validator->fails())
-        {
-           return $this->sendError($validator->errors()) ;
-        }
 
         $user_id = auth()->user()->id;
         
-        $jobFair = Job_fair::where('id', $id)->first();
+        $jobFair = JobFair::where('id', $id)->first();
 
         if(empty($jobFair))
         {
@@ -69,8 +75,18 @@ class JobFairPaymentApiController extends AppBaseController
 
         if($jobFair->price === 'free')
         {
+            $validator  = Validator::make($request->all(),[
+                'job_ids' => 'required|array',
+            ]);
+    
+            if($validator->fails())
+            {
+               return $this->sendError($validator->errors()) ;
+            }
+
             RecruiterJobFair::create([
                 'recruiter_id' => $user_id,
+                'job_ids' => $request->job_ids,
                 'job_fair_id' => $jobFair->id,
             ]);
 
@@ -106,7 +122,8 @@ class JobFairPaymentApiController extends AppBaseController
         $validator  = Validator::make($input,[
             'razorpay_payment_id' => 'required',
             'razorpay_order_id' => 'required',
-            'razorpay_signature' => 'required'
+            'razorpay_signature' => 'required',
+            'job_ids' => 'required|array',
         ]);
 
         if($validator->fails())
@@ -147,6 +164,7 @@ class JobFairPaymentApiController extends AppBaseController
             RecruiterJobFair::create([
                 'recruiter_id' => $user_id,
                 'job_fair_id' => $jobFair->id,
+                'job_ids' => $request->job_ids,
             ]);
             
             DB::commit();

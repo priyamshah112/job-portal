@@ -26,6 +26,7 @@
 <section class="app-job-list">
   <!-- list section start -->
   <input type="hidden" name="job_fair_id" value={{$job_fair->id}} />
+  <input type="hidden" name="price" value={{$job_fair->price}} />
   <div class="card">
     <div class="card-datatable table-responsive pt-0">
       <table class="job-list-table table">

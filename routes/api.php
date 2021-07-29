@@ -81,6 +81,7 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::post('/contact-update/{id}', [JobFairApiController::class, 'jobFairContactUpdate']);
                 Route::post('/event-date-time-update/{id}', [JobFairApiController::class, 'jobFairEventDateTimeUpdate']);
                 Route::delete('/delete/{id}', [JobFairApiController::class, 'destroy']);
+                Route::get('/{id}/payments', [JobFairPaymentApiController::class, 'show']);
 
             });
         });
@@ -116,6 +117,9 @@ Route::group(['prefix' => 'v1'], function () {
             Route::group(['prefix' => 'job-fair'], function () {
                 Route::post('/order/{id}', [JobFairPaymentApiController::class, 'order']);
                 Route::post('payments', [JobFairPaymentApiController::class, 'store']);
+                Route::get('/{id}/jobs',[JobFairApiController::class, 'jobs']);
+                Route::get('/{id}/applied-candidates',[JobFairApiController::class, 'appliedCandidates']);
+
             });
 
             Route::put('apllied-jobs/status/{id}', [AppliedJobApiController::class,'status']);
@@ -135,6 +139,10 @@ Route::group(['prefix' => 'v1'], function () {
 
             Route::post('/job-apply/{id}', [AppliedJobApiController::class, 'store'])->name('job-apply');
             Route::get('/applied-jobs', [AppliedJobApiController::class, 'index'])->name('applied-jobs');
+
+            Route::group(['prefix' => 'job-fair'], function () {
+                Route::post('/apply/{id}', [JobFairApiController::class, 'apply'])->name('job-fair-apply');
+            });
 
             Route::post('/feedback', [FeedbackApiController::class, 'store']);
         });  

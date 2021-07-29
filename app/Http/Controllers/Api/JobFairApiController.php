@@ -4,33 +4,28 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\AppBaseController;
-use App\Models\Job_fair;
+use App\Models\AppliedJob;
+use App\Models\AppliedJobFair;
+use App\Models\Job;
+use App\Models\JobFair;
+use App\Models\RecruiterJobFair;
+use App\Traits\JobTrait;
 use App\Traits\SaveTrait;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class JobFairApiController extends AppBaseController
 {
 
-    use SaveTrait;
+    use SaveTrait,JobTrait;
 
     public function index()
     {
-        $role = Auth::user()->user_type; 
-    
-        if($role === 'admin')
-        {
-        }
-        else if($role === 'recruiter')
-        {
-        }
-        else if($role === 'candidate')
-        {
-        }
-
         return "index";
     }
 
@@ -59,7 +54,7 @@ class JobFairApiController extends AppBaseController
             $input['img_path'] = $request->getSchemeAndHttpHost().$image['img_path'];
         }
 
-        $job_fair = Job_fair::create($input);
+        $job_fair = JobFair::create($input);
         return $this->sendResponse($job_fair, "Successfully Job Fair Created");
     }
 
@@ -87,7 +82,7 @@ class JobFairApiController extends AppBaseController
             $input['img_path'] = $request->getSchemeAndHttpHost().$image['img_path'];
         }
 
-        $job_fair = Job_fair::findOrFail($id);
+        $job_fair = JobFair::findOrFail($id);
         $job_fair->update($input);
         return $this->sendResponse($job_fair, "Successfully Updated Job Fair");
     }
@@ -107,7 +102,7 @@ class JobFairApiController extends AppBaseController
             return $this->sendValidationError($validator->errors());
         }
 
-        $job_fair = Job_fair::findOrFail($id);
+        $job_fair = JobFair::findOrFail($id);
 
         $job_fair->update($input);
 
@@ -130,7 +125,7 @@ class JobFairApiController extends AppBaseController
             return $this->sendValidationError($validator->errors());
         }
         
-        $job_fair = Job_fair::findOrFail($id);
+        $job_fair = JobFair::findOrFail($id);
 
         $date = explode("to", $request->dates);
 
@@ -144,14 +139,14 @@ class JobFairApiController extends AppBaseController
 
     public function show($id)
     {
-        $job_fair = Job_fair::findOrFail($id);
+        $job_fair = JobFair::findOrFail($id);
 
         return $this->sendResponse($job_fair, "Job Fair Retreived Successfully");
     }
 
     public function update($id, Request $request)
     {
-        $job_fair = Job_fair::findOrFail($id);
+        $job_fair = JobFair::findOrFail($id);
 
         $input = $request->all();
 
@@ -188,12 +183,135 @@ class JobFairApiController extends AppBaseController
         return $this->sendResponse($job_fair, 'Successfully Updated Job Fair');
     }
 
-    public function destroy($id){
-        $job_fair = Job_fair::findOrFail($id);
+    public function destroy($id)
+    {
+        $job_fair = JobFair::findOrFail($id);
         Storage::disk('public')->delete('job_fair/' . $job_fair->img_name);
         $job_fair->delete();
 
         return $this->sendResponse($job_fair, "Successfully Job Fair Deleted");
     }
 
+    public function apply($id)
+    {
+        if(auth()->user()->user_type !== 'candidate')
+        {
+            abort(404);
+        }
+        
+        DB::beginTransaction();
+        try {
+            $job_fair = JobFair::findOrFail($id);
+
+            $input = [
+                'job_fair_id' => $id,
+                'candidate_id' => auth()->user()->id,
+            ];
+    
+            $check = AppliedJobFair::where($input)->first();
+            if(!empty($check)){
+                return $this->sendError("Already Applied For This Job Fair!!");
+            }
+
+            $recruiter_job_fairs = RecruiterJobFair::where([
+                'job_fair_id' => $id
+            ])->get();
+
+            $job_ids = [];
+
+            foreach($recruiter_job_fairs as $recruiter_job_fair)
+            {
+                $job_ids = array_unique(array_merge($job_ids, $recruiter_job_fair->job_ids));
+            }
+
+            foreach($job_ids as $job_id)
+            {
+                $job = Job::where('id', $job_id)->first();
+                if(!empty($job)){
+                    $job_input = [
+                        'job_id' => $job_id,
+                        'recruiter_id' => $job->recruiter_id,
+                        'candidate_id' => auth()->user()->id,
+                    ];
+
+                    $check = AppliedJob::where($job_input)->first();
+                    if(empty($check)){
+                        AppliedJob::create($job_input);
+                    }
+                }
+            }
+
+            $applied_job_fair = AppliedJobFair::create($input);
+            DB::commit();
+            return $this->sendResponse($applied_job_fair, "Successfully Applied For Job Fair");
+        } 
+        catch(Exception $err)
+        {
+            DB::rollBack();
+            return $this->sendError($err->getMessage());
+        }
+    }
+
+    public function jobs($id)
+    {
+        
+        $job_fair = JobFair::findOrFail($id);
+
+        $user_id = auth()->user()->id;
+        $job_ids = [];
+        $recruiter_job_fairs = RecruiterJobFair::where([
+            'job_fair_id' => $id
+        ])->get();
+
+        foreach($recruiter_job_fairs as $recruiter_job_fair)
+        {
+            $job_ids = array_unique(array_merge($job_ids, $recruiter_job_fair->job_ids));
+        }
+
+        $jobs = Job::whereNull('deleted_at')
+        ->where('recruiter_id', $user_id)
+        ->whereIn('id', $job_ids)
+        ->get();
+
+        foreach($jobs as $job)
+        {
+            $job['action'] = '<a href="' . route('job-fair.applied', ['id' => $job->id]) . '" class="btn p-0 m-0"><i data-feather="eye" class="text-primary font-medium-5"></i></a>';
+        }
+
+        return $this->sendResponse($jobs, 'Jobs Retreived Successfully');
+    }
+
+    public function appliedCandidates($id)      
+    {
+        $job = Job::findOrFail($id);
+        $user = auth()->user();
+
+        $applied_jobs = AppliedJob::where([
+        'applied_jobs.recruiter_id' => $user->id,
+        'applied_jobs.job_id' => $id
+        ])
+        ->leftJoin('jobs','jobs.id','=','applied_jobs.job_id')
+        ->leftJoin('candidates','candidates.user_id','=','applied_jobs.candidate_id')
+        ->leftJoin('users','users.id','=','applied_jobs.candidate_id')
+        ->select(
+        'candidates.gender',
+        'candidates.category',
+        'users.first_name',
+        'users.last_name',
+        'users.img_path',
+        'jobs.*',
+        'applied_jobs.*'
+        )
+        ->orderBy('applied_jobs.updated_at','Desc')
+        ->get();
+
+        foreach($applied_jobs as $job)
+        {   
+            $job['full_name'] = $user->first_name . ' ' . $user->last_name;
+            $job['score'] = $this->score($job, $job->candidate_id);
+        }
+
+            
+        return $this->sendResponse($applied_jobs, "Applied Jobs Retreived Successfully");
+    }
 }
