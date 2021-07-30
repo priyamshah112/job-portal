@@ -184,17 +184,6 @@
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
-                                                <label for="department_id">Department Type
-                                                    <span class="invalid-feedback">*</span>
-                                                </label>
-                                                <select class="select2-size-lg form-control" id="department_id"
-                                                    name="department_id" previous-selected="{{$recruiterInfo->department_id}}">
-                                                    <option value="">Select Option</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6">
-                                            <div class="form-group">
                                                 <label for="no_of_employees">No of Employees<span
                                                             class="invalid-feedback">*</span></label>
                                                 <select class="form-control"

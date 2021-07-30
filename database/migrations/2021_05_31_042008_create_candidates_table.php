@@ -27,7 +27,7 @@ class CreateCandidatesTable extends Migration
             $table->longText('permanent_address')->nullable();
             $table->string('category')->nullable();
             $table->string('department_id')->nullable();
-            $table->string('category_work')->nullable();
+            $table->string('specialization')->nullable();
             $table->string('state')->nullable();
             $table->string('city')->nullable();
             $table->jsonb('preferred_state')->nullable();

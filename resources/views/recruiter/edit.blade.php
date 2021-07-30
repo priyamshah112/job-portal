@@ -236,15 +236,6 @@
                         </div>
                         <div class="col-lg-4 col-md-6">
                             <div class="form-group">
-                                <label>Department Type</label><span class="invalid-feedback">*</span>
-                                <select class="select2-size-lg form-control" id="department_id"
-                                    name="department_id">
-                                    <option value="">Select Option</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="form-group">
                                 <label for="employee">No of Employees</label><span class="invalid-feedback">*</span>
                                 <select class="form-control"
                                         id="no_of_employees" name="no_of_employees">

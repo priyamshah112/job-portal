@@ -145,7 +145,6 @@ let validator2 = adminRecruiterEditForm2.validate({
         company_mobile_1: {required: true},
         state: {required: true},
         city: {required: true},
-        department_id: {required: true},
         no_of_employees: {required: true},
         annual_turnover: {required: true},
     }

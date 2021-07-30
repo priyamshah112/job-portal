@@ -54,20 +54,6 @@ $.ajax({
 });
 
 $.ajax({
-    url: `${assetPath}api/v1/departments`,
-    type: "GET",
-    dataType: 'json',
-    success: function(res) {
-        res.data.forEach(item => {
-            $("#department_id").append('<option value="' + item.id + '">' + item.name + '</option>');
-        });
-    },
-    failure: function(err){
-        console.log(err);
-    }
-});
-
-$.ajax({
     url: `${assetPath}api/v1/states/101`,
     type: "GET",
     dataType: 'json',
@@ -117,8 +103,6 @@ let validator = registerform.validate({
             notEqualMobile: "#mobile_number",
         },
         email: {required: true, validate_email: true},
-        industry_segment: {required: true},
-        department_id: {required: true},
         no_of_employees: {required: true},
         annual_turnover: {required: true},
         password: { required: true, minlength: 8 },

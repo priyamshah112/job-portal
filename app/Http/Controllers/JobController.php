@@ -40,10 +40,9 @@ class JobController extends AppBaseController
             ->orderBy('jobs.updated_at')
             ->select('applied_jobs.job_id','jobs.*')
             ->get(); 
-            $candidate = Candidate::where('user_id', $user->id)->first();
             foreach($jobs as $job)
             {
-               $job['score'] = $this->score($job, $candidate->id);
+               $job['score'] = $this->score($job, $user->id);
             }
             return view('candidate.jobs')->with('jobs', $jobs);
         }

@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Imports\QualificationsImport;
+use App\Imports\SpecializationsImport;
 use Illuminate\Database\Seeder;
 use Maatwebsite\Excel\Facades\Excel;
 
-class QualificationSeeder extends Seeder
+class SpecializationSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,7 +14,7 @@ class QualificationSeeder extends Seeder
      * @return void
      */
     public function run()
-    { 
-        Excel::import(new QualificationsImport, 'importSeeder/Qualifications.xlsx');
+    {
+        Excel::import(new SpecializationsImport, 'importSeeder/Specializations.xlsx');
     }
 }

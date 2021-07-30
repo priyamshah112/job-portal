@@ -95,7 +95,6 @@ class UserAccountController extends AppBaseController
             'company_landline_2' => [],
             'mobile_number' => ['required', 'string', 'max:255'],
             'company_mobile_2' => [],
-            'industry_segment' => ['required', 'string', 'max:255'],
             'department_id' => ['required', 'string', 'max:255'],
             'no_of_employees' => ['required', 'string', 'max:255'],
             'annual_turnover' => ['required', 'string', 'max:255'],
@@ -123,7 +122,6 @@ class UserAccountController extends AppBaseController
             'company_landline_2' => $request['company_landline_2'],
             'company_mobile_1' => $request['mobile_number'],
             'company_mobile_2' => $request['company_mobile_2'],
-            'industry_segment' => $request['industry_segment'],
             'department_id' => $request['department_id'],
             'no_of_employees' => $request['no_of_employees'],
             'annual_turnover' => $request['annual_turnover'],
@@ -406,7 +404,6 @@ class UserAccountController extends AppBaseController
             'company_mobile_2' => '',
             'department_id' => 'required',
             'no_of_employees' => 'required',
-            'industry_segment' => 'required',
             'annual_turnover' => 'required',
             'city' => 'required',
             'state' => 'required'
@@ -432,7 +429,6 @@ class UserAccountController extends AppBaseController
             'company_mobile_2' => $request->company_mobile_2,
             'department_id' => $request->department_id,
             'no_of_employees' => $request->no_of_employees,
-            'industry_segment' => $request->industry_segment,
             'annual_turnover' => $request->annual_turnover,
             'city' => $request->city,
             'state' => $request->state]);

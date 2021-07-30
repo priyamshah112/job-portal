@@ -26,7 +26,6 @@ class CreateRecruitersTable extends Migration
             $table->string('logo_name')->nullable();
             $table->string('logo_path')->nullable();
             $table->string('industry_segment')->nullable();
-            $table->string('department_id')->nullable();
             $table->string('no_of_employees')->nullable();
             $table->string('annual_turnover')->nullable();
             $table->string('doc_name')->nullable();

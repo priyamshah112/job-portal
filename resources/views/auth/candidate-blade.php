@@ -131,23 +131,6 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <div class="form-group">
-                                <label for="industry_segment" class="form-label">Industry Segment</label>
-                                <select class="form-control @error('industry_segment') is-invalid @enderror"
-                                        id="industry_segment" name="industry_segment">
-                                    <option value="">Select Option</option>
-                                    <option @if (old('industry_segment') == 'Manufacturing') selected="selected" @endif>Manufacturing</option>
-                                    <option @if (old('industry_segment') == 'Service') selected="selected" @endif>Service</option>
-                                    <option @if (old('industry_segment') == 'Outsorcing') selected="selected" @endif>Outsorcing</option>
-                                </select>
-                                @error('industry_segment')
-                                <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col">
                         <div class="form-group">
                             <label for="department_id" class="form-label">Department Type</label><span class="invalid-feedback">*</span>
                             <select class="select2-size-lg form-control" id="department_id"
@@ -168,11 +151,11 @@
                                 <select class="form-control @error('no_of_employees') is-invalid @enderror"
                                         id="no_of_employees" name="no_of_employees">
                                     <option value="">Select Option</option>
-                                    <option @if (old('industry_segment') == 'Below 10') selected="selected" @endif>Below 10</option>
-                                    <option @if (old('industry_segment') == '10-20') selected="selected" @endif>10-20</option>
-                                    <option @if (old('industry_segment') == '20-50') selected="selected" @endif>20-50</option>
-                                    <option @if (old('industry_segment') == '50-100') selected="selected" @endif>50-100</option>
-                                    <option @if (old('industry_segment') == 'More than 100') selected="selected" @endif>More than 100</option>
+                                    <option @if (old('no_of_employees') == 'Below 10') selected="selected" @endif>Below 10</option>
+                                    <option @if (old('no_of_employees') == '10-20') selected="selected" @endif>10-20</option>
+                                    <option @if (old('no_of_employees') == '20-50') selected="selected" @endif>20-50</option>
+                                    <option @if (old('no_of_employees') == '50-100') selected="selected" @endif>50-100</option>
+                                    <option @if (old('no_of_employees') == 'More than 100') selected="selected" @endif>More than 100</option>
                                 </select>
                                 @error('no_of_employees')
                                 <span class="invalid-feedback" role="alert">

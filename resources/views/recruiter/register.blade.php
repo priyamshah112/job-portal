@@ -139,7 +139,7 @@
                        name="email" placeholder="microsoft@outlook.com"  />
             </div>
             <div class="row">
-                <div class="col-sm-12 col-lg-6">
+                <div class="col-sm-12 col-lg-12">
                     <div class="form-group">
                         <label for="industry_segment" class="form-label">Industry Segment</label><span
                                 class="invalid-feedback">*</span>
@@ -167,16 +167,6 @@
                             <option>
                                 Construction
                             </option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-sm-12 col-lg-6">
-                    <div class="form-group">
-                        <label for="department_id" class="form-label">Department Type</label>
-                        <span class="invalid-feedback">*</span>
-                        <select class="form-control" id="department_id"
-                            name="department_id">
-                            <option value="">Select Option</option>
                         </select>
                     </div>
                 </div>

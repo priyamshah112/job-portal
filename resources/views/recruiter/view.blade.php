@@ -116,10 +116,6 @@
                                         <h4 class="ml-2 bg-lightNew p-1 rounded rounded-lg"><strong>Industry Type</strong>
                                         </h4>
                                     </div>
-                                    <div class="col-md-8 text-left">
-                                        <h4 class="ml-2 bg-lightNew p-1 rounded rounded-lg">
-                                            {{$user->recruiter->department_id ? $user->recruiter->department_id : '-'}}</h4>
-                                    </div>
                                 </div>
                             </div>
                             <div class="col-lg-12 col-md-12 mt-1">

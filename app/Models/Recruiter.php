@@ -10,7 +10,7 @@ class Recruiter extends Model
 {
     use HasFactory, SoftDeletes;
     protected $fillable = ['user_id', 'company_name', 'company_address', 'company_mobile_1', 'company_mobile_2',
-        'industry_segment', 'department_id', 'company_landline_1', 'company_landline_2',
+        'industry_segment', 'company_landline_1', 'company_landline_2',
         'no_of_employees', 'annual_turnover','state','city'];
 
     public function user(){
