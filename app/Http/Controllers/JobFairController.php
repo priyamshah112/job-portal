@@ -23,7 +23,8 @@ class JobFairController extends Controller
             ['link' => "javascript:void(0)", 'name' => "Job Fair"],
             ['name' => "List"]
         ];
-        $role = Auth::user()->user_type; 
+        $user = Auth::user(); 
+        $role = $user->user_type;
     
         if($role === 'admin')
         {            
@@ -38,7 +39,10 @@ class JobFairController extends Controller
         }
         else if($role === 'recruiter')
         {
-            $job_fairs = JobFair::rightJoin('recruiter_job_fairs','recruiter_job_fairs.job_fair_id','=','job_fairs.id')
+            $job_fairs = JobFair::rightJoin('recruiter_job_fairs',function($join) use($user){
+                $join->on('recruiter_job_fairs.job_fair_id','=','job_fairs.id')
+                ->where('recruiter_job_fairs.recruiter_id',$user->id);
+            })
             ->where('job_fairs.draft','0')
             ->orderBy('job_fairs.updated_at','DESC')
             ->select('recruiter_job_fairs.*','job_fairs.*')
@@ -87,8 +91,13 @@ class JobFairController extends Controller
             ['link' => "javascript:void(0)", 'name' => "Future Event"],
             ['name' => "List"]
         ];
+
+        $user = auth()->user();
                     
-        $job_fairs = JobFair::leftJoin('recruiter_job_fairs','recruiter_job_fairs.job_fair_id','=','job_fairs.id')
+        $job_fairs = JobFair::leftJoin('recruiter_job_fairs',function($join) use ($user){
+            $join->on('recruiter_job_fairs.job_fair_id','=','job_fairs.id')
+            ->where('recruiter_job_fairs.recruiter_id',$user->id);
+        })
         ->whereNull('recruiter_job_fairs.job_fair_id')
         ->where('job_fairs.draft','0')
         ->whereDate('job_fairs.start_date','>',Carbon::now())

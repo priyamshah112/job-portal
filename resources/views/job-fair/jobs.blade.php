@@ -36,8 +36,11 @@
       <table id="pageTable"  class="category-list-table table">
         <thead class="thead-light">
           <tr>
+            <th>Sr.no</th>
             <th>Position</th>
-            <th>Number of Posisions</th>
+            <th>Age</th>
+            <th>Salary</th>
+            <th>Gender</th>
             <th>Experience</th>
             <th>Deadline</th>
             <th>Status</th>

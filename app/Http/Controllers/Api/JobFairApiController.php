@@ -268,7 +268,7 @@ class JobFairApiController extends AppBaseController
             $job_ids = array_unique(array_merge($job_ids, $recruiter_job_fair->job_ids));
         }
 
-        $jobs = Job::whereNull('deleted_at')
+        $jobs = Job::with('position')->whereNull('deleted_at')
         ->where('recruiter_id', $user_id)
         ->whereIn('id', $job_ids)
         ->get();

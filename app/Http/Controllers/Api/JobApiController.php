@@ -271,7 +271,7 @@ class JobApiController extends AppBaseController
     public function participate($job_fair_id)
     {
         $job_fair = JobFair::findOrFail($job_fair_id);
-        return DataTables::of(Job::whereNull('deleted_at')
+        return DataTables::of(Job::with('position')->whereNull('deleted_at')
         ->where('recruiter_id', auth()->user()->id)
         ->where('draft','0')
         ->whereBetween('deadline',[Carbon::parse($job_fair->start_date)->format('Y-m-d'),Carbon::parse($job_fair->end_date)->format('Y-m-d')])
