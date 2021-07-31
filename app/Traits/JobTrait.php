@@ -55,10 +55,30 @@ trait JobTrait
                 $score++;
             }
 
-            if(count(array_intersect(json_decode($candidate->preferred_state),json_decode($job->state))) > 0)
+            //Match Location
+            $locationMatchedCount = 0;
+            $preferred_state = json_decode($candidate->preferred_state);
+            $job_state = json_decode($job->state);
+            for ($i=0; $i < count($preferred_state); $i++) { 
+                if(in_array($preferred_state[$i], $job_state))
+                {
+                    $preferred_city = json_decode($candidate->preferred_city)[$i];
+                    $job_city = json_decode($job->city);                    
+                    if($preferred_city === 'all'){
+                        $locationMatchedCount++;
+                    }
+                    else if(in_array($preferred_city, $job_city))
+                    {
+                        $locationMatchedCount++;
+                    }
+                }
+            }
+
+            if($locationMatchedCount > 0)
             {
                 $score++;
             }
+
 
             if($candidate->category === 'fresher')
             {

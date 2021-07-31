@@ -40,7 +40,6 @@
         <thead class="thead-light">
           <tr>
             <th>Profile</th>
-            <th>Name</th>
             <th>Gender</th>
             <th>Position</th>
             <th>Category</th>
@@ -68,7 +67,7 @@
   <script src="{{ asset(mix('vendors/js/forms/validation/jquery.validate.min.js')) }}"></script>
   <script src="{{ asset(mix('vendors/js/extensions/toastr.min.js')) }}"></script>
   <script src="{{ asset(mix('vendors/js/extensions/sweetalert2.all.min.js')) }}"></script>
-<script src="{{asset(mix('js/main/config.js'))}}"></script>
+  <script src="{{asset(mix('js/main/config.js'))}}"></script>
 @endsection
 
 @section('page-script')

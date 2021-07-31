@@ -39,13 +39,16 @@ class JobController extends AppBaseController
                 return redirect(route('video-resume'));
             }
 
-            $jobs = Job::leftJoin('applied_jobs','applied_jobs.job_id','=','jobs.id')
+            $jobs = Job::leftJoin('applied_jobs',function ($join) use ($user) {
+                $join->on('applied_jobs.job_id', '=', 'jobs.id')
+                ->where('applied_jobs.candidate_id','=', $user->id);
+            })
+            ->whereNull('applied_jobs.candidate_id')
             ->whereNull('jobs.deleted_at')
             ->where(['jobs.draft' => '0','jobs.status' => '1'])
             ->whereDate('jobs.deadline','>=',Carbon::now())
-            ->whereNull('applied_jobs.job_id')
             ->orderBy('jobs.updated_at')
-            ->select('applied_jobs.job_id','jobs.*')
+            ->select('applied_jobs.*','jobs.*')
             ->get(); 
             
             foreach($jobs as $job)
@@ -55,7 +58,6 @@ class JobController extends AppBaseController
                $job['qualificationNames'] = $this->convertQualificationIdsToQualificationNames(($job->qualification_id));
                $job['stateNames'] = $this->convertStateIdsToStateNames($job->state);
             }
-            // return $jobs;
             return view('candidate.jobs')->with('jobs', $jobs);
         }
     }

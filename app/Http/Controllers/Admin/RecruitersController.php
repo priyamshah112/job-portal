@@ -21,6 +21,7 @@ class RecruitersController extends AppBaseController
             ['name' => "View Recruiter"],
         ];
         $user = User::with('recruiter')->where('id', $id)->first();
+
         return view('recruiter.view', compact('user', 'breadcrumbs'));
     }
 

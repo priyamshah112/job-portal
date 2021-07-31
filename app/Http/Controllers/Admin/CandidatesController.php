@@ -7,6 +7,7 @@ use App\Models\Candidate;
 use App\Models\Cities;
 use App\Models\States;
 use App\Models\User;
+use App\Traits\JobTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CandidatesController extends AppBaseController
 {
+    use JobTrait;
 
     public function index()
     {
@@ -44,10 +46,22 @@ class CandidatesController extends AppBaseController
             ['name' => "View Candidates"],
         ];
         $candidate = Candidate::with('user','qualification')->where('user_id', $id)->first();
-        $userType = 'admin';
-        $id = Auth::id();
+        if(empty($candidate))
+        {
+            abort(404);
+        }
+        
+        $userType = auth()->user()->user_type;
 
-        return view('resume.my-resume.index', compact('candidate','userType', 'breadcrumbs'));
+        if ($candidate) {
+            $capturedVideo  = $candidate->video_resume_name ? true : false;
+        } else {
+            $capturedVideo  = false;
+        }
+       
+        $candidate['skillNames'] = $this->convertSkillIdsToSkillNames($candidate->skills);
+
+        return view('resume.my-resume.index', compact('candidate','capturedVideo','userType', 'breadcrumbs'));
     }
 
     public function edit(Request $request)

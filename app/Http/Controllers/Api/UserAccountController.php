@@ -84,8 +84,9 @@ class UserAccountController extends AppBaseController
         return $this->sendSuccess('Registered Successfully.');
     }
 
-    public function registerafterotp(Request $request) {
-        $validated = $request->validate([
+    public function registerafterotp(Request $request) 
+    {
+        $validator = Validator::make($request->all(),[
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'user_type' => [],
@@ -103,6 +104,11 @@ class UserAccountController extends AppBaseController
             'state' => ['required', 'string'],
             'city' => ['required', 'string'],
         ]);
+
+        if($validator->fails())
+        {
+            return $this->sendValidationError($validator->errors());
+        }
 
         DB::beginTransaction();
         $user = User::create([

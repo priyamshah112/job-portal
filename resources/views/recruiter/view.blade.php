@@ -99,7 +99,7 @@
                             </div>
                             <div class="col-lg-12 col-md-12 mt-1">
                                 <p><span>Primary Number - </span>
-                                    <a href="tel:{{$user->recruiter->company_mobile_1}}">{{$user->recruiter->company_mobile_1}}</a>
+                                    <a href="tel:{{$user->recruiter->company_mobile_1}}">{{$user->mobile_number}}</a>
                                 </p>
                             </div>
                             <div class="col-lg-12 col-md-12 mt-1">

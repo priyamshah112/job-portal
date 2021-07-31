@@ -12,11 +12,12 @@ class NotificationApiController extends AppBaseController
     public function index(Request $request)
     {
         $notifications = Notification::where([
-            'receiver_id' => $request->user()->id,
-            'status' => 'unread'
+            'receiver_id' => $request->user()->id
         ])
         ->orderBy('updated_at','DESC')
         ->get();
+
+        $this->mark_all_unread_to_read($request);
 
         return $this->sendResponse($notifications, 'Notifications retrieved successfully');
     }
