@@ -17,6 +17,11 @@ class DatabaseSeeder extends Seeder
             PermissionTableSeeder::class,
             RoleTableSeeder::class,
             CountriesSeeder::class,
+            StatesSeeder::class,
+            CitiesSeeder::class,
+            SkillSeeder::class,
+            PositionSeeder::class,
+            IndustrySegmentSeeder::class,
             DepartmentSeeder::class,
             QualificationSeeder::class,
             UsersTableSeeder::class,
@@ -24,8 +29,6 @@ class DatabaseSeeder extends Seeder
             PackageSeeder::class,
             RecruiterSeeder::class,
             RecruiterPackageSeeder::class,
-            StatesSeeder::class,
-            CitiesSeeder::class,
             CandidateTableSeeder::class
         ]);
     }

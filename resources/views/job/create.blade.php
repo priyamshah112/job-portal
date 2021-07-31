@@ -67,9 +67,11 @@
                     <div class="row mt-2">
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group">
-                                <label for="position">{{ __('Job Post') }}<span class="invalid-feedback">*</span></label>
-                                <input type="text" class="form-control" name="position"
-                                    placeholder="Position" />
+                                <label for="position_id">{{ __('Job Post') }}<span class="invalid-feedback">*</span></label>
+                                <select class="form-control select2" id="position_id" name="position_id"
+                                    placeholder="Position">
+                                    <option value="">Select Position</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6">
@@ -138,14 +140,29 @@
                             <div class="form-group">
                                 <label for="skills">{{ __('Skills') }}</label><span class="invalid-feedback">*</span>
                                 <select id="skills"  class="select2 form-control" size="1" placeholder="Select Skills" name="skills[]" multiple>
-                                    <option value="Codeigniter">Codeigniter</option>
-                                    <option value="Laravel">Laravel</option>
-                                    <option value="YII">YII</option>
-                                    <option value="Zend">Zend</option>
-                                    <option value="Symfony">Symfony</option>
-                                    <option value="Phalcon">Phalcon</option>
-                                    <option value="Slim">Slim</option>
-
+                                    <option value="">Select Skills</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">  
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                <label for="department_id">{{ __('Department') }}</label><span class="invalid-feedback">*</span>
+                                <select id="department_id"  class="select2 form-control" name="department_id">
+                                    <option value="">Select Department</option>
+                                </select>
+                            </div>
+                        </div>                   
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                <label for="gender">Preferred Gender<span class="invalid-feedback">*</span></label>
+                                <select name="gender" id="gender" class="form-control">
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="transgender">Transgender</option>
+                                    <option value="any">Any</option>
                                 </select>
                             </div>
                         </div>
@@ -182,18 +199,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1">                        
-                        <div class="col-lg-6 col-md-6">
-                            <div class="form-group">
-                                <label for="gender">Preferred Gender<span class="invalid-feedback">*</span></label>
-                                <select name="gender" id="gender" class="form-control">
-                                    <option value="">Select Gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="any">Any</option>
-                                </select>
-                            </div>
-                        </div>
+                    <div class="row mt-1">   
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group">
                                 <label for="deadline">{{ __('Application Deadline') }}<span class="invalid-feedback">*</span></label>

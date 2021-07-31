@@ -17,6 +17,7 @@ class RecruiterSeeder extends Seeder
         Recruiter::create([
             "id"=> 1,
             "user_id"=>2,
+            "industry_segment_id" => 2,
             "company_name"=>"Frudev",
             "company_address"=>"12121"
         ]);

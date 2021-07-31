@@ -97,17 +97,17 @@
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
-                                                <label for="account-name">First Name<span
+                                                <label for="first-name">First Name<span
                                                             class="invalid-feedback">*</span></label>
-                                                <input type="text" class="form-control" id="account-name" name="first_name"
+                                                <input type="text" class="form-control" id="first-name" name="first_name"
                                                        placeholder="Name" value="{{ auth()->user()->first_name }}"/>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
-                                                <label for="account-name">Last Name<span
+                                                <label for="last-name">Last Name<span
                                                             class="invalid-feedback">*</span></label>
-                                                <input type="text" class="form-control" id="account-name" name="last_name"
+                                                <input type="text" class="form-control" id="last-name" name="last_name"
                                                        placeholder="Name" value="{{ auth()->user()->last_name }}"/>
                                             </div>
                                         </div>
@@ -133,7 +133,7 @@
 
                                             <label for="firstName">{{ __('State') }}<span
                                                         class="invalid-feedback">*</span></label>
-                                            <select name="state" id="state" class="form-control">
+                                            <select name="state" id="state" class="form-control" previous-selected="{{$recruiterInfo->state}}">
                                                 <option value="">Select State</option>
                                             </select>
                                         </div>
@@ -141,7 +141,9 @@
                                             <div class="form-group">
                                                 <label for="firstName">{{ __('City') }}<span
                                                             class="invalid-feedback">*</span></label>
-                                                <select name="city" id="city" class="form-control"></select>
+                                                <select name="city" id="city" class="form-control" previous-selected="{{$recruiterInfo->city}}">
+                                                    <option value="">Select City</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
@@ -180,17 +182,6 @@
                                                        name="company_mobile_2" placeholder="090256 65566"
                                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                                                        value="{{ $recruiterInfo->company_mobile_2 ? $recruiterInfo->company_mobile_2 : '' }}"/>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6">
-                                            <div class="form-group">
-                                                <label for="department_id">Department Type
-                                                    <span class="invalid-feedback">*</span>
-                                                </label>
-                                                <select class="select2-size-lg form-control" id="department_id"
-                                                    name="department_id" previous-selected="{{$recruiterInfo->department_id}}">
-                                                    <option value="">Select Option</option>
-                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
@@ -253,19 +244,12 @@
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
-                                                <label for="annual_turnover">Industry Segment<span
+                                                <label for="industry_segment_id">Industry Segment<span
                                                             class="invalid-feedback">*</span></label>
                                                 <select class="form-control"
-                                                        id="industry_segment" name="industry_segment">
-                                                    <option @if ($recruiterInfo->industry_segment == 'Manufacturing') selected="selected" @endif>
-                                                        Manufacturing
-                                                    </option>
-                                                    <option @if ($recruiterInfo->industry_segment == 'Service') selected="selected" @endif>
-                                                        Service
-                                                    </option>
-                                                    <option @if ($recruiterInfo->industry_segment == 'Outsorcing') selected="selected" @endif>
-                                                        Outsorcing
-                                                    </option>
+                                                        id="industry_segment_id" name="industry_segment_id" previous-selected="{{$recruiterInfo->industry_segment_id}}"
+                                                    >
+                                                    <option value="">Select Industry Segment</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -451,37 +435,5 @@
 </style>
     <!-- Page js files -->
 <script src="{{asset(mix('js/main/config.js'))}}"></script>
-    <script>
-        $(document).ready(function () {
-            $("#success").delay(5000).slideUp(300);
-        });
-        var state = '{!! old('state', $recruiterInfo->state) !!}';
-        var city = '{!! old('city', $recruiterInfo->city) !!}';
-        $.getJSON("/data/statecity.json", function (json) {
-            var options = Object.keys(json);
-            $.each(options, function (key, value) {
-                $("#state").append('<option ' + (state == value ? 'selected' : '') + ' value="' + value + '">' + value + '</option>');
-            });
-        });
-        if (city.trim() != '') {
-            setcity()
-        }
-        $('#state').on('change', function () {
-            $("#city").html('');
-            setcity();
-        });
-
-        function setcity() {
-            $.getJSON("/data/statecity.json", function (json) {
-                var options = Object.keys(json);
-                var id = $("#state option:selected").text();
-                console.log(id);
-                let values = json[id];
-                $.each(values, function (key, value) {
-                    $("#city").append('<option ' + (city == value ? 'selected' : '') + ' value="' + value + '">' + value + '</option>');
-                });
-            });
-        }
-    </script>
 <script src="{{ asset(mix('js/main/recruiter/profile.js')) }}"></script>
 @endsection

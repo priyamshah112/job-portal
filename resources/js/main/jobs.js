@@ -142,22 +142,50 @@ $(window).on('load', function () {
     const url = "".concat(assetPath, "api/v1/jobs");
     table = $('#pageTable').DataTable({
         serverSide: true,
-        order: [[5, 'desc']],
+        width: 'auto',
         ajax: {
             url: url
         },
         columns: [
-            {
-                data: 'position',
+            { 
+                data: null,
                 orderable: false,
+                searchable: false,
+                render: function (data, type, full, meta) {
+                    return meta.row + 1;
+                }
+            },
+            {
+                data: null,
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    return full['position'].name;
+                }
             },
             {
                 data: 'num_position',
                 orderable: false,
             },
             {
-                data: 'experience',
+                data: null,
                 orderable: false,
+                render: function (data, type, full, meta) {
+                    return full['experience'] + ' - ' + full['maxexperience'] + ' Years';
+                }
+            },
+            {
+                data: null,
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    return full['salary_min'] + ' - ' + full['salary_max'] + ' Rs';
+                }
+            },
+            {
+                data: null,
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    return full['age_min'] + ' - ' + full['age_max'];
+                }
             },
             {
                 data: 'deadline',
@@ -180,9 +208,5 @@ $(window).on('load', function () {
         drawCallback: function (data) {
             feather.replace();
         },
-        columnDefs: [
-            {className: 'status-cell', targets: [4]},
-            {className: 'action-cell', targets: [5]}
-        ]
     });
 });

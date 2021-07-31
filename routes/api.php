@@ -13,11 +13,14 @@ use App\Http\Controllers\Api\RecruitersApiController;
 use App\Http\Controllers\Api\UserAccountController;
 use App\Http\Controllers\Api\CandidateResumeController;
 use App\Http\Controllers\Api\DepartmentApiController;
+use App\Http\Controllers\Api\IndustrySegmentApiController;
 use App\Http\Controllers\Api\JobFairApiController;
 use App\Http\Controllers\Api\JobFairPaymentApiController;
 use App\Http\Controllers\Api\NotificationApiController;
 use App\Http\Controllers\Api\PaymentApiController;
+use App\Http\Controllers\Api\PositionApiController;
 use App\Http\Controllers\Api\QualificationApiController;
+use App\Http\Controllers\Api\SkillApiController;
 
 Route::group(['prefix' => 'v1'], function () {
 
@@ -28,6 +31,9 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::get('qualifications', [QualificationApiController::class,'index']);
     Route::get('departments', [DepartmentApiController::class,'index']);
+    Route::get('skills', [SkillApiController::class,'index']);
+    Route::get('industry_segments', [IndustrySegmentApiController::class,'index']);
+    Route::get('positions', [PositionApiController::class,'index']);
     Route::get('countries', [CountryApiController::class, 'index']);
     Route::get('states/{id}', [StateApiController::class, 'countryBy']);
     Route::get('cities/{id}', [CityApiController::class, 'stateBy']);
@@ -81,6 +87,7 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::post('/contact-update/{id}', [JobFairApiController::class, 'jobFairContactUpdate']);
                 Route::post('/event-date-time-update/{id}', [JobFairApiController::class, 'jobFairEventDateTimeUpdate']);
                 Route::delete('/delete/{id}', [JobFairApiController::class, 'destroy']);
+                Route::get('/{id}/payments', [JobFairPaymentApiController::class, 'show']);
 
             });
         });
@@ -116,6 +123,9 @@ Route::group(['prefix' => 'v1'], function () {
             Route::group(['prefix' => 'job-fair'], function () {
                 Route::post('/order/{id}', [JobFairPaymentApiController::class, 'order']);
                 Route::post('payments', [JobFairPaymentApiController::class, 'store']);
+                Route::get('/{id}/jobs',[JobFairApiController::class, 'jobs']);
+                Route::get('/{id}/applied-candidates',[JobFairApiController::class, 'appliedCandidates']);
+
             });
 
             Route::put('apllied-jobs/status/{id}', [AppliedJobApiController::class,'status']);
@@ -135,6 +145,10 @@ Route::group(['prefix' => 'v1'], function () {
 
             Route::post('/job-apply/{id}', [AppliedJobApiController::class, 'store'])->name('job-apply');
             Route::get('/applied-jobs', [AppliedJobApiController::class, 'index'])->name('applied-jobs');
+
+            Route::group(['prefix' => 'job-fair'], function () {
+                Route::post('/apply/{id}', [JobFairApiController::class, 'apply'])->name('job-fair-apply');
+            });
 
             Route::post('/feedback', [FeedbackApiController::class, 'store']);
         });  

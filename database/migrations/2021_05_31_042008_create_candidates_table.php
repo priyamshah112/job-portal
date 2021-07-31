@@ -26,8 +26,12 @@ class CreateCandidatesTable extends Migration
             $table->string('alt_mobile_number')->nullable();
             $table->longText('permanent_address')->nullable();
             $table->string('category')->nullable();
-            $table->string('department_id')->nullable();
-            $table->string('category_work')->nullable();
+            $table->foreignId('department_id')->nullable()->constrained();
+            $table->string('previous_company')->nullable();
+            $table->foreignId('previous_position')->nullable()->references('id')->on('positions');
+            $table->string('previous_ctc')->nullable();
+            $table->string('experience')->nullable();
+            $table->string('expected_salary')->nullable();
             $table->string('state')->nullable();
             $table->string('city')->nullable();
             $table->jsonb('preferred_state')->nullable();

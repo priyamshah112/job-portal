@@ -5,12 +5,16 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Controllers\Controller;
-use App\Models\Job_fair;
+use App\Models\Job;
+use App\Models\JobFair;
+use App\Models\RecruiterJobFair;
+use App\Traits\JobTrait;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class JobFairController extends Controller
 {
+    use JobTrait;
 
     public function index()
     {
@@ -23,7 +27,7 @@ class JobFairController extends Controller
     
         if($role === 'admin')
         {            
-            $job_fairs = Job_fair::with('department')
+            $job_fairs = JobFair::with('department')
             ->where('draft','0')
             ->orderBy('updated_at','DESC')
             ->get();
@@ -34,9 +38,8 @@ class JobFairController extends Controller
         }
         else if($role === 'recruiter')
         {
-            $job_fairs = Job_fair::rightJoin('recruiter_job_fairs','recruiter_job_fairs.job_fair_id','=','job_fairs.id')
+            $job_fairs = JobFair::rightJoin('recruiter_job_fairs','recruiter_job_fairs.job_fair_id','=','job_fairs.id')
             ->where('job_fairs.draft','0')
-            ->whereDate('job_fairs.start_date','>',Carbon::now())
             ->orderBy('job_fairs.updated_at','DESC')
             ->select('recruiter_job_fairs.*','job_fairs.*')
             ->get();
@@ -46,13 +49,29 @@ class JobFairController extends Controller
             ])->with('job_fairs', $job_fairs);
         }
         else
-        {          
+        {    
+            $user = auth()->user();
+            $isProfileCompleted = $this->checkCandidateProfileCompleted($user->id);
+            if(!$isProfileCompleted)
+            {
+                flash()->overlay('Complete Your Profile','ok');
+                return redirect(route('candidate-resume-edit'));
+            }
+
+            $isVideoResumeCompleted = $this->checkVideoResumeCompleted($user->id);
+            if(!$isVideoResumeCompleted)
+            {
+                flash()->overlay('Complete Video Resume','ok');
+                return redirect(route('video-resume'));
+            }      
             $date = Carbon::now();
-            $job_fairs = Job_fair::with('department')
-            ->whereDate('start_date','<=', $date)
-            ->WhereDate('end_date','>=', $date)
-            ->where('draft','0')
-            ->orderBy('updated_at','DESC')
+            $job_fairs = JobFair::leftJoin('applied_job_fairs','applied_job_fairs.job_fair_id','=','job_fairs.id')
+            ->whereNull('job_fair_id')
+            ->whereDate('job_fairs.start_date','<=', $date)
+            ->WhereDate('job_fairs.end_date','>=', $date)
+            ->where('job_fairs.draft','0')
+            ->orderBy('job_fairs.updated_at','DESC')
+            ->select('applied_job_fairs.*','job_fairs.*')
             ->get();
             
             return view('job-fair.list', [
@@ -69,7 +88,7 @@ class JobFairController extends Controller
             ['name' => "List"]
         ];
                     
-        $job_fairs = Job_fair::leftJoin('recruiter_job_fairs','recruiter_job_fairs.job_fair_id','=','job_fairs.id')
+        $job_fairs = JobFair::leftJoin('recruiter_job_fairs','recruiter_job_fairs.job_fair_id','=','job_fairs.id')
         ->whereNull('recruiter_job_fairs.job_fair_id')
         ->where('job_fairs.draft','0')
         ->whereDate('job_fairs.start_date','>',Carbon::now())
@@ -91,7 +110,7 @@ class JobFairController extends Controller
             ['name' => "Participate"]
         ];
                     
-        $job_fair = Job_fair::findOrFail($id);
+        $job_fair = JobFair::findOrFail($id);
         
         return view('job-fair.participate', [
             'breadcrumbs' => $breadcrumbs
@@ -120,10 +139,40 @@ class JobFairController extends Controller
             ['name' => "Edit"]
         ];
 
-        $job_fair = Job_fair::findOrFail($id);
+        $job_fair = JobFair::findOrFail($id);
 
         return view('job-fair.edit', [
             'breadcrumbs' => $breadcrumbs
         ])->with(compact('job_fair'));
+    }
+
+    public function jobs($id)
+    {
+        $breadcrumbs = [
+            ['link' => "/", 'name' => "Home"],
+            ['link' => route('job-fairs'), 'name' => "Job Fair"],
+            ['name' => "Added Jobs"]
+        ];
+        
+        $job_fair = JobFair::findOrFail($id);
+
+        return view('job-fair.jobs', [
+            'breadcrumbs' => $breadcrumbs
+        ])->with(compact('job_fair'));
+    }
+
+    public function appliedCandidates($id)
+    {
+        $job = Job::findOrFail($id);
+
+        return view('job-fair.applied-candidates')->with(compact('job'));
+    }
+
+
+    public function payments($id)
+    {
+        $job_fair = JobFair::findOrFail($id);
+        return view('job-fair.payments')
+        ->with(compact(['job_fair']));
     }
 }

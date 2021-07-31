@@ -1,25 +1,78 @@
 Dropzone.autoDiscover = false;
 var isRtl = $('html').attr('data-textdirection') === 'rtl',
 assetPath = $("body").attr("data-asset-path")
-department = $("#department_id").select2();
 
+//initial
 $.ajax({
-    url: `${assetPath}api/v1/departments`,
+    url: `${assetPath}api/v1/industry_segments`,
     type: "GET",
     dataType: 'json',
     success: function(res) {
         res.data.forEach(item => {
-            $("#department_id").append('<option value="' + item.id + '">' + item.name + '</option>');
+            $("#industry_segment_id").append('<option value="' + item.id + '">' + item.name + '</option>');
         });
-        let department_id = $("#department_id").attr('previous-selected');
-        if(department_id !== "")
+        let industry_segment_id = $("#industry_segment_id").attr('previous-selected');
+        if(industry_segment_id !== '')
         {
-            department.select2('val', [department_id]);
+            $("#industry_segment_id").find('option[value=' + industry_segment_id + ']').prop('selected',true);
         }
     },
     failure: function(err){
         console.log(err);
     }
+});
+
+$.ajax({
+    url: `${assetPath}api/v1/states/101`,
+    type: "GET",
+    dataType: 'json',
+    success: function (res) {
+        res.data.forEach(item => {
+            $("#state").append('<option value="' + item
+                .id + '">' + item.name + '</option>');
+        });   
+        
+        let state = $("#state").attr('previous-selected');
+        if(state !== '')
+        {
+            $("#state").find('option[value=' + state + ']').prop('selected',true);
+            $.ajax({
+                url: `${assetPath}api/v1/cities/${state}`,
+                type: "GET",
+                dataType: 'json',
+                success: function (res) {
+                    $('#city').html('<option value="">Select City</option>');
+                    res.data.forEach(item => {
+                        $("#city").append('<option value="' + item
+                            .id + '">' + item.name + '</option>');
+                    });
+                    let city = $("#city").attr('previous-selected');
+                    if(city !== '')
+                    {
+                        $("#city").find('option[value=' + city + ']').prop('selected',true);
+                    }
+                }
+            });
+        }
+    }
+});
+
+$('#state').on('change', function () {
+    var id = this.value;
+    $("#city").html('');
+    $.ajax({
+        url: `${assetPath}api/v1/cities/${id}`,
+        type: "GET",
+        dataType: 'json',
+        success: function (res) {
+            $('#city').html('<option value="">Select City</option>');
+            res.data.forEach(item => {
+                $("#city").append('<option value="' + item
+                    .id + '">' + item.name + '</option>');
+            });
+
+        }
+    });
 });
 
 function preview(path, ex) {
@@ -195,10 +248,9 @@ $(function () {
                 state: { required: true },
                 city: { required: true },
                 company_mobile_1: { required: true },
-                department_id: { required: true },
                 no_of_employees: { required: true },
                 annual_turnover: { required: true },
-                industry_segment: { required: true },
+                industry_segment_id: { required: true },
             }
         });
         userDetailsForm.on('submit', function (e) {

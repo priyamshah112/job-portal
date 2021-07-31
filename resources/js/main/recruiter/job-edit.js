@@ -12,7 +12,30 @@ var selectedJobId = $('input[name="job_id"]').val(),
 
 //initial
 $('#skills').select2();
+let position = $("#position_id").select2();
 let qualifications = $("#qualification_id").select2();
+let skills = $("#skills").select2();
+let department = $("#department_id").select2();
+
+$.ajax({
+    url: `${assetPath}api/v1/positions`,
+    type: "GET",
+    dataType: 'json',
+    success: function(res) {
+        res.data.forEach(item => {
+            $("#position_id").append('<option value="' + item.id + '">' + item.name + '</option>');
+        });
+        
+        let position_id = $("#position_id").attr('previous-selected');
+        if(position_id !== '')
+        {
+            position.select2('val',[JSON.parse(position_id)]);  
+        }
+    },
+    failure: function(err){
+        console.log(err);
+    }
+});
 
 $.ajax({
     url: `${assetPath}api/v1/qualifications`,
@@ -27,6 +50,46 @@ $.ajax({
         if(qualification_id !== '')
         {
             qualifications.select2('val',[JSON.parse(qualification_id)]);  
+        }
+    },
+    failure: function(err){
+        console.log(err);
+    }
+});
+
+$.ajax({
+    url: `${assetPath}api/v1/skills`,
+    type: "GET",
+    dataType: 'json',
+    success: function(res) {
+        res.data.forEach(item => {
+            $("#skills").append('<option value="' + item.id + '">' + item.name + '</option>');
+        });
+        
+        let value = $("#skills").attr('previous-selected');
+        if(value !== '')
+        {
+            skills.select2('val',[JSON.parse(value)]);  
+        }
+    },
+    failure: function(err){
+        console.log(err);
+    }
+});
+
+$.ajax({
+    url: `${assetPath}api/v1/departments`,
+    type: "GET",
+    dataType: 'json',
+    success: function(res) {
+        res.data.forEach(item => {
+            $("#department_id").append('<option value="' + item.id + '">' + item.name + '</option>');
+        });
+        
+        let value = $("#department_id").attr('previous-selected');
+        if(value !== '')
+        {
+            department.select2('val',[JSON.parse(value)]);  
         }
     },
     failure: function(err){
@@ -122,7 +185,7 @@ $(horizontalWizard)
 
 let jobDetailValidator = jobDetailForm.validate({
     rules: {
-        position: { required: true},
+        position_id: { required: true},
         num_position: { required: true },
         salary_min: { required: true },
         salary_max: { 
@@ -160,6 +223,7 @@ let criteriaValidator = criteriaForm.validate({
         deadline: { required: true },
         'qualification_id[]': { required: true },
         'skills[]': { required: true },
+        department_id: { required: true},
         gender: { required: true },
     },
     messages: {

@@ -17,14 +17,6 @@
   <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-validation.css')) }}">
   <link rel="stylesheet" href="{{ asset(mix('css/base/pages/app-user.css')) }}">
   <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/extensions/ext-component-toastr.css')) }}">
-  <style>
-    .dataTables_wrapper div:nth-child(1), .dataTables_wrapper div:nth-child(3) {
-        padding: 0 10px;
-    }
-    .action-cell{
-      min-width: 80px;
-    }
-</style>
 @endsection
 @section('content')
 <div class="float-right" style="margin-top: -50px">
@@ -38,9 +30,12 @@
       <table id="pageTable"  class="category-list-table table">
         <thead class="thead-light">
           <tr>
+            <th>Sr.no</th>
             <th>Position</th>
-            <th>Number of Posisions</th>
+            <th>Vecancy</th>
             <th>Experience</th>
+            <th>Salary</th>
+            <th>Age</th>
             <th>Deadline</th>
             <th>Status</th>
             <th>Action</th>

@@ -6,7 +6,7 @@ use App\Http\Controllers\AppBaseController;
 use App\Models\Candidate;
 use App\Models\Cities;
 use App\Models\Job;
-use App\Models\Job_fair;
+use App\Models\JobFair;
 use App\Models\Recruiter;
 use App\Models\State;
 use App\Models\States;
@@ -28,7 +28,7 @@ class JobApiController extends AppBaseController
         $user = Auth::user();
         if($user->user_type === 'recruiter')
         {
-            return DataTables::of(Job::whereNull('deleted_at')->where('recruiter_id', $user->id))
+            return DataTables::of(Job::with('position')->whereNull('deleted_at')->where('recruiter_id', $user->id))
             ->addColumn('action', function ($data) {
                 $menu = '<a href="' . route('jobs-view', ['id' => $data->id]) . '" class="btn p-0 m-0"><i data-feather="eye" class="text-primary font-medium-5"></i></a>';
                 if ($data->draft == 1) {
@@ -56,7 +56,7 @@ class JobApiController extends AppBaseController
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'position' => 'required',
+            'position_id' => 'required',
             'description' => 'required',
             'num_position' => 'required',
             'salary_min' => 'required|not_in:0',
@@ -79,7 +79,7 @@ class JobApiController extends AppBaseController
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'position' => 'required',
+            'position_id' => 'required',
             'description' => 'required',
             'num_position' => 'required',
             'salary_min' => 'required|not_in:0',
@@ -113,6 +113,7 @@ class JobApiController extends AppBaseController
             'deadline' => 'required',
             'skills' => 'required|array',
             'qualification_id' => 'required|array',
+            'department_id' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -162,9 +163,19 @@ class JobApiController extends AppBaseController
         $job = Job::findOrFail($id);
         $job->update($input);
 
+        $redirectURL = "";
+        $previousRouteName = app('router')->getRoutes()->match(app('request')->create(URL::previous()))->getName();
+        if($previousRouteName === 'jobs-edit' || $previousRouteName === 'jobs-create')
+        {
+            $redirectURL = route('jobs');
+        }
+        else
+        {
+            $redirectURL = URL::previous();
+        }
         return $this->sendResponse([
             $job,
-            'redirectURL' => URL::previous()
+            'redirectURL' =>$redirectURL 
         ], 'Job Created Successfully');
     }
 
@@ -259,7 +270,7 @@ class JobApiController extends AppBaseController
     
     public function participate($job_fair_id)
     {
-        $job_fair = Job_Fair::findOrFail($job_fair_id);
+        $job_fair = JobFair::findOrFail($job_fair_id);
         return DataTables::of(Job::whereNull('deleted_at')
         ->where('recruiter_id', auth()->user()->id)
         ->where('draft','0')

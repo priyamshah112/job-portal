@@ -11,7 +11,8 @@ class Job extends Model
     use HasFactory, SoftDeletes;
     protected $fillable = [
             'recruiter_id',
-            'position',
+            'position_id',
+            'department_id',
             'description',
             'num_position',
             'state',
@@ -32,5 +33,10 @@ class Job extends Model
 
     public function user(){
         return $this->belongsTo(User::class)->whereNull('deleted_at');
+    }
+
+    public function position()
+    {
+        return $this->belongsTo(Position::class);
     }
 }

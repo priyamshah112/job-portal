@@ -15,15 +15,10 @@ class JobFairPayment extends Model
         'razorpay_order_id',
         'razorpay_signature',
         'job_fair_id',
-        'job_fairs',
         'amount',
         'status',
         'created_by',
         'updated_by',
-    ];
-
-    protected $casts = [
-        'job_fairs' => 'array'
     ];
 
     public function user() {

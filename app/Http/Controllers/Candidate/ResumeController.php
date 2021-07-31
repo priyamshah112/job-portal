@@ -9,10 +9,13 @@ use App\Models\Candidate;
 use App\Models\Cities;
 use App\Models\States;
 use App\Models\User;
+use App\Traits\JobTrait;
 use Illuminate\Http\Request;
 
 class ResumeController extends Controller
 {
+
+    use JobTrait;
 
     public function edit()
     {
@@ -43,6 +46,9 @@ class ResumeController extends Controller
         } else {
             $capturedVideo = false;
         }
+        
+        $candidate['skillNames'] = $this->convertSkillIdsToSkillNames($candidate->skills);
+
         return view('/resume/my-resume/index',compact('candidate', 'capturedVideo', 'userType'));
     }
 
