@@ -24,16 +24,21 @@ class AppliedJobApiController extends AppBaseController
         if($role === 'recruiter'){
             $applied_jobs = AppliedJob::where('applied_jobs.recruiter_id', $user->id)
             ->leftJoin('jobs','jobs.id','=','applied_jobs.job_id')
+            ->leftJoin('positions','positions.id','=','jobs.position_id')
             ->leftJoin('candidates','candidates.user_id','=','applied_jobs.candidate_id')
             ->leftJoin('users','users.id','=','applied_jobs.candidate_id')
             ->select(
-            'candidates.gender',
-            'candidates.category',
-            'users.first_name',
-            'users.last_name',
-            'users.img_path',
-            'jobs.*',
-            'applied_jobs.*'
+                'candidates.category',
+                'users.first_name',
+                'users.id as user_id',
+                'users.email',
+                'users.last_name',
+                'users.img_path',
+                'positions.id',
+                'positions.name as position_name',
+                'jobs.*',
+                'applied_jobs.*',
+                'candidates.gender',
             )
             ->orderBy('applied_jobs.updated_at','Desc')
             ->get();

@@ -10,12 +10,14 @@ var modernVerticalWizard = document.querySelector('.modern-vertical-wizard-resum
     qualificationUpdateButton = $('btn-update-qualification'),
     token = $('meta[name="csrf-token"]').attr('content'),
     isRtl = $("html").attr("data-textdirection") === "rtl",
-    assetPath = $("body").attr("data-asset-path");
+    assetPath = $("body").attr("data-asset-path")
+    category =$('input[name="category"]');
 
 let qualification = $("#qualification_id").select2(),
     skills = $("#skills").select2(),
-    department = $("#department_id").select2();
-    position = $("#previous_position").select2();
+    department = $("#department_id").select2(),
+    position = $("#previous_position").select2(),
+    categoryValue = $('#experience').prop("checked") ? 'experience' : 'fresher';
 
 // custom validator
 jQuery.validator.addMethod("validate_email", function(value, element) {
@@ -55,7 +57,7 @@ jQuery.validator.addMethod(
     "Sorry, you must be 18 years of age to apply"
 );
 
-$('input[name="category"]').on('change', function() {
+category.on('change', function() {
     let category = $(this).val();
     if (category === "experience") {
         $(".experienceCategory").removeClass('d-none');
@@ -65,7 +67,21 @@ $('input[name="category"]').on('change', function() {
         position.select2('val', [""]);
         $("input[name='previous_ctc']").val('');
         $("input[name='experience']").val('');
-        $("input[name='expected_salary']").val('');        
+        $("input[name='expected_salary']").val('');         
+        $('#preferred_state_1').val('');
+        $('#preferred_state_2').val('');
+        $('#preferred_state_3').val('');
+        $('#preferred_city_1').val('');
+        $('#preferred_city_2').val('');
+        $('#preferred_city_3').val('');
+    }
+    if($('#experience').prop("checked"))
+    {
+        categoryValue = 'experience';
+    }
+    else
+    {
+        categoryValue = 'fresher'
     }
 })
 
@@ -167,7 +183,7 @@ $.ajax({
                 url: `${assetPath}api/v1/cities/${state}`,
                 type: "GET",
                 dataType: 'json',
-                success: function (res) {
+                success: function (res) {    
                     $('#city').html('<option value="">Select City</option>');
                     res.data.forEach(item => {
                         $("#city").append('<option value="' + item
@@ -191,7 +207,14 @@ $.ajax({
                 type: "GET",
                 dataType: 'json',
                 success: function (res) {
-                    $('#preferred_city_1').html('<option value="">Select City</option>');
+                    if(categoryValue)
+                    {
+                        $('#preferred_city_1').html('<option value="">Select City</option><option value="all">All</option>');                
+                    }
+                    else
+                    {
+                        $('#preferred_city_1').html('<option value="">Select City</option>');
+                    }
                     res.data.forEach(item => {
                         $("#preferred_city_1").append('<option value="' + item
                             .id + '">' + item.name + '</option>');
@@ -214,7 +237,14 @@ $.ajax({
                 type: "GET",
                 dataType: 'json',
                 success: function (res) {
-                    $('#preferred_city_2').html('<option value="">Select City</option>');
+                    if(categoryValue)
+                    {
+                        $('#preferred_city_2').html('<option value="">Select City</option><option value="all">All</option>');                
+                    }
+                    else
+                    {
+                        $('#preferred_city_2').html('<option value="">Select City</option>');
+                    }
                     res.data.forEach(item => {
                         $("#preferred_city_2").append('<option value="' + item
                             .id + '">' + item.name + '</option>');
@@ -237,7 +267,14 @@ $.ajax({
                 type: "GET",
                 dataType: 'json',
                 success: function (res) {
-                    $('#preferred_city_3').html('<option value="">Select City</option>');
+                    if(categoryValue)
+                    {
+                        $('#preferred_city_3').html('<option value="">Select City</option><option value="all">All</option>');                
+                    }
+                    else
+                    {
+                        $('#preferred_city_3').html('<option value="">Select City</option>');
+                    }
                     res.data.forEach(item => {
                         $("#preferred_city_3").append('<option value="' + item
                             .id + '">' + item.name + '</option>');
@@ -261,7 +298,6 @@ $('#state').on('change', function () {
         type: "GET",
         dataType: 'json',
         success: function (res) {
-            $('#city').html('<option value="">Select City</option>');
             res.data.forEach(item => {
                 $("#city").append('<option value="' + item
                     .id + '">' + item.name + '</option>');
@@ -279,7 +315,14 @@ $('#preferred_state_1').on('change', function () {
         type: "GET",
         dataType: 'json',
         success: function (res) {
-            $('#preferred_city_1').html('<option value="">Select City</option>');
+            if(categoryValue === 'experience')
+            {
+                $('#preferred_city_1').html('<option value="">Select City</option><option value="all">All</option>');                
+            }
+            else
+            {
+                $('#preferred_city_1').html('<option value="">Select City</option>');
+            }
             res.data.forEach(item => {
                 $("#preferred_city_1").append('<option value="' + item
                     .id + '">' + item.name + '</option>');
@@ -297,7 +340,14 @@ $('#preferred_state_2').on('change', function () {
         type: "GET",
         dataType: 'json',
         success: function (res) {
-            $('#preferred_city_2').html('<option value="">Select City</option>');
+            if(categoryValue === 'experience')
+            {
+                $('#preferred_city_2').html('<option value="">Select City</option><option value="all">All</option>');                
+            }
+            else
+            {
+                $('#preferred_city_2').html('<option value="">Select City</option>');
+            }
             res.data.forEach(item => {
                 $("#preferred_city_2").append('<option value="' + item
                     .id + '">' + item.name + '</option>');
@@ -315,7 +365,14 @@ $('#preferred_state_3').on('change', function () {
         type: "GET",
         dataType: 'json',
         success: function (res) {
-            $('#preferred_city_3').html('<option value="">Select City</option>');
+            if(categoryValue === 'experience')
+            {
+                $('#preferred_city_3').html('<option value="">Select City</option><option value="all">All</option>');                
+            }
+            else
+            {
+                $('#preferred_city_3').html('<option value="">Select City</option>');
+            }
             res.data.forEach(item => {
                 $("#preferred_city_3").append('<option value="' + item
                     .id + '">' + item.name + '</option>');
@@ -384,19 +441,19 @@ let qualificationValidator = qualificationForm.validate({
         'skills[]': {required: true},
         qualification_id: {required: true},        
         previous_company: {required: { depends: function (){
-            return $('#experience').prop("checked", true) ? true : false; 
+            return categoryValue == 'experience' ? true : false; 
         }}},
         previous_position: {required: { depends: function (){
-            return $('#experience').prop("checked", true) ? true : false; 
+            return categoryValue == 'experience' ? true : false; 
         }}},
         experience: {required: { depends: function (){
-            return $('#experience').prop("checked", true) ? true : false; 
+            return categoryValue == 'experience' ? true : false; 
         }}},
         previous_ctc: {required: { depends: function (){
-            return $('#experience').prop("checked", true) ? true : false; 
+            return categoryValue == 'experience' ? true : false; 
         }}},
         expected_salary: {required: { depends: function (){
-            return $('#experience').prop("checked", true) ? true : false; 
+            return categoryValue == 'experience' ? true : false; 
         }}},
     }
 });

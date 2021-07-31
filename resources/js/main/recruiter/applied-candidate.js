@@ -21,24 +21,26 @@ $(window).on('load', function () {
         },
         columns: [
             {
-                data: 'img_path',
+                data: null,
                 orderable: false,
-                render: function(data, type, full, meta){
-                    return data !== null ? `<div class="candidate-profile avatar">
-                   <a href="${data}" target="_blank"><img class="round" src="${data}" /></a>
-                    </div>` : '<div class="candidate-profile avatar"><img class="round" src="http://127.0.0.1:8000/images/portrait/small/avatar-s-11.jpg" /></div>';
+                render: (data, type, full, meta)=>{
+                    let v = '<a href="recruiter/candidates/'+full["user_id"]+'" class="d-flex">';
+                    if (full["img_path"]) {
+                        v += '<img class="round mr-1" src="/'+full["img_path"] +"/"+full["image_name"]+'" alt="avatar" height="40" width="40">';
+                    } else {
+                        v += '<img class="round mr-1" src="/images/avatars/default_user.jpeg" alt="avatar" height="40" width="40">';
+                    }
+                    v += '<div> <p class="font-weight-bold" style="margin-bottom: 2px">'+full["first_name"] + ' ' + full["last_name"]+'</p> <p class="m-0 text-muted">' +
+                        full["email"]+'</p></div></a>';
+                    return v;
                 }
-            },
-            {
-                data: 'full_name',
-                orderable: false,
             },
             {
                 data: 'gender',
                 orderable: false,
             },
             {
-                data: 'position',
+                data: 'position_name',
                 orderable: false,
             },
             {

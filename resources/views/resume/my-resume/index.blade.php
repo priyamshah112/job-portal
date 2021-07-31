@@ -224,14 +224,14 @@
 
 @section('content')
 <!-- Vertical Wizard -->
-@if($userType == 'admin')
-<div class="float-right" style="margin-top: -50px">
-    <a href="{{route('candidates')}}" class="btn btn-primary">BACK</a>
-</div>
+@if($userType == 'admin' || $userType == 'recruiter')
+    <div class="float-right" style="margin-top: -50px">
+        <a href="{{url()->previous()}}" class="btn btn-primary">BACK</a>
+    </div>
 @else
-<div class="float-right" style="margin-top: -50px">
-    <a href="{{route('candidate-resume-edit')}}" class="btn btn-primary">Edit Resume</a>
-</div>
+    <div class="float-right" style="margin-top: -50px">
+        <a href="{{route('candidate-resume-edit')}}" class="btn btn-primary">Edit Resume</a>
+    </div>
 @endif
 
 <section class="vertical-wizard">

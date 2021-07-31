@@ -45,14 +45,14 @@
                     @foreach ($notifications as $notification)
                     <a class="d-flex" href="{{route('notification-list')}}">
                         <div class="media d-flex align-items-start">
-                            <div class="media-left">
+                            {{-- <div class="media-left">
                                 <div class="avatar"><img
                                             src=""
                                             alt="avatar" width="32" height="32"></div>
-                            </div>
+                            </div> --}}
                             <div class="media-body">
                                 <p class="media-heading"><span class="font-weight-bolder">{{$notification->title}}</span></p>
-                                <small class="notification-text"> by {{$notification->sender['first_name']}} {{$notification->sender['last_name']}}</small>
+                                <small class="notification-text"> by {{ $notification->sender_id === auth()->user()->id ? "NaukriWala" : $notification->sender['first_name'].' '.$notification->sender['last_name']}}</small>
                             </div>
                         </div>
                     </a>

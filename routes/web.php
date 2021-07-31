@@ -125,10 +125,11 @@ Route::group(['middleware' => ['prevent-back-history','active_user','auth']], fu
         Route::get('applied-candidates', [JobController::class, 'appliedCandidates'])->name('applied-candidates');
         
         Route::group(['prefix' => 'recruiter'], function () {
-
+            
             Route::get('recruiter-account-settings', [UserController::class, 'showRecruiterAccountSettings'])->name('recruiter-account-settings');
             Route::post('changeRecruiterPassword', [UserController::class, 'changeRecruiterPassword'])->name('changeRecruiterPassword');
             Route::post('/changeRecruiterInfo', [UserController::class, 'changeRecruiterInfo'])->name('changeRecruiterInfo');
+            Route::get('/candidates/{id}', [CandidatesController::class, 'show'])->name('candidates-view');
 
         });
 
