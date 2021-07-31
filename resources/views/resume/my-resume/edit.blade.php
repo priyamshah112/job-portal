@@ -22,6 +22,9 @@
 
 @section('content')
 <!-- Vertical Wizard --> 
+@php
+    $category = $candidate->category == 'fresher' || $candidate->category == "" ? 'fresher' : 'experience';
+@endphp
 <section class="modern-vertical-wizard">
     <div class="bs-stepper vertical wizard-modern modern-vertical-wizard-resume">
         <div class="bs-stepper-header">
@@ -131,7 +134,7 @@
                                     <option value="">Select Gender</option>
                                     <option value="male" @if ($candidate->gender == 'male') selected="selected" @endif>Male</option>
                                     <option value="female" @if ($candidate->gender == 'female') selected="selected" @endif>Female</option>
-                                    <option value="any" @if ($candidate->gender == 'any') selected="selected" @endif>Any</option>
+                                    <option value="transgender" @if ($candidate->gender == 'transgender') selected="selected" @endif>Transgender</option>
                                 </select>
                             </div>
                         </div>
@@ -328,9 +331,8 @@
                         <div class="col-lg-12 col-md-12">
                             <div class="form-group">
                                 <label for="category" class="form-label mr-2">Category <span class="invalid-feedback">*</span> </label>
-                                @php  $cat = $candidate->category @endphp
-                                <input type="radio" name="category" id="fresher"  value="fresher"{{ $cat == "fresher" ? "checked" : "" }}  > <label for="fresher" class="mr-1"> Fresher </label>
-                                <input type="radio" name="category"  id="experience" value="experience" {{ $cat == "experience" ? "checked" : "" }}/> <label for="experience"> Experienced </label>                                
+                                <input type="radio" name="category" id="fresher"  value="fresher"{{ $category == "fresher" ? "checked" : "" }}  > <label for="fresher" class="mr-1"> Fresher </label>
+                                <input type="radio" name="category"  id="experience" value="experience" {{ $category == "experience" ? "checked" : "" }}/> <label for="experience"> Experience </label>                                
                             </div>
                         </div>
                     </div>
@@ -345,20 +347,9 @@
                         </div>
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group">
-                                <label for="firstName">Skills</label><span class="invalid-feedback">*</span>
-                                @php
-                                    $skills = $candidate->skills !== null ? json_decode($candidate->skills) : [];
-                                @endphp                                
-                                <select class="select2" id="skills" name="skills[]" multiple>
+                                <label for="firstName">Skills</label><span class="invalid-feedback">*</span>                            
+                                <select class="select2" id="skills" name="skills[]" multiple previous-selected="{{$candidate->skills}}">
                                     <option value="">Select Skills</option>
-                                    <option value="Codeigniter" {{in_array('Codeigniter',$skills) ? 'selected' : ''}}>Codeigniter</option>
-                                    <option value="CakePHP" {{in_array('CakePHP',$skills) ? 'selected' : ''}}>CakePHP</option>
-                                    <option value="Laravel" {{in_array('Laravel',$skills) ? 'selected' : ''}}>Laravel</option>
-                                    <option value="YII" {{in_array('YII',$skills) ? 'selected' : ''}}>YII</option>
-                                    <option value="Zend" {{in_array('Zend',$skills) ? 'selected' : ''}}>Zend</option>
-                                    <option value="Symfony" {{in_array('Symfony',$skills) ? 'selected' : ''}}>Symfony</option>
-                                    <option value="Phalcon" {{in_array('Phalcon',$skills) ? 'selected' : ''}}>Phalcon</option>
-                                    <option value="Slim" {{in_array('Slim',$skills) ? 'selected' : ''}}>Slim</option>
                                 </select>
                             </div>
                         </div>
@@ -369,43 +360,66 @@
                                 <label for="department_id" class="form-label">Department Type</label><span class="invalid-feedback">*</span>
                                 <select class="select2-size-lg form-control" id="department_id"
                                     name="department_id" previous-selected="{{$candidate->department_id}}">
-                                    <option value="">Select Option</option>
+                                    <option value="">Select Department</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> 
+                    </div>                    
+                    <div class="content-header mt-1 experienceCategory {{ $category === 'fresher' ? 'd-none' : ''}}">
+                        <h6 class="mb-0">Previous Company Details</h6>
+                        <small>Enter the following details about your previous job</small>
+                    </div>
+                    <div class="row mt-1 experienceCategory {{ $category === 'fresher' ? 'd-none' : ''}}">                       
                         <div class="col-lg-6 col-md-6">
-                            <div class="form-group" id="companyCategory" @if($candidate->category == 'fresher') style="display:none" @endif>
-                                <label for="industry_type" class="form-label">Select Company Category</label><span class="invalid-feedback">*</span>
+                            <div class="form-group">
+                                <label for="previous_company" class="form-label">Company Name</label><span class="invalid-feedback">*</span>  
+                                <input type="text" class="form-control"
+                                    id="previous_company" name="previous_company"
+                                    value="{{ old('previous_company',$candidate->previous_company) }}"
+                                />                          
+                            </div>
+                        </div>  
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                <label for="previous_position" class="form-label">Position</label><span class="invalid-feedback">*</span>
                                 <select class="form-control"
-                                        id="industry_type" name="category_work">
-                                    <option value="">Select Option</option>
-                                    <option @if ($candidate->category_work == 'Banking and Insurance') selected="selected"
-                                        @endif>Banking and Insurance</option>
-                                    <option @if ($candidate->category_work == 'IT') selected="selected" @endif>IT</option>
-                                    <option @if ($candidate->category_work == 'Education') selected="selected"
-                                        @endif>Education</option>
-                                    <option @if ($candidate->category_work == 'Engg') selected="selected" @endif>Engg</option>
-                                    <option @if ($candidate->category_work == 'Food') selected="selected" @endif>Food</option>
-                                    <option @if ($candidate->category_work == 'Pharma') selected="selected" @endif>Pharma</option>
-                                    <option @if ($candidate->category_work == 'Civil Construction') selected="selected" @endif>Civil
-                                        Construction</option>
-                                    <option @if ($candidate->category_work == 'Chemical') selected="selected" @endif>Chemical</option>
-                                    <option @if ($candidate->category_work == 'Civil Hardware') selected="selected" @endif>Civil
-                                        Hardware</option>
-                                    <option @if ($candidate->category_work == 'Consumer durables') selected="selected" @endif>Consumer
-                                        durables</option>
-                                    <option @if ($candidate->category_work == 'FMCG') selected="selected" @endif>FMCG</option>
-                                    <option @if ($candidate->category_work == 'Hospitality') selected="selected"
-                                        @endif>Hospitality</option>
-                                    <option @if ($candidate->category_work == 'Aviation') selected="selected" @endif>Aviation</option>
-                                    <option @if ($candidate->category_work == 'Electronics') selected="selected"
-                                        @endif>Electronics</option>
-                                    <option @if ($candidate->category_work == 'Home Appliances') selected="selected" @endif>Home
-                                        Appliances</option>
-                                    <option @if ($candidate->category_work== 'Others') selected="selected" @endif>Others</option>
+                                        id="previous_position" name="previous_position">
+                                    <option value="">Select Position</option>                                    
                                 </select>
                             </div>
                         </div>
+                    </div>
+                    <div class="row mt-1 experienceCategory {{ $category === 'fresher' ? 'd-none' : ''}}"> 
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                <label for="experience" class="form-label">Total Experience Year</label><span class="invalid-feedback">*</span>  
+                                <input type="text" class="form-control"
+                                    id="experience" name="experience"
+                                    value="{{ old('experience',$candidate->experience) }}" maxlength="2"
+                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                                />                          
+                            </div>
+                        </div>                        
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                <label for="previous_ctc" class="form-label">CTC</label><span class="invalid-feedback">*</span>  
+                                <input type="text" class="form-control"
+                                    id="previous_ctc" name="previous_ctc"
+                                    value="{{ old('previous_ctc',$candidate->previous_ctc) }}"
+                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                                />                          
+                            </div>
+                        </div>                     
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                <label for="expected_salary" class="form-label">Monthly Expected Salary</label><span class="invalid-feedback">*</span>  
+                                <input type="text" class="form-control"
+                                    id="expected_salary" name="expected_salary"
+                                    value="{{ old('expected_salary',$candidate->expected_salary) }}"
+                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                                />                          
+                            </div>
+                        </div>  
                     </div>
                     <div class="d-flex justify-content-between">
                         <button type="button" class="btn btn-primary btn-prev">

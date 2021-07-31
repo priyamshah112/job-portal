@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\AppBaseController;
-use App\Models\Candidate;
 use App\Models\Job;
 use App\Models\RecruiterPackage;
 use App\Traits\JobTrait;
@@ -26,12 +25,20 @@ class JobController extends AppBaseController
         }
         else if($role === 'candidate')
         {
-            $isCompleted = $this->checkCandidateProfileCompleted($user->id);
-            if(!$isCompleted)
+            $isProfileCompleted = $this->checkCandidateProfileCompleted($user->id);
+            if(!$isProfileCompleted)
             {
-                flash()->overlay('Complete Your Profile','profile');
+                flash()->overlay('Complete Your Profile','ok');
                 return redirect(route('candidate-resume-edit'));
             }
+
+            $isVideoResumeCompleted = $this->checkVideoResumeCompleted($user->id);
+            if(!$isVideoResumeCompleted)
+            {
+                flash()->overlay('Complete Video Resume','ok');
+                return redirect(route('video-resume'));
+            }
+
             $jobs = Job::leftJoin('applied_jobs','applied_jobs.job_id','=','jobs.id')
             ->whereNull('jobs.deleted_at')
             ->where(['jobs.draft' => '0','jobs.status' => '1'])
@@ -40,10 +47,15 @@ class JobController extends AppBaseController
             ->orderBy('jobs.updated_at')
             ->select('applied_jobs.job_id','jobs.*')
             ->get(); 
+            
             foreach($jobs as $job)
             {
                $job['score'] = $this->score($job, $user->id);
+               $job['skillNames'] = $this->convertSkillIdsToSkillNames($job->skills);
+               $job['qualificationNames'] = $this->convertQualificationIdsToQualificationNames(($job->qualification_id));
+               $job['stateNames'] = $this->convertStateIdsToStateNames($job->state);
             }
+            // return $jobs;
             return view('candidate.jobs')->with('jobs', $jobs);
         }
     }
@@ -61,14 +73,19 @@ class JobController extends AppBaseController
     public function show($id)
     {
         $job = Job::where('id', $id)->first();
-        $skills = json_decode($job->skills);
-        $qualification = json_decode($job->qualification_id);
         $breadcrumbs = [
             ['link' => URL::previous(), 'name' => app('router')->getRoutes()->match(app('request')->create(url()->previous()))->getName() === 'jobs' ? "Job List" : 'Future Event'],
             ['name' => "Create Job"],
         ];
 
-        return view('job.view', compact('job', 'skills', 'qualification', 'breadcrumbs'));
+        
+        $job['skillNames'] = $this->convertSkillIdsToSkillNames($job->skills);
+        $job['qualificationNames'] = $this->convertQualificationIdsToQualificationNames(($job->qualification_id));
+        $job['stateNames'] = $this->convertStateIdsToStateNames($job->state);
+        $job['cityNames'] = $this->convertCityIdsToCityNames($job->city);
+
+
+        return view('job.view', compact('job','breadcrumbs'));
     }
 
     public function createForm()

@@ -68,9 +68,11 @@
                     <div class="row mt-2">
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group">
-                                <label for="position">{{ __('Job Post') }}<span class="invalid-feedback">*</span></label>
-                                <input type="text" class="form-control" name="position"
-                                    placeholder="Position" value="{{ $job->position}}"/>
+                                <label for="position_id">{{ __('Job Post') }}<span class="invalid-feedback">*</span></label>
+                                <select class="form-control" name="position_id" id="position_id"
+                                    placeholder="Position" previous-selected="{{ $job->position_id}}">
+                                    <option value="">Select Position</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6">
@@ -129,7 +131,7 @@
                             <div class="form-group">
                                 <label for="qualification_id">{{ __('Qualification') }}<span class="invalid-feedback">*</span></label>
                                 <select class="select2 form-control" id="qualification_id"
-                                    name="qualification_id[]" previous-selected="{{$job->qualification_id}}" multiple>
+                                    name="qualification_id[]" previous-selected="{{$job->qualification_id}}" multiple previous-selected="{{$job->qualification_id}}">
                                     <option value="">Select Qualification</option>
                                 </select>
                             </div>
@@ -137,25 +139,30 @@
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group">
                                 <label for="skills">{{ __('Skills') }}</label><span class="invalid-feedback">*</span>
-                                <select id="skills" class="select2 form-control" size="1" name="skills[]" multiple }}>
-                                    @php
-                                        if($job->skills !== null)
-                                        {
-                                            $skills = json_decode($job->skills);
-                                        }
-                                        else
-                                        {
-                                            $skills = [];
-                                        }                                           
-                                    @endphp
-                                    <option value="Codeigniter" {{in_array('Codeigniter', $skills) ? 'selected' : ''}}>Codeigniter</option>
-                                    <option value="CakePHP" {{in_array('CakePHP', $skills) ? 'selected' : ''}}>CakePHP</option>
-                                    <option value="Laravel" {{in_array('Laravel', $skills) ? 'selected' : ''}}>Laravel</option>
-                                    <option value="YII" {{in_array('YII', $skills) ? 'selected' : ''}}>YII</option>
-                                    <option value="Zend" {{in_array('Zend', $skills) ? 'selected' : ''}}>Zend</option>
-                                    <option value="Symfony" {{in_array('Symfony', $skills) ? 'selected' : ''}}>Symfony</option>
-                                    <option value="Phalcon" {{in_array('Phalcon', $skills) ? 'selected' : ''}}>Phalcon</option>
-                                    <option value="Slim" {{in_array('Slim', $skills) ? 'selected' : ''}}>Slim</option>
+                                <select id="skills" class="form-control" size="1" name="skills[]" multiple previous-selected="{{$job->skills}}">
+                                    <option value="">Select Skills</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">  
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                <label for="department_id">{{ __('Department') }}</label><span class="invalid-feedback">*</span>
+                                <select id="department_id"  class="select2 form-control" name="department_id" previous-selected="{{$job->department_id}}">
+                                    <option value="">Select Department</option>
+                                </select>
+                            </div>
+                        </div>                    
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                <label for="gender">Preferred Gender<span class="invalid-feedback">*</span></label>
+                                <select name="gender" id="gender" class="form-control">
+                                    <option value="">Select Gender</option>
+                                    <option value="male" @if ($job->gender == 'male') selected="selected" @endif>Male</option>
+                                    <option value="female" @if ($job->gender == 'female') selected="selected" @endif>Female</option>
+                                    <option value="transgender" @if ($job->gender == 'transgender') selected="selected" @endif>Transgender</option>
+                                    <option value="any" @if ($job->gender == 'any') selected="selected" @endif>Any</option>
                                 </select>
                             </div>
                         </div>
@@ -192,18 +199,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1">                        
-                        <div class="col-lg-6 col-md-6">
-                            <div class="form-group">
-                                <label for="gender">Preferred Gender<span class="invalid-feedback">*</span></label>
-                                <select name="gender" id="gender" class="form-control">
-                                    <option value="">Select Gender</option>
-                                    <option value="male" @if ($job->gender == 'male') selected="selected" @endif>Male</option>
-                                    <option value="female" @if ($job->gender == 'female') selected="selected" @endif>Female</option>
-                                    <option value="any" @if ($job->gender == 'any') selected="selected" @endif>Any</option>
-                                </select>
-                            </div>
-                        </div>
+                    <div class="row mt-1">    
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group">
                                 <label for="deadline">{{ __('Application Deadline') }}<span class="invalid-feedback">*</span></label>

@@ -266,10 +266,7 @@
                         <h6 class="mt-2"><strong>Professional Skills</strong></h6>
                         <div class="row">
                             <div class="col-md-6">
-                                @php
-                                    $skills = $candidate->skills !== null ? json_decode($candidate->skills) : [];
-                                @endphp
-                                @foreach($skills as $skill)
+                                @foreach($candidate->skillNames as $skill)
                                 <h4 class="badgeNew ml-4"> {{$skill}} </h4>
                                 @endforeach
                             </div>

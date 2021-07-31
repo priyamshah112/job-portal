@@ -1,7 +1,7 @@
 <div id="flash-overlay-modal" class="modal fade {{ isset($modalClass) ? $modalClass : '' }}">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            @if($title === 'profile')
+            @if($title === 'ok')
             <div class="modal-body">
                 <h4 class="my-2 text-center">{{$body}}</h4>
                 

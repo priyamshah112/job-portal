@@ -47,7 +47,7 @@
                         <div class="row">
                             <div class="col-lg-12 col-md-12 d-flex">
                                 <h5 class="text-primary">Position: </h5>
-                                <h5 class="ml-1 mb-0 lead">{{ $job->position }}</h5>
+                                <h5 class="ml-1 mb-0 lead">{{ $job->position['name'] }}</h5>
                             </div>
                             <div class="col-lg-12 col-md-12">
                                 <hr class="p-0 text-primary mt-0">
@@ -89,11 +89,9 @@
                             <div class="col-lg-12 text-left mt-1">
                                 <div class="row">
                                     <div class="col-lg-12 col-md-12 text-left rounded rounded-2 m-0 p-0">
-                                        @if($skills)
-                                            @foreach ($skills as $skill)
+                                        @foreach($job->skillNames as $skill)
                                             <h5 class="badgeNew ml-1">{{ $skill }}</h5>
-                                            @endforeach
-                                        @endif
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -112,7 +110,7 @@
                             <div class="col-lg-12 text-left mt-1">
                                 <div class="row">
                                     <div class="col-lg-12 col-md-12 text-left rounded rounded-2 m-0 p-0">
-                                        @foreach (json_decode($job->qualification_id) as $qual)
+                                        @foreach($job->qualificationNames as $qual)
                                         <h5 class="badgeNew ml-1">{{ $qual }}
                                         </h5>
                                         @endforeach
@@ -135,8 +133,12 @@
                             </div>
                             <div class="col-lg-12 col-md-6">
                                 <p><i data-feather="navigation"
-                                      class="text-success font-small-4 mr-2"></i>{{ $job->city }},
-                                    {{ $job->state }}</p>
+                                      class="text-success font-small-4 mr-2">
+                                    </i>
+                                    @foreach ($job->stateNames as $state)
+                                        {{$state}}
+                                    @endforeach
+                                </p>
                             </div>
                             <div class="col-lg-12 col-md-12">
                                 <h5 class="text-primary center-text">Experience (Min - Max)</h5>

@@ -50,11 +50,19 @@ class JobFairController extends Controller
         }
         else
         {    
-            $isCompleted = $this->checkCandidateProfileCompleted(auth()->user()->id);
-            if(!$isCompleted)
+            $user = auth()->user();
+            $isProfileCompleted = $this->checkCandidateProfileCompleted($user->id);
+            if(!$isProfileCompleted)
             {
-                flash()->overlay('Complete Your Profile','profile');
+                flash()->overlay('Complete Your Profile','ok');
                 return redirect(route('candidate-resume-edit'));
+            }
+
+            $isVideoResumeCompleted = $this->checkVideoResumeCompleted($user->id);
+            if(!$isVideoResumeCompleted)
+            {
+                flash()->overlay('Complete Video Resume','ok');
+                return redirect(route('video-resume'));
             }      
             $date = Carbon::now();
             $job_fairs = JobFair::leftJoin('applied_job_fairs','applied_job_fairs.job_fair_id','=','job_fairs.id')

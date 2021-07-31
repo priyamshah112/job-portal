@@ -14,12 +14,54 @@ var createdJobId = null,
 $('.select2').select2();
 
 $.ajax({
+    url: `${assetPath}api/v1/positions`,
+    type: "GET",
+    dataType: 'json',
+    success: function(res) {
+        res.data.forEach(item => {
+            $("#position_id").append('<option value="' + item.id + '">' + item.name + '</option>');
+        });
+    },
+    failure: function(err){
+        console.log(err);
+    }
+});
+
+$.ajax({
     url: `${assetPath}api/v1/qualifications`,
     type: "GET",
     dataType: 'json',
     success: function(res) {
         res.data.forEach(item => {
             $("#qualification_id").append('<option value="' + item.id + '">' + item.name + '</option>');
+        });
+    },
+    failure: function(err){
+        console.log(err);
+    }
+});
+
+$.ajax({
+    url: `${assetPath}api/v1/departments`,
+    type: "GET",
+    dataType: 'json',
+    success: function(res) {
+        res.data.forEach(item => {
+            $("#department_id").append('<option value="' + item.id + '">' + item.name + '</option>');
+        });
+    },
+    failure: function(err){
+        console.log(err);
+    }
+});
+
+$.ajax({
+    url: `${assetPath}api/v1/skills`,
+    type: "GET",
+    dataType: 'json',
+    success: function(res) {
+        res.data.forEach(item => {
+            $("#skills").append('<option value="' + item.id + '">' + item.name + '</option>');
         });
     },
     failure: function(err){
@@ -82,7 +124,7 @@ $(horizontalWizard)
 
 let jobDetailValidator = jobDetailForm.validate({
     rules: {
-        position: { required: true},
+        position_id: { required: true},
         num_position: { required: true },
         salary_min: { required: true },
         salary_max: { 
@@ -120,6 +162,7 @@ let criteriaValidator = criteriaForm.validate({
         deadline: { required: true },
         'qualification_id[]': { required: true },
         'skills[]': { required: true },
+        department_id: { required: true},
         gender: { required: true },
     },
     messages: {

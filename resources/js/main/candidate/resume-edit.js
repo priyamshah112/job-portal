@@ -15,6 +15,7 @@ var modernVerticalWizard = document.querySelector('.modern-vertical-wizard-resum
 let qualification = $("#qualification_id").select2(),
     skills = $("#skills").select2(),
     department = $("#department_id").select2();
+    position = $("#previous_position").select2();
 
 // custom validator
 jQuery.validator.addMethod("validate_email", function(value, element) {
@@ -56,11 +57,15 @@ jQuery.validator.addMethod(
 
 $('input[name="category"]').on('change', function() {
     let category = $(this).val();
-    if (category === "experienced") {
-        $("#companyCategory").show();
-        $("#department_id").show();
+    if (category === "experience") {
+        $(".experienceCategory").removeClass('d-none');
     } else {
-        $("#companyCategory").hide();
+        $(".experienceCategory").addClass('d-none');
+        $("input[name='previous_company']").val('');
+        position.select2('val', [""]);
+        $("input[name='previous_ctc']").val('');
+        $("input[name='experience']").val('');
+        $("input[name='expected_salary']").val('');        
     }
 })
 
@@ -83,6 +88,24 @@ $.ajax({
 });
 
 $.ajax({
+    url: `${assetPath}api/v1/skills`,
+    type: "GET",
+    dataType: 'json',
+    success: function(res) {
+        res.data.forEach(item => {
+            $("#skills").append('<option value="' + item.id + '">' + item.name + '</option>');
+        });
+        let value = $("#skills").attr('previous-selected');
+        if(value !== ""){
+            skills.select2('val',[JSON.parse(value)]);
+        }
+    },
+    failure: function(err){
+        console.log(err);
+    }
+});
+
+$.ajax({
     url: `${assetPath}api/v1/departments`,
     type: "GET",
     dataType: 'json',
@@ -94,6 +117,25 @@ $.ajax({
         if(department_id !== "")
         {
             department.select2('val', [department_id]);
+        }
+    },
+    failure: function(err){
+        console.log(err);
+    }
+});
+
+$.ajax({
+    url: `${assetPath}api/v1/positions`,
+    type: "GET",
+    dataType: 'json',
+    success: function(res) {
+        res.data.forEach(item => {
+            $("#previous_position").append('<option value="' + item.id + '">' + item.name + '</option>');
+        });
+        let value = $("#previous_position").attr('previous-selected');
+        if(value !== "")
+        {
+            position.select2('val', [value]);
         }
     },
     failure: function(err){
@@ -340,10 +382,21 @@ let qualificationValidator = qualificationForm.validate({
         category: {required: true},
         department_id: {required: true},
         'skills[]': {required: true},
-        qualification_id: {required: true},
-        category_work: {required: { depends: function (){
-            let category = $('input[name="category"]').val()
-            return category === 'experience' ? true : false; 
+        qualification_id: {required: true},        
+        previous_company: {required: { depends: function (){
+            return $('#experience').prop("checked", true) ? true : false; 
+        }}},
+        previous_position: {required: { depends: function (){
+            return $('#experience').prop("checked", true) ? true : false; 
+        }}},
+        experience: {required: { depends: function (){
+            return $('#experience').prop("checked", true) ? true : false; 
+        }}},
+        previous_ctc: {required: { depends: function (){
+            return $('#experience').prop("checked", true) ? true : false; 
+        }}},
+        expected_salary: {required: { depends: function (){
+            return $('#experience').prop("checked", true) ? true : false; 
         }}},
     }
 });

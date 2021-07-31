@@ -231,7 +231,9 @@
                             <div class="form-group">
                                 <label for="city">{{ __('City') }}<span
                                             class="invalid-feedback">*</span></label>
-                                <select name="city" id="city" class="form-control"></select>
+                                <select name="city" id="city" class="form-control">
+                                    <option value="">Select City</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6">

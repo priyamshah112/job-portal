@@ -216,22 +216,11 @@ function register() {
         url: url,
         data: params
     }).done(function (response) {
-        if (typeof response == 'string') {
-            response = JSON.parse(response);
-        }
-        console.log('asdasdasd', response)
-        if (!response.status) {
-            toastr["error"]("", response.msg, {
-                closeButton: true,
-                tapToDismiss: false,
-                rtl: isRtl,
-            });
-            disableOTPButton(false)
-            registerform.show();
-            otpform.hide();
-            submitBtn.prop('disabled', true);
-            return;
-        }
+        toastr["success"]("", response.message, {
+            closeButton: true,
+            tapToDismiss: false,
+            rtl: isRtl,
+        }); 
         registerform.trigger('reset');
         window.location.href = "/pending-status";
     }).fail(function (err) {

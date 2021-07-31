@@ -160,6 +160,11 @@ class CandidateResumeController extends AppBaseController
             "department_id" => 'required',
             "skills" => 'required|array',
             "qualification_id" => 'required',
+            "previous_company" => 'required_if:category,==,experience',
+            "previous_position" => 'required_if:category,==,experience',
+            "experience" => 'required_if:category,==,experience',
+            "previous_ctc" => 'required_if:category,==,experience',
+            "expected_salary" => 'required_if:category,==,experience'
         ]);
 
         if ($validator->fails()) {

@@ -54,6 +54,20 @@ $.ajax({
 });
 
 $.ajax({
+    url: `${assetPath}api/v1/industry_segments`,
+    type: "GET",
+    dataType: 'json',
+    success: function(res) {
+        res.data.forEach(item => {
+            $("#industry_segment_id").append('<option value="' + item.id + '">' + item.name + '</option>');
+        });
+    },
+    failure: function(err){
+        console.log(err);
+    }
+});
+
+$.ajax({
     url: `${assetPath}api/v1/states/101`,
     type: "GET",
     dataType: 'json',
@@ -103,6 +117,7 @@ let validator = registerform.validate({
             notEqualMobile: "#mobile_number",
         },
         email: {required: true, validate_email: true},
+        industry_segment_id: {required: true},
         no_of_employees: {required: true},
         annual_turnover: {required: true},
         password: { required: true, minlength: 8 },
@@ -263,22 +278,11 @@ function register() {
         url: url,
         data: params
     }).done(function (response) {
-        if (typeof response == 'string') {
-            response = JSON.parse(response);
-        }
-        console.log('asdasdasd', response)
-        if (!response.status) {
-            toastr["error"]("", response.msg, {
-                closeButton: true,
-                tapToDismiss: false,
-                rtl: isRtl,
-            });
-            disableOTPButton(false)
-            registerform.show();
-            otpform.hide();
-            submitBtn.prop('disabled', true);
-            return;
-        }
+        toastr["success"]("", response.message, {
+            closeButton: true,
+            tapToDismiss: false,
+            rtl: isRtl,
+        });
         registerform.trigger('reset');
         window.location.href = "/pending-status";
     }).fail(function (err) {

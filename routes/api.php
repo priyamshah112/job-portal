@@ -13,11 +13,14 @@ use App\Http\Controllers\Api\RecruitersApiController;
 use App\Http\Controllers\Api\UserAccountController;
 use App\Http\Controllers\Api\CandidateResumeController;
 use App\Http\Controllers\Api\DepartmentApiController;
+use App\Http\Controllers\Api\IndustrySegmentApiController;
 use App\Http\Controllers\Api\JobFairApiController;
 use App\Http\Controllers\Api\JobFairPaymentApiController;
 use App\Http\Controllers\Api\NotificationApiController;
 use App\Http\Controllers\Api\PaymentApiController;
+use App\Http\Controllers\Api\PositionApiController;
 use App\Http\Controllers\Api\QualificationApiController;
+use App\Http\Controllers\Api\SkillApiController;
 
 Route::group(['prefix' => 'v1'], function () {
 
@@ -28,6 +31,9 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::get('qualifications', [QualificationApiController::class,'index']);
     Route::get('departments', [DepartmentApiController::class,'index']);
+    Route::get('skills', [SkillApiController::class,'index']);
+    Route::get('industry_segments', [IndustrySegmentApiController::class,'index']);
+    Route::get('positions', [PositionApiController::class,'index']);
     Route::get('countries', [CountryApiController::class, 'index']);
     Route::get('states/{id}', [StateApiController::class, 'countryBy']);
     Route::get('cities/{id}', [CityApiController::class, 'stateBy']);

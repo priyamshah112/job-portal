@@ -24,14 +24,17 @@
           <div class="modal-dialog modal-md modal-dialog-scrollable" role="document">
               <div class="modal-content">
                   <div class="modal-header">
-                      <h3 class="modal-title text-primary">{{$job->position}}</h3>
+                      <h3 class="modal-title text-primary">{{$job->position['name']}}</h3>
                       <button type="button" class="close modal-close-button" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                       </button>
                   </div>
                   <div class="modal-body"> 
                     <p class="card-text">
-                      <strong>Location:</strong> {{$job->state}}, {{$job->city}}
+                      <strong>Location:</strong>                  
+                      @foreach ($job->stateNames as $state)
+                        {{$state}}
+                      @endforeach
                     </p>
                     <p class="card-text">
                       <strong>Salary Expected:</strong> {{$job->salary_min}} - {{$job->salary_max}} Rupees
@@ -46,13 +49,14 @@
                       <strong>Age Criteria:</strong> {{$job->age_min}} - {{$job->age_max}} Years
                     </p>
                     <p class="card-text">
-                      <strong>Technical Skills:</strong> @foreach (json_decode($job->skills) as $skill)
-                        @if($loop->last)
-                          {{$skill}}.
-                        @else
-                          {{$skill}},  
-                        @endif
-                        @endforeach
+                      <strong>Technical Skills:</strong> 
+                      @foreach ($job->skillNames as $skill)
+                          @if($loop->last)
+                            {{$skill}}.
+                          @else
+                            {{$skill}},  
+                          @endif
+                      @endforeach
                     </p>
                     <div class="card-text">
                       <strong>Deadline to Apply:</strong> {{$job->deadline}}
@@ -71,24 +75,28 @@
         </div>
         <div class="card">
           <div class="card-header border-bottom pb-1">
-            <h5 class="card-text">{{$job->position}}</h5>
+            <h5 class="card-text">{{$job->position['name']}}</h5>
             <h5 class="card-text">Job</h5>
           </div>
           <div class="card-body pt-2">
             <div class="d-flex justify-content-between">
               <p class="card-text">
-                <strong>Location:</strong> {{$job->state}}, {{$job->city}}
+                <strong>Location:</strong>                                  
+                @foreach ($job->stateNames as $state)
+                  {{$state}}
+                @endforeach
               </p>
               <button type="button" class="btn btn-success" data-toggle="modal" data-target="#view-job-modal-{{ $job->id}}">View</button>
             </div>
             <p class="card-text">
-              <strong>Technical Skills:</strong> @foreach (json_decode($job->skills) as $skill)
+              <strong>Technical Skills:</strong> 
+              @foreach ($job->skillNames as $skill)
                 @if($loop->last)
                   {{$skill}}.
                 @else
                   {{$skill}},  
                 @endif
-                @endforeach
+              @endforeach
             </p>
             <div class="d-flex justify-content-between">
               <div class="card-text text-danger">

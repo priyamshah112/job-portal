@@ -141,32 +141,10 @@
             <div class="row">
                 <div class="col-sm-12 col-lg-12">
                     <div class="form-group">
-                        <label for="industry_segment" class="form-label">Industry Segment</label><span
+                        <label for="industry_segment_id" class="form-label">Industry Segment</label><span
                                 class="invalid-feedback">*</span>
-                        <select class="form-control"
-                                id="industry_segment" name="industry_segment">
-                            <option value="">Select Option</option>
-                            <option>
-                                Manufacturing
-                            </option>
-                            <option>
-                                Service
-                            </option>
-                            <option>
-                                Outsorcing
-                            </option>
-                            <option>
-                                Trading/ Retail
-                            </option>
-                            <option>
-                                Showroom
-                            </option>
-                            <option>
-                                Distribution
-                            </option>
-                            <option>
-                                Construction
-                            </option>
+                        <select class="form-control" id="industry_segment_id" name="industry_segment_id">
+                            <option value="">Select Option</option>                            
                         </select>
                     </div>
                 </div>

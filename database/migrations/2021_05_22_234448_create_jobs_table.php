@@ -17,7 +17,8 @@ class CreateJobsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('recruiter_id');
             $table->foreign('recruiter_id')->references('id')->on('users');
-            $table->string('position')->nullable();
+            $table->foreignId('position_id')->constrained();
+            $table->foreignId('department_id')->nullable()->constrained();
             $table->longText('description')->nullable();
             $table->integer('num_position')->nullable();
             $table->jsonb('state')->nullable();

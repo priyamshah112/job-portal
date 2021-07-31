@@ -14,21 +14,21 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            SkillSeeder::class,
-            PositionSeeder::class,
             PermissionTableSeeder::class,
             RoleTableSeeder::class,
             CountriesSeeder::class,
+            StatesSeeder::class,
+            CitiesSeeder::class,
+            SkillSeeder::class,
+            PositionSeeder::class,
+            IndustrySegmentSeeder::class,
             DepartmentSeeder::class,
             QualificationSeeder::class,
-            SpecializationSeeder::class,
             UsersTableSeeder::class,
             MenuTableSeeder::class,
             PackageSeeder::class,
             RecruiterSeeder::class,
             RecruiterPackageSeeder::class,
-            StatesSeeder::class,
-            CitiesSeeder::class,
             CandidateTableSeeder::class
         ]);
     }
