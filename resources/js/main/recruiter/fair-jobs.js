@@ -10,17 +10,41 @@ $(window).on('load', function () {
             url: `${assetPath}api/v1/recruiter/job-fair/${id}/jobs`
         },
         columns: [
+            { 
+                data: null,
+                orderable: false,
+                searchable: false,
+                render: function (data, type, full, meta) {
+                    return meta.row + 1;
+                }
+            },
             {
                 data: 'position',
                 orderable: false,
+                render: function (data, type, full, meta) {
+                    return data.name;
+                }
             },
             {
-                data: 'num_position',
-                orderable: false,
+                data: null,
+                render: function(data, type, full, meta){
+                    return full['age_min'] +' - '+ full['age_max'];
+                }
             },
             {
-                data: 'experience',
-                orderable: false,
+                data: null,
+                render: function(data, type, full, meta){
+                    return full['salary_min'] +' - '+ full['salary_max'];
+                }
+            },
+            {
+                data: 'gender'
+            }, 
+            {
+                data: null,
+                render: function(data, type, full, meta){
+                    return full['experience'] +' - '+ full['maxexperience'];
+                }
             },
             {
                 data: 'deadline',

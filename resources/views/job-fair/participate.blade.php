@@ -39,7 +39,6 @@
             <th>Salary</th>
             <th>Gender</th>
             <th>Experience</th>
-            <th>Skills</th>
             <th>deadline</th>
             <th>Actions</th>
           </tr>

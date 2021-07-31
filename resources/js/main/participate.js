@@ -30,6 +30,9 @@ let table = $('.job-list-table').DataTable({
         },
         {
             data: 'position',
+            render: function(data, type, full, meta){
+                return data.name
+            }
         },
         {
             data: null,
@@ -50,12 +53,6 @@ let table = $('.job-list-table').DataTable({
             data: null,
             render: function(data, type, full, meta){
                 return full['experience'] +' - '+ full['maxexperience'];
-            }
-        },
-        {
-            data: 'skills',
-            render: function(data, type, full, meta){
-                return data;
             }
         },
         {
