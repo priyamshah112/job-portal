@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Package;
 use App\Models\RecruiterPackage;
 use Closure;
 use Illuminate\Http\Request;
@@ -19,11 +20,20 @@ class CheckPlan
     {
         $user_id = auth()->user()->id;
         $recruiter_package = RecruiterPackage::where(['recruiter_id'=>$user_id,'status' => 'active'])->first();
-        if(empty($recruiter_package))
+        if(!empty($recruiter_package))
         {
-            flash()->overlay('Purchase a plan or Upgarde your plan',' ');
+            $package = Package::where('id', $recruiter_package->package_id)->first();
+            if($recruiter_package->post_quota_used >= $package->post_quota)
+            {
+                flash()->overlay('Your quota has been exceeded. Please Upgrade Your Plan',' ');
+                return back();
+            }
+            return $next($request);
+        }
+        else
+        {
+            flash()->overlay('To Enjoy Are Services. Please Purchase a Plan',' ');
             return back();
         }
-        return $next($request);
     }
 }

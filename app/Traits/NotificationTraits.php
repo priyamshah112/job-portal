@@ -19,8 +19,10 @@ trait NotificationTraits
             'updated_by'=>$data['sender_id']
         ]);
         
-
-        broadcast(new SendNotification($data, $data['receiver_id']));
+        if($data['sender_id'] !== $data['receiver_id'])
+        {
+            broadcast(new SendNotification($data, $data['receiver_id']));
+        }
 
         return $notification;
     }

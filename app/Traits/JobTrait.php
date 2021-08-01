@@ -5,8 +5,10 @@ namespace App\Traits;
 
 use App\Models\Candidate;
 use App\Models\City;
+use App\Models\Package;
 use App\Models\Qualification;
 use App\Models\Recruiter;
+use App\Models\RecruiterPackage;
 use App\Models\Skill;
 use App\Models\State;
 use App\Models\User;
@@ -25,7 +27,8 @@ use Exception;
 trait JobTrait
 {
 
-    public function score($job, $candidate_id){
+    public function score($job, $candidate_id)
+    {
         try{
             $candidate = Candidate::where('user_id', $candidate_id)->first();
             $score = 0;
@@ -106,6 +109,21 @@ trait JobTrait
         }
     }
 
+    public function incrementJobPostQuote($job_id, $recruiter_id)
+    {        
+        $recruiter_package = RecruiterPackage::where(['recruiter_id' => $recruiter_id,'status' => 'active'])->first();
+        if(!empty($recruiter_package))
+        {
+            $package = Package::where('id', $recruiter_package->package_id)->first();
+            if($recruiter_package->post_quota_used < $package->post_quota)
+            {
+                $recruiter_package->update([
+                    'post_quota_used' => $recruiter_package->post_quota_used + 1,
+                ]);
+            }
+        }
+        return false;
+    }
     public function age_by_dob($dob){
         return Carbon::parse($dob)->age;
     }

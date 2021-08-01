@@ -171,15 +171,19 @@
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group">
                                 <label for="experience">{{ __(' Min. Exp In Yrs') }}<span class="invalid-feedback">*</span></label>
-                                <input type="number" class="form-control" id="minexp"
-                                    name="experience" value="{{ $job->experience }}" placeholder="Experience" />
+                                <input type="text" class="form-control" id="minexp"
+                                    name="experience" value="{{ $job->experience }}"                                    
+                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" 
+                                    placeholder="Experience" />
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group">
                                 <label for="maxexperience">{{ __(' Max. Exp In Yrs') }}<span class="invalid-feedback">*</span></label>
-                                <input type="number" class="form-control" id="maxexperience"
-                                       name="maxexperience" value="{{ $job->maxexperience }}" placeholder="Experience" />
+                                <input type="text" class="form-control" id="maxexperience"
+                                       name="maxexperience" value="{{ $job->maxexperience }}"
+                                       oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                                       placeholder="Experience" />
                             </div>
                         </div>
                     </div>

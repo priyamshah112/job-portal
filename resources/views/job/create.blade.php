@@ -86,14 +86,16 @@
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group">
                                 <label for="salary_min">{{ __('Min. Salary P/Month') }}<span class="invalid-feedback">*</span></label>
-                                <input type="number" class="form-control" name="salary_min" id="salary_min"
+                                <input type="text" class="form-control" name="salary_min" id="salary_min"                                
+                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                                     placeholder="Salary" />
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group">
                                 <label for="salary_max">{{ __(' Max. Salary P/Month') }}<span class="invalid-feedback">*</span></label>
-                                <input type="number" class="form-control" name="salary_max" id="salary_max"
+                                <input type="text" class="form-control" name="salary_max" id="salary_max"                                
+                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                                     placeholder="Salary" />
                             </div>
                         </div>
@@ -171,7 +173,7 @@
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group">
                                 <label for="firstName">{{ __(' Min. Exp In Yrs') }}<span class="invalid-feedback">*</span></label>
-                                <input type="number" class="form-control" id="minexp"
+                                <input class="form-control" id="minexp"
                                     name="experience" placeholder="Experience" />
                             </div>
                         </div>

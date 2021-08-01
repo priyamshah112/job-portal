@@ -109,7 +109,7 @@ class JobApiController extends AppBaseController
             'age_min' => 'required|not_in:0',
             'age_max' => 'required|not_in:0|gt:age_min',
             'gender' => 'required',
-            'experience' => 'required|not_in:0',
+            'experience' => 'required',
             'maxexperience' => 'required|not_in:0|gt:experience',
             'deadline' => 'required',
             'skills' => 'required|array',
@@ -173,6 +173,7 @@ class JobApiController extends AppBaseController
                 "receiver_id" => $user->id,
                 "sender_id" => $user->id,
             ]);
+            $this->incrementJobPostQuote($job->id, $user->id);
         }
         else
         {
