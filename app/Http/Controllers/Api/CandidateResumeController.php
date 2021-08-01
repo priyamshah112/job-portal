@@ -6,13 +6,17 @@ use App\Http\Controllers\AppBaseController;
 use App\Models\Candidate;
 use App\Models\Cities;
 use App\Models\User;
+use App\Traits\NotificationTraits;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class CandidateResumeController extends AppBaseController
 {
+    use NotificationTraits;
+
     public function index()
     {
         $user_id = Auth::user()->id;
@@ -77,6 +81,13 @@ class CandidateResumeController extends AppBaseController
                 'about' => $request->about,
             ]);
 
+            $this->notification([
+                "title" => 'Your Personal Info has been updated successfully',
+                "description" => 'Your Personal Info has been updated successfully',
+                "receiver_id" => $user_id,
+                "sender_id" => $user_id,
+            ]);
+
             DB::commit();
 
             return $this->sendResponse($updatedUser, 'Candidate Personal Information Updated Successfully');
@@ -134,6 +145,13 @@ class CandidateResumeController extends AppBaseController
         
         $candidate->update($input);
 
+        $this->notification([
+            "title" => 'Your Address has been updated successfully',
+            "description" => 'Your Address has been updated successfully',
+            "receiver_id" => $user_id,
+            "sender_id" => $user_id,
+        ]);
+
         return $this->sendResponse($candidate, 'Candidate Address Updated Successfully'); 
     }
 
@@ -148,7 +166,14 @@ class CandidateResumeController extends AppBaseController
             'alt_mobile_number' => isset($request->alt_mobile_number) ? $request->alt_mobile_number : null,
         ]);
 
-        return $this->sendResponse($candidate, 'Candidate Personal Information Updated Successfully');
+        $this->notification([
+            "title" => 'Your Contact has been updated successfully',
+            "description" => 'Your Contact has been updated successfully',
+            "receiver_id" => $user_id,
+            "sender_id" => $user_id,
+        ]);
+
+        return $this->sendResponse($candidate, 'Candidate Contactrmation Updated Successfully');
     }
 
     public function qualificationUpdate(Request $request)
@@ -176,6 +201,13 @@ class CandidateResumeController extends AppBaseController
         $candidate = Candidate::where('user_id', $user_id)->first();
         
         $candidate->update($input);
+
+        $this->notification([
+            "title" => 'Your Qualification has been updated successfully',
+            "description" => 'Your Qualification has been updated successfully',
+            "receiver_id" => $user_id,
+            "sender_id" => $user_id,
+        ]);
 
         return $this->sendResponse($candidate, 'Candidate Qualification Updated Successfully');
     }

@@ -3,11 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\AppBaseController;
+use App\Mail\Hired;
+use App\Mail\Rejected;
+use App\Mail\ShortListed;
 use App\Models\AppliedJob;
 use App\Traits\JobTrait;
 use App\Models\Job;
+use App\Models\Recruiter;
+use App\Models\User;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class AppliedJobApiController extends AppBaseController
@@ -97,11 +105,79 @@ class AppliedJobApiController extends AppBaseController
 
         $applied_job = AppliedJob::findOrFail($id);
 
-        $applied_job->update([
-            'job_status' => $request->status,
-            'updated_at' => Carbon::now(),
-        ]);
+        if($applied_job->job_status !== 'pending')
+        {
+            return $this->sendError('You Cannot Edit Applied Candidate Job Status!');
+        }
+        DB::beginTransaction();
+        try {
+            if($request->status === 'hire')
+            {
+                $user = auth()->user();
+                $candidate = User::findOrFail($applied_job->candidate_id);
+                $recruiter = Recruiter::where('user_id', $user->id)->first();
+                if(empty($recruiter))
+                {
+                    return $this->sendError('No Recruiter Found');
+                }
+                $input = [
+                    'subject' => 'Your are hired in company '.$recruiter->company_name,
+                    'email' => $candidate->email,
+                    'company_name' => $recruiter->company_name,
+                    'company_address' => $recruiter->company_address,
+                    'mobile_number' => $user->mobile_number,
+                ];
 
-        return $this->sendResponse($applied_job, 'Successfully Updated Successfully');
+                Mail::to($input['email'])->send(new Hired($input));
+            }  
+            else if($request->status === 'shortlist')
+            {
+                $user = auth()->user();
+                $candidate = User::findOrFail($applied_job->candidate_id);
+                $recruiter = Recruiter::where('user_id', $user->id)->first();
+                if(empty($recruiter))
+                {
+                    return $this->sendError('No Recruiter Found');
+                }
+                $input = [
+                    'subject' => 'Your are shortlisted in company '.$recruiter->company_name,
+                    'email' => $candidate->email,
+                    'company_name' => $recruiter->company_name,
+                    'company_address' => $recruiter->company_address,
+                    'mobile_number' => $user->mobile_number,
+                ];
+
+                Mail::to($input['email'])->send(new ShortListed($input));
+            }      
+            else if($request->status === 'reject')
+            {
+                $user = auth()->user();
+                $candidate = User::findOrFail($applied_job->candidate_id);
+                $recruiter = Recruiter::where('user_id', $user->id)->first();
+                if(empty($recruiter))
+                {
+                    return $this->sendError('No Recruiter Found');
+                }
+                $input = [
+                    'subject' => 'Your are rejected by '.$recruiter->company_name,
+                    'email' => $candidate->email,
+                    'company_name' => $recruiter->company_name,
+                    'company_address' => $recruiter->company_address,
+                    'mobile_number' => $user->mobile_number,
+                ];
+
+                Mail::to($input['email'])->send(new Rejected($input));
+            }      
+
+            $applied_job->update([
+                'job_status' => $request->status,
+                'updated_at' => Carbon::now(),
+            ]);
+            DB::commit();
+            return $this->sendResponse($applied_job, 'Successfully Updated Successfully');
+
+        } catch (Exception $e) {
+            return $this->sendError($e->getMessage());
+        }
     }
 }

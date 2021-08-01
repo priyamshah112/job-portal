@@ -3,15 +3,22 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\AppBaseController;
+use App\Mail\Feedback as MailFeedback;
 use App\Models\Feedback;
+use App\Models\User;
+use App\Traits\NotificationTraits;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 
 class FeedbackApiController extends AppBaseController
 {
+    use NotificationTraits;
+
     public function userFeedbacks()
     {
             return DataTables::of(Feedback::whereNull('deleted_at')->with('user'))
@@ -33,29 +40,63 @@ class FeedbackApiController extends AppBaseController
             'feedback' => 'required',
             'fileToUpload' => 'mimes:jpeg,png|max:5048',
         ]);
+
         if($validator->fails()){
             return $this->sendValidationError($validator->errors());
         }
 
-        $filename = "";
-        if ($request->hasFile('fileToUpload')) {
-            $filenameWithExt = $request->file('fileToUpload');
-            $path = 'storage/feedbacks';
-            $filename = uniqid() . time() . '.' . $filenameWithExt->getClientOriginalExtension();
-            $filenameWithExt->move($path, $filename);
-        }
-        $user = Auth::user();
-        Feedback::create([
-            'user_id' =>2,
-            'name' => $user->first_name.' '.$user->last_name,
-            'email' => $user->email,
-            'subject' => $request->subject,
-            'message' => $request->feedback,
-            'file_path' => $filename,
-        ]);
-        $message = 'Feedback Form has been Submitted Successfully';
-        return collect(["status" => 1, 'message' => $message])->toJson();
+        DB::beginTransaction();
 
+        try
+        {
+            $filename = "";
+            if ($request->hasFile('fileToUpload')) {
+                $filenameWithExt = $request->file('fileToUpload');
+                $path = 'storage/feedbacks';
+                $filename = uniqid() . time() . '.' . $filenameWithExt->getClientOriginalExtension();
+                $filenameWithExt->move($path, $filename);
+            }
+            $user = Auth::user();
+
+            $input = [
+                'user_id' =>2,
+                'name' => $user->first_name.' '.$user->last_name,
+                'email' => $user->email,
+                'subject' => $request->subject,
+                'message' => $request->feedback,
+                'file_path' => $filename,
+            ];
+
+            Feedback::create($input);
+
+            Mail::to(env('MAIL_USERNAME'))->send(new MailFeedback($input));
+
+            // Mail To Candidate
+            $this->notification([
+                "title" => 'Your feedback form is submitted successful.',
+                "description" => 'Your feedback form is submitted successful. Please check your mailbox.',
+                "receiver_id" => $user->id,
+                "sender_id" => $user->id,
+            ]);
+
+            //Mail To Administrator
+            $admin_id = User::role('admin')->first()->id;
+            $this->notification([
+                "title" => 'You Have Received Feedback From '.$user->first_name.' '.$user->last_name,
+                "description" => 'You Have Received Feedback. Please check your mailbox.',
+                "receiver_id" => $admin_id,
+                "sender_id" => $user->id,
+            ]);
+
+            DB::commit();
+            
+            return $this->sendSuccess('Feedback Form has been Submitted Successfully');
+        }
+        catch(Exception $e)
+        {
+            DB::rollBack();
+            return $this->sendError($e->getMessage());
+        }
     }
 
     public function delete(Request $request)

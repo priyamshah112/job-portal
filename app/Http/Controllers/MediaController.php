@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Candidate;
+use App\Traits\NotificationTraits;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class MediaController extends Controller
 {
+    use NotificationTraits;
     /**
      * Display a listing of the resource.
      *
@@ -70,6 +72,14 @@ class MediaController extends Controller
                 } else {
                     $capturedVideo = false;
                 }
+
+                $this->notification([
+                    "title" => 'Your video resume has been saved successfully',
+                    "description" => 'Your video resume has been saved successfully',
+                    "receiver_id" => $id,
+                    "sender_id" => $id,
+                ]);
+
                 return view('video-resume.index', 
                 compact('capturedVideo', 'candidate', ['success-message' => "Successfully Updated"]));
             }

@@ -162,12 +162,12 @@
                     <div class="row mt-2"> 
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group">
-                                <label for="mobile_number" class="form-label">Mobile Number*</label>                        
+                                <label for="mobile_number" class="form-label">Mobile Number*</label>                     
                                 <input type="text"
                                     class="form-control"
                                     id="mobile_number" name="mobile_number" placeholder="90256 65566" maxlength="10"
                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
-                                    value={{$job_fair->mobile_number}}
+                                    value="{{$job_fair->mobile_number}}"
                                 />
                             </div>
                         </div> 
@@ -175,7 +175,7 @@
                             <div class="form-group">
                                 <label for="email" class="form-label">Email*</label>
                                 <input type="email" class="form-control" name="email" placeholder="xyx@jobportal.com" 
-                                    value={{$job_fair->email}}
+                                    value="{{$job_fair->email}}"
                                 />
                             </div>
                         </div>
@@ -224,7 +224,7 @@
                                     name="dates"
                                     class="form-control flatpickr-range"
                                     placeholder="YYYY-MM-DD to YYYY-MM-DD"
-                                    value="{{$job_fair->start_date}} to {{$job_fair->end_date}}"
+                                    value="{{$job_fair->start_date !== null && $job_fair->end_date !== null ? $date = $job_fair->start_date.' to '.$job_fair->end_date : "" }}"
                                 />
                             </div>
                         </div>   

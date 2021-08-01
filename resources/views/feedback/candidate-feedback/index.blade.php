@@ -29,7 +29,7 @@
             @endif
 
 
-            <form enctype="multipart/form-data" class="auth-login-form mt-2" method="POST" action="{{route('feedback-candidates-submit')}}">
+            <form enctype="multipart/form-data" class="auth-login-form mt-2">
                 @csrf
 
                 <div class="form-group">
