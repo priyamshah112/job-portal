@@ -22,7 +22,7 @@
         padding: 0 10px;
     }
     .action-cell{
-      min-width: 80px;
+      min-width: 120px;
     }
 </style>
 @endsection

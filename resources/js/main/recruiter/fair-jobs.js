@@ -68,8 +68,8 @@ $(window).on('load', function () {
             feather.replace();
         },
         columnDefs: [
-            {className: 'status-cell', targets: [4]},
-            {className: 'action-cell', targets: [5]}
+            {className: 'status-cell', targets: [7]},
+            {className: 'action-cell', targets: [8]}
         ]
     });
 });
