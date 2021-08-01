@@ -24,4 +24,12 @@ class Payment extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+
+    public function package(){
+        return $this->belongsTo(Package::class);
+    }
+
+    public function recruiter(){
+        return $this->belongsTo(Recruiter::class,'created_by','user_id');
+    }
 }

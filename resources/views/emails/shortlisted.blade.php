@@ -20,7 +20,7 @@ Regards, <br/>
 <br/>
 <br/>
 Company: {{$details['company_name']}}<br>
-Email: {{$details['company_address']}}<br>
+Address: {{$details['company_address']}}<br>
 Contact: {{$details['mobile_number']}}
 
 @endcomponent

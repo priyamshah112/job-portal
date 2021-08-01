@@ -29,12 +29,8 @@ class PaymentApiController extends AppBaseController
 
     public function index()
     {
-        $payments = Payment::leftJoin('recruiters','recruiters.user_id','=','payments.created_by')
-        ->leftJoin('recruiter_packages','recruiter_packages.recruiter_id','=','recruiters.user_id')
-        ->leftJoin('packages','packages.id','=','recruiter_packages.package_id')
-        ->select('packages.plan_name as package_name','recruiter_packages.*','recruiters.*','payments.*')
-        ->whereIn('payments.status',['success','failed'])
-        ->orderBy('payments.updated_at', 'DESC')
+        $payments = Payment::with('package','recruiter')->whereIn('status',['success','failed'])
+        ->orderBy('updated_at', 'DESC')
         ->get();
 
         return $this->sendResponse($payments, 'Payments retrieved successfully');

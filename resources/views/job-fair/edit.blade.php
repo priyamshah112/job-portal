@@ -77,7 +77,7 @@
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group">
                                 <label for="img_name" class="form-label">Banner Image*</label>
-                                <input type="file" class="form-control" name="img_name" id="img_name" />
+                                <input type="file" class="form-control" name="img_name" id="img_name" accept="image/jpeg,image/png" />
                             </div>
                         </div> 
                     </div>                    

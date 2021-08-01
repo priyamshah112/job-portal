@@ -25,7 +25,7 @@ $(window).on('load', function () {
                 data: null,
                 orderable: false,
                 render: (data, type, full, meta)=>{
-                    let v = '<a href="recruiter/candidates/'+full["user_id"]+'" class="d-flex">';
+                    let v = '<a href="'+assetPath+'recruiter/candidates/'+full["user_id"]+'" class="d-flex">';
                     if (full["img_path"]) {
                         v += '<img class="round mr-1" src="/'+full["img_path"] +"/"+full["image_name"]+'" alt="avatar" height="40" width="40">';
                     } else {
@@ -64,7 +64,7 @@ $(window).on('load', function () {
                 searchable: false,
                 render: function (data, type, full, meta) {
                     return (
-                    `<select class="form-control job_status" data_id="${full['id']}">
+                    `<select class="form-control job_status" data_id="${full['id']}" style="width: 150px;">
                         <option value="">Select Option</option>
                         <option value="hire" ${full['job_status'] === 'hire' ? 'selected' : ''}>Hire</option>
                         <option value="shortlist" ${full['job_status'] === 'shortlist' ? 'selected' : ''}>Short List</option>
@@ -75,35 +75,55 @@ $(window).on('load', function () {
             }
         ],
         fnDrawCallback: function() {  
-            $('.job_status').on('change', function(){            
-                let id = $(this).attr('data_id');
-                let value = $(this).val();
-                $.ajax({
-                    url: `${assetPath}api/v1/recruiter/apllied-jobs/status/${id}?_method=PUT`,
-                    type: 'POST',
-                    data: {
-                        'status' : value,
+            $('.job_status').on('change', function(){ 
+                let $this = $(this);
+                let id = $this.attr('data_id');
+                let value = $this.val();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to send mail and won't able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, send it!',
+                    customClass: {
+                      confirmButton: 'btn btn-success',
+                      cancelButton: 'btn btn-outline-danger ml-1'
                     },
-                    success: function (res) {
-                    // console.log(res.data);
-                        toastr['info']('👋 Successfully Updated Job Status', 'Updated!', {
-                            closeButton: true,
-                            tapToDismiss: false,
-                            rtl: isRtl
-                      });
-                    },
-                    error: function (err) {
-                        console.log('An error occurred.',err);    
-                        Swal.fire({                            
-                        title: 'Error!',
-                        icon: 'error',
-                        text: err.statusText,
-                        customClass: {
-                            confirmButton: 'btn btn-success'
-                        }
-                        });
-                    },
-                })
+                    buttonsStyling: false
+                  }).then(function (result) {
+                    if (result.value) {
+                        $.ajax({
+                            url: `${assetPath}api/v1/recruiter/apllied-jobs/status/${id}?_method=PUT`,
+                            type: 'POST',
+                            data: {
+                                'status' : value,
+                            },
+                            success: function (res) {
+                            // console.log(res.data);
+                                toastr['info']('👋 Successfully Updated Job Status', 'Updated!', {
+                                    closeButton: true,
+                                    tapToDismiss: false,
+                                    rtl: isRtl
+                            });
+                            },
+                            error: function (err) {
+                                console.log('An error occurred.',err);    
+                                Swal.fire({                            
+                                title: 'Error!',
+                                icon: 'error',
+                                text: err.statusText,
+                                customClass: {
+                                    confirmButton: 'btn btn-success'
+                                }
+                                });
+                            },
+                        })
+                    }
+                    else
+                    {
+                        $this.val("");
+                    }
+                });
             });
         }
     });

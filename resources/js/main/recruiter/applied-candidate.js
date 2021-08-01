@@ -24,7 +24,7 @@ $(window).on('load', function () {
                 data: null,
                 orderable: false,
                 render: (data, type, full, meta)=>{
-                    let v = '<a href="recruiter/candidates/'+full["user_id"]+'" class="d-flex">';
+                    let v = '<a href="'+assetPath+'recruiter/candidates/'+full["user_id"]+'" class="d-flex">';
                     if (full["img_path"]) {
                         v += '<img class="round mr-1" src="/'+full["img_path"] +"/"+full["image_name"]+'" alt="avatar" height="40" width="40">';
                     } else {

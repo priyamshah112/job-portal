@@ -30,7 +30,7 @@ $(window).on('load', function () {
                 searchable: false,
             },
             {
-                data: 'position',
+                data: 'position_name',
                 orderable: false,
             },
             {

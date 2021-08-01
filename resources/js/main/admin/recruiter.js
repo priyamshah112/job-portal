@@ -227,8 +227,8 @@ $(window).on("load", function () {
             },
             {
                 data: "package",
-                orderable: false,
-                searchable: false,
+                orderable: true,
+                searchable: true,
                 render: (data, type, full, meta) => {
                     return data ? data.plan_name : "";
                 },

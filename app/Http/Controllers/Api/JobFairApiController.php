@@ -296,7 +296,7 @@ class JobFairApiController extends AppBaseController
 
         foreach($jobs as $job)
         {
-            $job['action'] = '<a href="' . route('job-fair.applied', ['id' => $job->id]) . '" class="btn p-0 m-0"><i data-feather="eye" class="text-primary font-medium-5"></i></a>';
+            $job['action'] = '<a href="' . route('job-fair.applied', ['id' => $job->id]) . '" class="btn btn-primary" style="width: 150px;">View Details</a>';
         }
 
         return $this->sendResponse($jobs, 'Jobs Retreived Successfully');
@@ -317,9 +317,11 @@ class JobFairApiController extends AppBaseController
         ->leftJoin('users','users.id','=','applied_jobs.candidate_id')
         ->select(
             'candidates.category',
+            'users.id as user_id',
             'users.first_name',
             'users.last_name',
             'users.img_path',
+            'users.image_name',
             'users.email',
             'positions.id',
             'positions.name as position_name',

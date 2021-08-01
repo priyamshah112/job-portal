@@ -302,12 +302,18 @@ $(window).on('load', function () {
                 }
             },
             {
-                data: 'company_name',
+                data: 'recruiter',
                 orderable: true,
+                render: function (data, type, full, meta){
+                    return data.company_name;
+                }
             },
             {
-                data: 'package_name',
-                orderable: true
+                data: 'package',
+                orderable: true,
+                render: function (data, type, full, meta){
+                    return data.plan_name;
+                }
             },
             {
                 data: 'amount',

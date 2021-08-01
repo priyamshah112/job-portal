@@ -103,7 +103,7 @@
                 <strong>Deadline to Apply:</strong> {{$job->deadline}}
               </div>
               <div class="card-text">
-                <strong>Percent Matching: </strong> {{$job->score}}
+                <strong>Percent Matching: </strong> {{$job->score}}%
               </div>
             </div>
           </div>

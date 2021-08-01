@@ -42,6 +42,7 @@ class AppliedJobApiController extends AppBaseController
                 'users.email',
                 'users.last_name',
                 'users.img_path',
+                'users.image_name',
                 'positions.id',
                 'positions.name as position_name',
                 'jobs.*',
@@ -61,8 +62,9 @@ class AppliedJobApiController extends AppBaseController
         else if($role === 'candidate'){
             $applied_jobs = AppliedJob::where('applied_jobs.candidate_id', $user->id)
             ->leftJoin('jobs','jobs.id','=','applied_jobs.job_id')
+            ->leftJoin('positions','positions.id','=','jobs.position_id')
             ->leftJoin('recruiters','recruiters.user_id','=','jobs.recruiter_id')
-            ->select('jobs.*','applied_jobs.*','recruiters.user_id','recruiters.company_name')
+            ->select('positions.id', 'positions.name as position_name','jobs.*','applied_jobs.*','recruiters.user_id','recruiters.company_name')
             ->orderBy('applied_jobs.updated_at','Desc')
             ->get();
         }
