@@ -163,7 +163,6 @@
                                     <option value="">Select Gender</option>
                                     <option value="male">Male</option>
                                     <option value="female">Female</option>
-                                    <option value="transgender">Transgender</option>
                                     <option value="any">Any</option>
                                 </select>
                             </div>

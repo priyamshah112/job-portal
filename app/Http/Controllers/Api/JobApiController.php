@@ -31,9 +31,12 @@ class JobApiController extends AppBaseController
         {
             return DataTables::of(Job::with('position')->whereNull('deleted_at')->where('recruiter_id', $user->id))
             ->addColumn('action', function ($data) {
-                $menu = '<a href="' . route('jobs-view', ['id' => $data->id]) . '" class="btn p-0 m-0"><i data-feather="eye" class="text-primary font-medium-5"></i></a>';
+                $menu = '<div style="width: 100px;"><a href="' . route('jobs-view', ['id' => $data->id]) . '" class="btn p-0 m-0"><i data-feather="eye" class="text-primary font-medium-5"></i></a>';
                 if ($data->draft == 1) {
-                    $menu .= '<a href="' . route('jobs-edit', ['id' => $data->id]) . '" class="btn p-0 m-0"><i data-feather="edit" class="text-warning ml-1 font-medium-5"></i></a>';
+                    $menu .= '<a href="' . route('jobs-edit', ['id' => $data->id]) . '" class="btn p-0 m-0"><i data-feather="edit" class="text-warning ml-1 font-medium-5"></i></a></div>';
+                }
+                else{
+                    $menu .= '</div>';
                 }
                 return $menu;
             })
@@ -109,7 +112,7 @@ class JobApiController extends AppBaseController
             'age_min' => 'required|not_in:0',
             'age_max' => 'required|not_in:0|gt:age_min',
             'gender' => 'required',
-            'experience' => 'required',
+            'experience' => 'required|gt:-1',
             'maxexperience' => 'required|not_in:0|gt:experience',
             'deadline' => 'required',
             'skills' => 'required|array',

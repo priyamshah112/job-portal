@@ -39,6 +39,17 @@
                 </span>
                 </button>
             </div>
+            <div class="step" data-target="#qualification-vertical-modern">
+                <button type="button" class="step-trigger">
+                <span class="bs-stepper-box">
+                    <i data-feather="layers" class="font-medium-3"></i>
+                </span>
+                <span class="bs-stepper-label">
+                    <span class="bs-stepper-title">Qualifications</span>
+                    <span class="bs-stepper-subtitle">Add Qualifications</span>
+                </span>
+                </button>
+            </div>
             <div class="step" data-target="#address-step-vertical-modern">
                 <button type="button" class="step-trigger">
                 <span class="bs-stepper-box">
@@ -58,17 +69,6 @@
                 <span class="bs-stepper-label">
                     <span class="bs-stepper-title">Contact</span>
                     <span class="bs-stepper-subtitle">Add Contacts</span>
-                </span>
-                </button>
-            </div>
-            <div class="step" data-target="#qualification-vertical-modern">
-                <button type="button" class="step-trigger">
-                <span class="bs-stepper-box">
-                    <i data-feather="layers" class="font-medium-3"></i>
-                </span>
-                <span class="bs-stepper-label">
-                    <span class="bs-stepper-title">Qualifications</span>
-                    <span class="bs-stepper-subtitle">Add Qualifications</span>
                 </span>
                 </button>
             </div>
@@ -134,7 +134,6 @@
                                     <option value="">Select Gender</option>
                                     <option value="male" @if ($candidate->gender == 'male') selected="selected" @endif>Male</option>
                                     <option value="female" @if ($candidate->gender == 'female') selected="selected" @endif>Female</option>
-                                    <option value="transgender" @if ($candidate->gender == 'transgender') selected="selected" @endif>Transgender</option>
                                 </select>
                             </div>
                         </div>
@@ -339,7 +338,7 @@
                     <div class="row mt-1">
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group">
-                                <label for="qualification_id" class="form-label">Qualification</label><span class="invalid-feedback">*</span>
+                                <label for="qualification_id" class="form-label">Latest Qualification</label><span class="invalid-feedback">*</span>
                                 <select name="qualification_id" id="qualification_id" class="form-control" previous-selected="{{$candidate->qualification_id}}">
                                     <option value="">Select Qualification</option>
                                 </select>

@@ -63,7 +63,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <h5 class="text-primary">Age (Min - Max)</h5>
-                                <h5 class="mt-1">{{ $job->age_min }} - {{ $job->age_max }}</h5>
+                                <h5 class="mt-1">{{ $job->age_min }} to {{ $job->age_max }}</h5>
                             </div>
                         </div>
                         <div class="col-lg-12 col-md-12 p-0">
@@ -158,7 +158,7 @@
                                 <hr class="text-primary mt-0">
                             </div>
                             <div class="col-lg-12 col-md-6">
-                                <p>
+                                <p class="text-captilize">
                                     {{ $job->gender }}
                                 </p>
                             </div>

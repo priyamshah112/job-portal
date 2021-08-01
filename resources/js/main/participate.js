@@ -37,7 +37,7 @@ let table = $('.job-list-table').DataTable({
         {
             data: null,
             render: function(data, type, full, meta){
-                return full['age_min'] +' - '+ full['age_max'];
+                return full['age_min'] +' to '+ full['age_max'];
             }
         },
         {
