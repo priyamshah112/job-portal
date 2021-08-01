@@ -45,8 +45,11 @@ class PaymentApiController extends AppBaseController
         $user_id = auth()->user()->id;
         
         if($this->is_any_plan_active($user_id))
-        {
-            return $this->sendErrorWithCode("Your Current Plan is Active !!",410);
+        {            
+            if(!$this->is_quota_exceeded($user_id))
+            {
+                return $this->sendErrorWithCode("Your Current Plan is Active !!",410);
+            }
         }
 
         $package = Package::where('id', $id)->first();
@@ -133,6 +136,8 @@ class PaymentApiController extends AppBaseController
             $payment->update($input);
             
             $package = Package::findOrFail($payment->package_id);
+            //Mark prvious plan active to expired;            
+            RecruiterPackage::where(['recruiter_id'=>$user_id,'status' => 'active'])->update(['status' => 'expired']);
 
             RecruiterPackage::create([
                 'recruiter_id' => $user_id,
