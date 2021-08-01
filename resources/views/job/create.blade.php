@@ -4,6 +4,7 @@
 
 @section('vendor-style')
     <!-- vendor css files -->
+    <link rel="stylesheet" href="{{ asset(mix('vendors/css/pickers/flatpickr/flatpickr.min.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/forms/wizard/bs-stepper.min.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/forms/select/select2.min.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('vendors/css/pickers/pickadate/pickadate.css')) }}">
@@ -17,6 +18,7 @@
     <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/extensions/ext-component-toastr.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-validation.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-wizard.css')) }}">
+    <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-flat-pickr.css')) }}">
 
 @endsection
 @section('content')
@@ -204,7 +206,7 @@
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group">
                                 <label for="deadline">{{ __('Application Deadline') }}<span class="invalid-feedback">*</span></label>
-                                <input type="date" id="datepicker" class="form-control"
+                                <input type="text" id="deadline" class="form-control"
                                     name="deadline" />
                             </div>
                         </div>
@@ -292,7 +294,7 @@
     <script src="{{ asset(mix('vendors/js/forms/validation/jquery.validate.min.js')) }}"></script>
     <script src="{{ asset(mix('vendors/js/extensions/toastr.min.js')) }}"></script>
     <script src="{{ asset(mix('vendors/js/extensions/sweetalert2.all.min.js')) }}"></script>
-
+    <script src="{{ asset(mix('vendors/js/pickers/flatpickr/flatpickr.min.js')) }}"></script>
 @endsection
 @section('page-script')
     <script src="{{asset(mix('js/main/config.js'))}}"></script>

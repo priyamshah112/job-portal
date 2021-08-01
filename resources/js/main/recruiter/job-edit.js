@@ -17,6 +17,11 @@ let qualifications = $("#qualification_id").select2();
 let skills = $("#skills").select2();
 let department = $("#department_id").select2();
 
+$('#deadline').flatpickr({
+    dateFormat: 'Y-m-d',
+    minDate: 'today',
+});
+
 $.ajax({
     url: `${assetPath}api/v1/positions`,
     type: "GET",
