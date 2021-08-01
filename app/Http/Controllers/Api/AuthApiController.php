@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\AppBaseController;
 use App\Models\User;
+use App\Traits\NotificationTraits;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthApiController extends AppBaseController
 {
+    use NotificationTraits;
 
     public function login(Request $request)
     {
@@ -32,6 +34,13 @@ class AuthApiController extends AppBaseController
         }
         
         $token = $user->createToken('API Token')->plainTextToken;
+
+        $this->notification([
+            "title" => 'Hey '.$user->first_name.' ' . $user->last_name.', Welcome to the platform',
+            "description" => 'Welcome to the platform !!',
+            "receiver_id" => $user->id,
+            "sender_id" => $user->id,
+        ]);
 
         return $this->sendResponse([
             'user' => $user,

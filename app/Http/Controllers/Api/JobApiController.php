@@ -11,6 +11,7 @@ use App\Models\Recruiter;
 use App\Models\State;
 use App\Models\States;
 use App\Traits\JobTrait;
+use App\Traits\NotificationTraits;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -21,7 +22,7 @@ use Illuminate\Support\Facades\URL;
 
 class JobApiController extends AppBaseController
 {
-    use JobTrait;
+    use JobTrait,NotificationTraits;
 
     public function index()
     {
@@ -162,6 +163,26 @@ class JobApiController extends AppBaseController
 
         $job = Job::findOrFail($id);
         $job->update($input);
+
+        $user = auth()->user();
+        if($input['draft'] === '0')
+        {            
+            $this->notification([
+                "title" => 'Your have published a job successfully.',
+                "description" => '',
+                "receiver_id" => $user->id,
+                "sender_id" => $user->id,
+            ]);
+        }
+        else
+        {
+            $this->notification([
+                "title" => 'Your have save as draft a job successfully.',
+                "description" => '',
+                "receiver_id" => $user->id,
+                "sender_id" => $user->id,
+            ]);
+        }
 
         $redirectURL = "";
         $previousRouteName = app('router')->getRoutes()->match(app('request')->create(URL::previous()))->getName();

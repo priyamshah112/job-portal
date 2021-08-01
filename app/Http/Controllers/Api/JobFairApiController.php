@@ -10,6 +10,7 @@ use App\Models\Job;
 use App\Models\JobFair;
 use App\Models\RecruiterJobFair;
 use App\Traits\JobTrait;
+use App\Traits\NotificationTraits;
 use App\Traits\SaveTrait;
 use Carbon\Carbon;
 use Exception;
@@ -22,7 +23,7 @@ use Illuminate\Support\Facades\Validator;
 class JobFairApiController extends AppBaseController
 {
 
-    use SaveTrait,JobTrait;
+    use SaveTrait,JobTrait,NotificationTraits;
 
     public function index()
     {
@@ -132,6 +133,26 @@ class JobFairApiController extends AppBaseController
         $input['start_date'] = $date[0];
         $input['end_date'] = $date[1];
         $input['number_of_days'] = Carbon::parse($date[0])->diffInDays(Carbon::parse($date[1]));
+        
+        if($input['draft'] === '1')
+        {
+            $this->notification([
+                "title" => 'Your Job fair had been saved successfully',
+                "description" => 'Your Job fair had been saved successfully',
+                "receiver_id" => auth()->user()->id,
+                "sender_id" => auth()->user()->id,
+            ]);
+        }
+        else if($input['draft'] === '0')
+        {
+            $this->notification([
+                "title" => 'Your Job fair had been published  successfully',
+                "description" => 'Your Job fair had been published  successfully',
+                "receiver_id" => auth()->user()->id,
+                "sender_id" => auth()->user()->id,
+            ]);
+        }
+
         $job_fair->update($input);
 
         return $this->sendResponse($job_fair, "Successfully Updated Job Fair");
@@ -291,16 +312,20 @@ class JobFairApiController extends AppBaseController
         'applied_jobs.job_id' => $id
         ])
         ->leftJoin('jobs','jobs.id','=','applied_jobs.job_id')
+        ->leftJoin('positions','positions.id','=','jobs.position_id')
         ->leftJoin('candidates','candidates.user_id','=','applied_jobs.candidate_id')
         ->leftJoin('users','users.id','=','applied_jobs.candidate_id')
         ->select(
-        'candidates.gender',
-        'candidates.category',
-        'users.first_name',
-        'users.last_name',
-        'users.img_path',
-        'jobs.*',
-        'applied_jobs.*'
+            'candidates.category',
+            'users.first_name',
+            'users.last_name',
+            'users.img_path',
+            'users.email',
+            'positions.id',
+            'positions.name as position_name',
+            'jobs.*',
+            'applied_jobs.*',
+            'candidates.gender',
         )
         ->orderBy('applied_jobs.updated_at','Desc')
         ->get();

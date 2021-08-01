@@ -29,7 +29,6 @@ class JobFairController extends Controller
         if($role === 'admin')
         {            
             $job_fairs = JobFair::with('department')
-            ->where('draft','0')
             ->orderBy('updated_at','DESC')
             ->get();
 

@@ -44,7 +44,6 @@
         <thead class="thead-light">
           <tr>
             <th>Profile</th>
-            <th>Name</th>
             <th>Gender</th>
             <th>Position</th>
             <th>Category</th>

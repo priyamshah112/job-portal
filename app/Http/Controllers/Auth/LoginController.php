@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use App\Traits\NotificationTraits;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-
+    use NotificationTraits;
     /*
     |--------------------------------------------------------------------------
     | Login Controller
@@ -68,7 +69,15 @@ class LoginController extends Controller
         }
 
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            $user = Auth::user();
+            $user = Auth::user();           
+
+            $this->notification([
+                "title" => 'Hey '.$user->first_name.' ' . $user->last_name.', Welcome to the platform',
+                "description" => 'Welcome to the platform !!',
+                "receiver_id" => $user->id,
+                "sender_id" => $user->id,
+            ]);
+            
             if ($user->hasRole('admin')) {
                 return redirect()->intended('dashboard');
             } else if ($user->hasRole('recruiter')){

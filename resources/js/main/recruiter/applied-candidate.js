@@ -74,35 +74,40 @@ $(window).on('load', function () {
             }
         ],
         fnDrawCallback: function() {  
-            $('.job_status').on('change', function(){            
-                let id = $(this).attr('data_id');
-                let value = $(this).val();
-                $.ajax({
-                    url: `${assetPath}api/v1/recruiter/apllied-jobs/status/${id}?_method=PUT`,
-                    type: 'POST',
-                    data: {
-                        'status' : value,
-                    },
-                    success: function (res) {
-                    // console.log(res.data);
-                        toastr['info']('👋 Successfully Updated Job Status', 'Updated!', {
-                            closeButton: true,
-                            tapToDismiss: false,
-                            rtl: isRtl
-                      });
-                    },
-                    error: function (err) {
-                        console.log('An error occurred.',err);    
-                        Swal.fire({                            
-                        title: 'Error!',
-                        icon: 'error',
-                        text: err.statusText,
-                        customClass: {
-                            confirmButton: 'btn btn-success'
-                        }
+            $('.job_status').on('change', function(){  
+                let $this = $(this);
+                let id = $this.attr('data_id');
+                let value = $this.val();
+                if(value !== '' && value !== undefined)
+                {
+                    $.ajax({
+                        url: `${assetPath}api/v1/recruiter/apllied-jobs/status/${id}?_method=PUT`,
+                        type: 'POST',
+                        data: {
+                            'status' : value,
+                        },
+                        success: function (res) {
+                        // console.log(res.data);
+                            toastr['info']('👋 Successfully Updated Job Status', 'Updated!', {
+                                closeButton: true,
+                                tapToDismiss: false,
+                                rtl: isRtl
                         });
-                    },
-                })
+                        },
+                        error: function (err) {
+                            console.log('An error occurred.',err);    
+                            Swal.fire({                            
+                            title: 'Error!',
+                            icon: 'error',
+                            text: err.responseJSON.message,
+                            customClass: {
+                                confirmButton: 'btn btn-success'
+                            }
+                            });
+                            $this.val("")
+                        },
+                    })
+                }
             });
         }
     });
