@@ -12,6 +12,10 @@ var createdJobId = null,
 
 //initial
 $('.select2').select2();
+$('#deadline').flatpickr({
+    dateFormat: 'Y-m-d',
+    minDate: 'today',
+});
 
 $.ajax({
     url: `${assetPath}api/v1/positions`,

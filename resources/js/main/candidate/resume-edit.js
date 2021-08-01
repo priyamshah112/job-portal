@@ -18,6 +18,10 @@ let qualification = $("#qualification_id").select2(),
     department = $("#department_id").select2(),
     position = $("#previous_position").select2(),
     categoryValue = $('#experience').prop("checked") ? 'experience' : 'fresher';
+$('#dateOfBirth').flatpickr({
+    dateFormat: 'Y-m-d',
+    maxDate: 'today',
+});
 
 // custom validator
 jQuery.validator.addMethod("validate_email", function(value, element) {

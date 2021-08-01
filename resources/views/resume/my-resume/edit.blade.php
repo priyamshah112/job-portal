@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/toastr.min.css')) }}">
 <link rel="stylesheet" href="{{ asset(mix('vendors/css/animate/animate.min.css')) }}">
 <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/sweetalert2.min.css')) }}">
+<link rel="stylesheet" href="{{ asset(mix('vendors/css/pickers/flatpickr/flatpickr.min.css')) }}">
 @endsection
 
 @section('page-style')
@@ -16,8 +17,8 @@
 <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/extensions/ext-component-toastr.css')) }}">
 <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-validation.css')) }}">
 <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-wizard.css')) }}">
-<link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-pickadate.css')) }}">
 <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/form-file-uploader.css')) }}">
+<link rel="stylesheet" href="{{ asset(mix('css/base/plugins/forms/pickers/form-flat-pickr.css')) }}">
 @endsection
 
 @section('content')
@@ -121,9 +122,9 @@
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group">
                                 <label for="dateOfBirth" class="form-label">Date of Birth</label><span class="invalid-feedback">*</span>
-                                <input type="date" class="form-control"
-                                    id="dob" name="dateOfBirth" placeholder="Last Name" 
-                                    value="{{ old('dateOfBirth',$candidate->dateOfBirth)}}"
+                                <input class="form-control"
+                                    id="dateOfBirth" name="dateOfBirth" placeholder="Last Name" 
+                                    value="{{ $candidate->dateOfBirth }}"
                                 />                            
                             </div>
                         </div>
@@ -441,6 +442,7 @@
 <script src="{{ asset(mix('vendors/js/forms/validation/jquery.validate.min.js')) }}"></script>
 <script src="{{ asset(mix('vendors/js/extensions/toastr.min.js')) }}"></script>
 <script src="{{ asset(mix('vendors/js/extensions/sweetalert2.all.min.js')) }}"></script>
+<script src="{{ asset(mix('vendors/js/pickers/flatpickr/flatpickr.min.js')) }}"></script>
 <script src="{{asset(mix('js/main/config.js'))}}"></script>
 @endsection
 @section('page-script')
