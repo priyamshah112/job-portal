@@ -53,7 +53,8 @@
                         <div class="form-group">
                             <label for="exampleFormControlFile1" class="form-label">Attachment (Optional)</label>
                             <input type="file" name="fileToUpload" class="myfileupload"
-                                   id="exampleFormControlFile1">
+                                   id="exampleFormControlFile1"
+                                   accept="image/jpeg, image/png">
                             <p class="filetext">Select Your File(Must be .PNG .JPEG and less than 5MB)</p>
                         </div>
                     </div>

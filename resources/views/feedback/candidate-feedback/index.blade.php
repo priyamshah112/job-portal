@@ -70,7 +70,10 @@
                 </div>
                 <div class="form-group">
                     <label for="exampleFormControlFile1" class="form-label">Attachment (Optional)</label>
-                    <input type="file" name="fileToUpload" class="myfileupload @error('fileToUpload') @enderror" id="exampleFormControlFile1">
+                    <input type="file" name="fileToUpload" class="myfileupload 
+                        @error('fileToUpload') @enderror" id="exampleFormControlFile1"
+                        accept="image/jpeg, image/png"
+                    >
                     <p class="filetext">Select Your File(Must be .PNG .JPEG and less than 5MB)</p>
                     @error('fileToUpload')
                     <span class="invalid-feedback" role="alert">

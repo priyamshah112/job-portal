@@ -142,7 +142,6 @@ $(window).on('load', function () {
     const url = "".concat(assetPath, "api/v1/jobs");
     table = $('#pageTable').DataTable({
         serverSide: true,
-        width: 'auto',
         ajax: {
             url: url
         },
@@ -184,7 +183,7 @@ $(window).on('load', function () {
                 data: null,
                 orderable: false,
                 render: function (data, type, full, meta) {
-                    return full['age_min'] + ' - ' + full['age_max'];
+                    return full['age_min'] + ' to ' + full['age_max'];
                 }
             },
             {
