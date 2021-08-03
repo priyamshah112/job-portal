@@ -18,7 +18,10 @@ $('.flatpickr-range').flatpickr({
     minDate: "today",
 });
 
-$('.pickatime').pickatime();
+$('.flatpickr-time').flatpickr({
+    enableTime: true,
+    noCalendar: true
+});
 
 //custom validators
 jQuery.validator.addMethod("validate_email", function(value, element) {

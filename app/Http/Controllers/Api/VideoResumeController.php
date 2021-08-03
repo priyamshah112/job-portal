@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\AppBaseController;
 use App\Models\Candidate;
 use App\Traits\NotificationTraits;
 use Exception;
@@ -9,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-class MediaController extends Controller
+class VideoResumeController extends AppBaseController
 {
     use NotificationTraits;
     /**
@@ -26,13 +27,8 @@ class MediaController extends Controller
         });
         $id = Auth::id();
         $candidate = Candidate::where('user_id', $id)->first();
-        if ($candidate) {
-            $capturedVideo = $candidate->video_resume_name ? true : false;
-        } else {
-            $capturedVideo = false;
-        }
 
-        return view('video-resume.index', compact('capturedVideo', 'candidate'));
+        return $this->sendResponse($candidate, 'Video Resume Retreived Successfully');
     }
 
     /**
@@ -90,8 +86,7 @@ class MediaController extends Controller
                     "sender_id" => $id,
                 ]);
 
-                return view('video-resume.index', 
-                compact('capturedVideo', 'candidate', ['success-message' => "Successfully Updated"]));
+                return $this->sendResponse($candidate, 'Video resume created Successfully');
             }
         } catch (Exception $e) {
             return response()->json(['error-message' => $e->getMessage()]);
@@ -148,7 +143,11 @@ class MediaController extends Controller
             Storage::disk('public')->delete($store_path); 
         }
 
-        return redirect()->route('video-resume.index')
-            ->with('success', 'video deleted successfully');
+        $candidate->update([
+            "video_resume_name" => null,
+            "video_resume_path" => null
+        ]);
+
+        return $this->sendResponse($candidate, 'Video Resume deleted Successfully');
     }
 }

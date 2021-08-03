@@ -296,7 +296,7 @@ class JobFairApiController extends AppBaseController
 
         foreach($jobs as $job)
         {
-            $job['action'] = '<a href="' . route('job-fair.applied', ['id' => $job->id]) . '" class="btn btn-primary" style="width: 150px;">View Details</a>';
+            $job['action'] = '<a href="' . route('job-fair.applied', ['job_fair_id' => $id, 'id' => $job->id]) . '" class="btn btn-primary" style="width: 150px;">View Details</a>';
         }
 
         return $this->sendResponse($jobs, 'Jobs Retreived Successfully');

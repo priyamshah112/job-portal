@@ -11,6 +11,7 @@ use App\Models\RecruiterJobFair;
 use App\Traits\JobTrait;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 
 class JobFairController extends Controller
 {
@@ -19,8 +20,8 @@ class JobFairController extends Controller
     public function index()
     {
         $breadcrumbs = [
-            ['link' => "/", 'name' => "Home"],
-            ['link' => "javascript:void(0)", 'name' => "Job Fair"],
+            ['link' => route('dashboard'), 'name' => "Home"],
+            ['link' => route('job-fairs'), 'name' => "Job Fair"],
             ['name' => "List"]
         ];
         $user = Auth::user(); 
@@ -157,7 +158,7 @@ class JobFairController extends Controller
     public function jobs($id)
     {
         $breadcrumbs = [
-            ['link' => "/", 'name' => "Home"],
+            ['link' => route('dashboard'), 'name' => "Home"],
             ['link' => route('job-fairs'), 'name' => "Job Fair"],
             ['name' => "Added Jobs"]
         ];
@@ -169,11 +170,21 @@ class JobFairController extends Controller
         ])->with(compact('job_fair'));
     }
 
-    public function appliedCandidates($id)
+    public function appliedCandidates($job_fair_id,$id)
     {
         $job = Job::findOrFail($id);
+        $job_fair = JobFair::findOrFail($job_fair_id); 
+        
+        $breadcrumbs = [
+            ['link' => route('dashboard'), 'name' => "Home"],
+            ['link' => route('job-fairs'), 'name' => "Job Fair"],
+            ['link' =>  route('job-fair.jobs', $job_fair_id), 'name' => $job_fair->name],
+            ['name' => "Candidates"]
+        ];
 
-        return view('job-fair.applied-candidates')->with(compact('job'));
+        return view('job-fair.applied-candidates', [
+            'breadcrumbs' => $breadcrumbs
+        ])->with(compact('job'));
     }
 
 

@@ -233,13 +233,13 @@
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group">
                                 <label for="start_time" class="form-label">Start Time*</label>
-                                <input type="time" class="form-control" id="start_time" name="start_time" value="{{$job_fair->start_time}}" />
+                                <input type="text" class="form-control flatpickr-time" id="start_time" name="start_time" value="{{$job_fair->start_time}}" />
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group">
                                 <label for="end_time" class="form-label">End Time*</label>
-                                <input type="time" class="form-control" id="end_time" name="end_time" value="{{$job_fair->end_time}}" />
+                                <input type="text" class="form-control flatpickr-time" id="end_time" name="end_time" value="{{$job_fair->end_time}}" />
                             </div>
                         </div>
                     </div>               
