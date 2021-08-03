@@ -121,7 +121,7 @@ Route::group(['middleware' => ['prevent-back-history','active_user','auth']], fu
         Route::get('/future-events', [JobFairController::class, 'futureEvents'])->name('future-events');    
         Route::get('/participate/{id}', [JobFairController::class, 'participate'])->name('participate');    
         Route::get('/job-fair/{id}/jobs', [JobFairController::class, 'jobs'])->name('job-fair.jobs');
-        Route::get('/job-fair/{id}/applied-candidates', [JobFairController::class, 'appliedCandidates'])->name('job-fair.applied');
+        Route::get('/job-fair/{job_fair_id}/jobs/{id}/applied-candidates', [JobFairController::class, 'appliedCandidates'])->name('job-fair.applied');
         Route::get('applied-candidates', [JobController::class, 'appliedCandidates'])->name('applied-candidates');
         
         Route::group(['prefix' => 'recruiter'], function () {

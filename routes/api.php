@@ -21,6 +21,7 @@ use App\Http\Controllers\Api\PaymentApiController;
 use App\Http\Controllers\Api\PositionApiController;
 use App\Http\Controllers\Api\QualificationApiController;
 use App\Http\Controllers\Api\SkillApiController;
+use App\Http\Controllers\Api\VideoResumeController;
 
 Route::group(['prefix' => 'v1'], function () {
 
@@ -142,6 +143,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('/address-update', [CandidateResumeController::class, 'addressUpdate']);
             Route::post('/contact-update', [CandidateResumeController::class, 'contactUpdate']);
             Route::post('/qualification-update', [CandidateResumeController::class, 'qualificationUpdate']);
+            Route::delete('/video-resume-delete', [VideoResumeController::class, 'destroy']);
 
             Route::post('/job-apply/{id}', [AppliedJobApiController::class, 'store'])->name('job-apply');
             Route::get('/applied-jobs', [AppliedJobApiController::class, 'index'])->name('applied-jobs');
@@ -247,6 +249,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('/address-update', [CandidateResumeController::class, 'addressUpdate']);
             Route::post('/contact-update', [CandidateResumeController::class, 'contactUpdate']);
             Route::post('/qualification-update', [CandidateResumeController::class, 'qualificationUpdate']);
+            Route::delete('/video-resume-delete', [VideoResumeController::class, 'destroy']);
 
             Route::post('/job-apply/{id}', [AppliedJobApiController::class, 'store'])->name('job-apply');
             Route::get('/applied-jobs', [AppliedJobApiController::class, 'index'])->name('applied-jobs');

@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Jobs List')
+@section('title', $job_fair->name)
 
 @section('vendor-style')
   {{-- Page Css files --}}

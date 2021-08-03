@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Applied Candidate List')
+@section('title', $job->position['name'])
 
 @section('vendor-style')
   {{-- Page Css files --}}

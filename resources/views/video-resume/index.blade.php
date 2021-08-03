@@ -47,6 +47,7 @@
                     </div> 
                     <div class="d-flex justify-content-center mt-3">
                         <button class="btn btn-success rounded-lg mr-1 record-again">Record again</button>
+                        <a class="btn btn-outline-danger delete-video">Delete</a>
                     </div>
                 </div>
                 <div class="col-md-12 newVideo {{ $capturedVideo ? 'd-none' : '' }}">
@@ -108,6 +109,8 @@
 @section('page-script')
 <script src="{{asset(mix('js/main/config.js'))}}"></script>
 <script>
+    const isRtl = $("html").attr("data-textdirection") === "rtl";
+    const assetPath = $("body").attr("data-asset-path");
     var preview = document.getElementById('preview'),
         recording = document.getElementById("recording"),
         capturedVideo = $('.capturedVideo'),
@@ -206,6 +209,51 @@
         });
     });
 
+    $('.delete-video').on('click', function(){
+        blockPage(true);
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Delete it!',
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-outline-danger ml-1'
+            },
+            buttonsStyling: false
+            }).then(function (result) {
+            if (result.value) {
+                $.ajax({
+                    url: `${assetPath}api/v1/candidate/video-resume-delete`,
+                    type: 'DELETE',
+                    success: function (res) {
+                    // console.log(res.data);
+                        toastr['warning']('👋 Successfully deleted Video Resume', 'Deleted!', {
+                            closeButton: true,
+                            tapToDismiss: false,
+                            rtl: isRtl
+                        });
+                        blockPage(false);
+                        window.location.reload();
+                    },
+                    error: function (err) {
+                        console.log('An error occurred.',err);    
+                        Swal.fire({                            
+                            title: 'Error!',
+                            icon: 'error',
+                            text: err.statusText,
+                            customClass: {
+                                confirmButton: 'btn btn-success'
+                            }
+                        });
+                        blockPage(false);
+                    },
+                })
+            }
+        });
+    })
+
     function progressCountdown(timeleft) {
         var countdownTimer = setInterval(() => {
             timeleft--;
@@ -224,6 +272,25 @@
         } else {
             saveButton.removeAttr('disabled');
             saveButton.html('Save');
+        }
+    }
+
+    function blockPage(status) {
+        if (status) {
+            $.blockUI({
+                message:
+                '<div class="d-flex justify-content-center align-items-center"><p class="mr-50 mb-0">Please wait...</p> <div class="spinner-grow spinner-grow-sm text-white" role="status"></div> </div>',
+                css: {
+                backgroundColor: 'transparent',
+                color: '#fff',
+                border: '0'
+                },
+                overlayCSS: {
+                opacity: 0.7
+                }
+            });
+        } else {
+            $('.blockUI').remove();
         }
     }
 </script>
