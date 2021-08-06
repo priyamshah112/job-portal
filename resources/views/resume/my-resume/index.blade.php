@@ -260,7 +260,7 @@
             <div class="about-section pt-4 px-3 px-lg-4 mt-1 pb-3">
                 <div class="row">
                     <div class="col-md-6">
-                        <h2 class="h3 mb-1"><strong>About Me</strong></h2>
+                        <h2 class="h3 mb-1"><strong>My Profile</strong></h2>
                         <p style="text-indent: 50px;"> {{$candidate->about}}</p>
                         <hr class="p-0 text-primary mt-2">
                         <h6 class="mt-2"><strong>Professional Skills</strong></h6>
@@ -278,6 +278,16 @@
                                 <h4 class="badgeNew ml-4"> {{$candidate->qualification->name}} </h4>                                
                             @endif
                         </div>
+                        @if($candidate->category === 'experience')
+                            <hr class="p-0 text-primary mt-2">
+                            <h6><strong>Experience</strong></h6>
+                            <div>
+                                <p class="badgeNew ml-4">Company Name: {{$candidate->previous_company}}</p>
+                                <p class="badgeNew ml-4">Experience  In Years: {{$candidate->experience}}</p>
+                                <p class="badgeNew ml-4">Position: {{$candidate->previous_position_detail['name']}}</p>
+                                <p class="badgeNew ml-4">CTC: {{$candidate->previous_ctc}} ₹</p>
+                            </div>
+                        @endif
                     </div>
                     <div class="col-md-6">
                         <div class="row mt-2">

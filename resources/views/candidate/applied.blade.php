@@ -18,9 +18,6 @@
   <link rel="stylesheet" href="{{ asset(mix('css/base/pages/app-user.css')) }}">
   <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/extensions/ext-component-toastr.css')) }}">
   <style>
-    .dataTables_wrapper div:nth-child(1), .dataTables_wrapper div:nth-child(3) {
-        padding: 0 10px;
-    }
     .action-cell{
       min-width: 80px;
     }
@@ -40,6 +37,7 @@
             <th>Job Title</th>
             <th>Employer</th>
             <th>Status</th>
+            <th>Action</th>
           </tr>
         </thead>
       </table>

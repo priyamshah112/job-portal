@@ -392,7 +392,7 @@
                     <div class="row mt-1 experienceCategory {{ $category === 'fresher' ? 'd-none' : ''}}"> 
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group">
-                                <label for="experience" class="form-label">Total Experience Year</label><span class="invalid-feedback">*</span>  
+                                <label for="experience" class="form-label">Total  Experience  In Years</label><span class="invalid-feedback">*</span>  
                                 <input type="text" class="form-control"
                                     id="experience" name="experience"
                                     value="{{ old('experience',$candidate->experience) }}" maxlength="2"

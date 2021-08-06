@@ -65,9 +65,9 @@ $(window).on('load', function () {
                     return (
                     `<select class="form-control job_status" data_id="${full['id']}">
                         <option value="">Select Option</option>
-                        <option value="hire" ${full['job_status'] === 'hire' ? 'selected' : ''}>Hire</option>
-                        <option value="shortlist" ${full['job_status'] === 'shortlist' ? 'selected' : ''}>Short List</option>
                         <option value="reject" ${full['job_status'] === 'reject' ? 'selected' : ''}>Reject</option>
+                        <option value="shortlist" ${full['job_status'] === 'shortlist' ? 'selected' : ''}>Short List</option>
+                        <option value="hire" ${full['job_status'] === 'hire' ? 'selected' : ''}>Hire</option>
                     </select>`
                     );
                 }
@@ -80,33 +80,52 @@ $(window).on('load', function () {
                 let value = $this.val();
                 if(value !== '' && value !== undefined)
                 {
-                    $.ajax({
-                        url: `${assetPath}api/v1/recruiter/apllied-jobs/status/${id}?_method=PUT`,
-                        type: 'POST',
-                        data: {
-                            'status' : value,
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You want to send mail and won't able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, send it!',
+                        customClass: {
+                          confirmButton: 'btn btn-success',
+                          cancelButton: 'btn btn-outline-danger ml-1'
                         },
-                        success: function (res) {
-                        // console.log(res.data);
-                            toastr['info']('👋 Successfully Updated Job Status', 'Updated!', {
-                                closeButton: true,
-                                tapToDismiss: false,
-                                rtl: isRtl
-                        });
-                        },
-                        error: function (err) {
-                            console.log('An error occurred.',err);    
-                            Swal.fire({                            
-                            title: 'Error!',
-                            icon: 'error',
-                            text: err.responseJSON.message,
-                            customClass: {
-                                confirmButton: 'btn btn-success'
-                            }
-                            });
-                            $this.val("")
-                        },
-                    })
+                        buttonsStyling: false
+                      }).then(function (result) {
+                        if (result.value) {
+                            $.ajax({
+                                url: `${assetPath}api/v1/recruiter/apllied-jobs/status/${id}?_method=PUT`,
+                                type: 'POST',
+                                data: {
+                                    'status' : value,
+                                },
+                                success: function (res) {
+                                // console.log(res.data);
+                                    toastr['info']('👋 Successfully Updated Job Status', 'Updated!', {
+                                        closeButton: true,
+                                        tapToDismiss: false,
+                                        rtl: isRtl
+                                });
+                                },
+                                error: function (err) {
+                                    console.log('An error occurred.',err);    
+                                    Swal.fire({                            
+                                    title: 'Error!',
+                                    icon: 'error',
+                                    text: err.responseJSON.message,
+                                    customClass: {
+                                        confirmButton: 'btn btn-success'
+                                    }
+                                    });
+                                    $this.val("")
+                                },
+                            })
+                        }
+                        else
+                        {
+                            $this.val("");
+                        }
+                    });
                 }
             });
         }

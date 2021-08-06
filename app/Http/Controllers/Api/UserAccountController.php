@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\AppBaseController;
+use App\Mail\CandidateSignup;
+use App\Mail\RecruiterSignup;
 use App\Models\Attachments;
 use App\Models\Candidate;
 use Exception;
@@ -13,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -74,6 +77,12 @@ class UserAccountController extends AppBaseController
             "receiver_id" => $admin_id,
             "sender_id" => $user->id,
         ]);
+
+        $input = [
+            'email' => $user->email,
+        ];
+
+        Mail::to($input['email'])->send(new CandidateSignup($input));
 
         if (!$candidate) {
             DB::rollback();
@@ -153,6 +162,12 @@ class UserAccountController extends AppBaseController
             "receiver_id" => $admin_id,
             "sender_id" => $user->id,
         ]);
+
+        $input = [
+            'email' => $user->email,
+        ];
+
+        Mail::to($input['email'])->send(new RecruiterSignup($input));
         
         if (!$user || !$recruiter) {
             DB::rollback();
