@@ -52,4 +52,8 @@ class Candidate extends Model
     public function city_detail(){
         return $this->belongsTo(City::class,'city','id');
     }
+
+    public function previous_position_detail(){
+        return $this->belongsTo(Position::class,'previous_position','id');
+    }
 }

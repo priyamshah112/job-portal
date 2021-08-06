@@ -43,11 +43,12 @@ class JobController extends AppBaseController
                 $join->on('applied_jobs.job_id', '=', 'jobs.id')
                 ->where('applied_jobs.candidate_id','=', $user->id);
             })
+            ->with('recruiter_details')
             ->whereNull('applied_jobs.candidate_id')
             ->whereNull('jobs.deleted_at')
             ->where(['jobs.draft' => '0','jobs.status' => '1'])
             ->whereDate('jobs.deadline','>=',Carbon::now())
-            ->orderBy('jobs.updated_at')
+            ->orderBy('jobs.updated_at','desc')
             ->select('applied_jobs.*','jobs.*')
             ->get(); 
             

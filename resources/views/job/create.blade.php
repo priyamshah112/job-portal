@@ -273,7 +273,7 @@
                             <span class="align-middle d-sm-inline-block d-none">Previous</span>
                         </button>                        
                         <div>
-                            <button type="button" class="btn btn-primary btn-submit mr-2" data-type="1">Save as Draft</button>
+                            <button type="button" class="btn btn-primary btn-submit mr-2" data-type="1">View Your Job Posting</button>
                             <button type="button" class="btn btn-success btn-submit" data-type="0">
                                 <span class="align-middle d-sm-inline-block d-none">Submit</span>
                             </button>

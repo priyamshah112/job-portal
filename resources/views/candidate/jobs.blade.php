@@ -12,7 +12,42 @@
 @section('page-style')
   {{-- Page Css files --}}
   <link rel="stylesheet" href="{{ asset(mix('css/base/plugins/extensions/ext-component-toastr.css')) }}">
+  <style>
+    .job-card{
+      margin-left: 50px;
+      padding-left: 50px;
+    }
+    .job-company-logo{
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      left: -50px;
+      top: 50px;
+      border-radius: 5px;
+      box-shadow: 7px 9px 14px -9px rgba(0,0,0,0.75);
+      -webkit-box-shadow: 7px 9px 14px -9px rgba(0,0,0,0.75);
+      -moz-box-shadow: 7px 9px 14px -9px rgba(0,0,0,0.75);
+    }
+    .job-empty-logo{
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      left: -50px;
+      top: 50px;
+      border-radius: 5px;
+      box-shadow: 7px 9px 14px -9px rgba(0,0,0,0.75);
+      -webkit-box-shadow: 7px 9px 14px -9px rgba(0,0,0,0.75);
+      -moz-box-shadow: 7px 9px 14px -9px rgba(0,0,0,0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8f8f8;
+      font-weight: bold;
+
+    }
+  </style>
 @endsection
+
 @section('content')
 <!-- cateory list start -->
 <section class="job-list">
@@ -73,10 +108,19 @@
               </div>
           </div>
         </div>
-        <div class="card">
+        <div class="card job-card">
+          @if($job->recruiter_details['img_path'] !== null)
+            <img class="img-responsive job-company-logo" src="{{$job->recruiter_details['img_path']}}/{{$job->recruiter_details['image_name']}}"/>
+          @else
+            <div class="job-empty-logo">Logo</div>
+          @endif
           <div class="card-header border-bottom pb-1">
-            <h5 class="card-text">{{$job->position['name']}}</h5>
-            <h5 class="card-text">Job</h5>
+            <h5 class="card-text">
+              {{$job->position['name']}}
+            </h5>
+            <h5 class="card-text">
+              Job
+            </h5>
           </div>
           <div class="card-body pt-2">
             <div class="d-flex justify-content-between">

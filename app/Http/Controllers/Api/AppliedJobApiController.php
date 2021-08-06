@@ -67,6 +67,12 @@ class AppliedJobApiController extends AppBaseController
             ->select('positions.id', 'positions.name as position_name','jobs.*','applied_jobs.*','recruiters.user_id','recruiters.company_name')
             ->orderBy('applied_jobs.updated_at','Desc')
             ->get();
+
+            foreach($applied_jobs as $applied_job)
+            { 
+                $applied_job['stateNames'] = $this->convertStateIdsToStateNames($applied_job->state);
+                $applied_job['skillNames'] = $this->convertSkillIdsToSkillNames($applied_job->skills);
+            }
         }
 
         return $this->sendResponse($applied_jobs, "Applied Jobs Retreived Successfully");
@@ -106,8 +112,7 @@ class AppliedJobApiController extends AppBaseController
         }
 
         $applied_job = AppliedJob::findOrFail($id);
-
-        if($applied_job->job_status !== 'pending')
+        if($applied_job->job_status === 'reject' || $applied_job->job_status === 'hire')
         {
             return $this->sendError('You Cannot Edit Applied Candidate Job Status!');
         }
