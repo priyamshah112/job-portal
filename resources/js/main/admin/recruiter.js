@@ -184,15 +184,14 @@ function continueED(data, id, dom, isEnable) {
 $(window).on("load", function () {
     const url = "".concat(assetPath, "api/v1/admin/recruiters");
     table = $("#pageTable").DataTable({
-        serverSide: true,
         ajax: {
             url: url
         },
         columns: [
             {
                 data: "user",
-                orderable: false,
-                searchable: false,
+                orderable: true,
+                searchable: true,
                 render: (data, type, full, meta) => {
                     let v = '<a href="/recruiters/' + data.id + '" class="d-flex">';
                     if (data.img_path) {
@@ -219,11 +218,13 @@ $(window).on("load", function () {
             },
             {
                 data: "user.mobile_number",
-                orderable: false,
+                orderable: true,
+                searchable: true,
             },
             {
                 data: "company_name",
-                orderable: false,
+                orderable: true,
+                searchable: true,
             },
             {
                 data: "package",
@@ -235,7 +236,8 @@ $(window).on("load", function () {
             },
             {
                 data: "user.active",
-                orderable: false,
+                orderable: true,
+                searchable: true,
                 render: (data, type, full, meta) => {
                     let response = "";
                     if (data == 2) {

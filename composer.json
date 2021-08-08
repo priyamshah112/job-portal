@@ -7,10 +7,12 @@
         "laravel"
     ],
     "license": "MIT",
-    "repositories": [{
-        "type": "vcs",
-        "url": "git@github.com:InfyOmLabs/swaggervel.git"
-    }],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:InfyOmLabs/swaggervel.git"
+        }
+    ],
     "require": {
         "php": "^7.3|^8.0",
         "ext-json": "*",

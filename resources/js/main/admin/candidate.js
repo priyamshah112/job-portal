@@ -174,15 +174,14 @@ var table = null;
 $(window).on('load', function () {
     const url = "".concat(assetPath, "api/v1/admin/candidates");
     table = $('#pageTable').DataTable({
-        serverSide: true,
         ajax: {
             url: url
         },
         columns: [
             {
                 data: 'user',
-                orderable: false,
-                searchable: false,
+                orderable: true,
+                searchable: true,
                 render: (data, type, full, meta)=>{
                     let v = '<a href="/candidates/'+data.id+'" class="d-flex">';
                     if (data.img_path) {
@@ -197,15 +196,18 @@ $(window).on('load', function () {
             },
             {
                 data: 'user.mobile_number',
-                orderable: false,
+                orderable: true,
+                searchable: true,
             },
             {
                 data: 'dateOfBirth',
-                orderable: false,
+                orderable: true,
+                searchable: true,
             },
             {
                 data: 'user.active',
-                orderable: false,
+                orderable: true,
+                searchable: true,
                 render: (data, type, full, meta) => {
                     let response = '';
                     if (data == 2) {

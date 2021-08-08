@@ -19,7 +19,7 @@ class CreateRecruiterPackagesTable extends Migration
             $table->date('from_date')->nullable();
             $table->date('to_date')->nullable();
             $table->foreignId('package_id')->references('id')->on('packages');
-            $table->bigInteger('post_quota_used')->nullable();
+            $table->bigInteger('post_quota_used')->default(0);
             $table->enum('status', ['expired','active']);
             $table->timestamps();
             $table->softDeletes();

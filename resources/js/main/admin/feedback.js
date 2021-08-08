@@ -23,14 +23,14 @@ var table = null;
 $(window).on('load', function () {
     const url = "".concat(assetPath, "api/v1/admin/feedback");
      table = $('#pageTable').DataTable({
-       serverSide: true,
        ajax: {
            url: url
        },
         columns: [
             {
                 data: 'user',
-                orderable: false,
+                orderable: true,
+                searchable: true,
                 render: (data, type, full, meta)=>{
                     let v = '<div class="d-flex">';
                     if (data.img_path) {
@@ -46,17 +46,21 @@ $(window).on('load', function () {
 
             {
                 data: 'subject',
+                orderable: true,
+                searchable: true,
             },
             {
                 data: 'message',
+                orderable: true,
+                searchable: true,
             },
             {
-              data:'file_path',
+                data:'file_path',
                 render: function(data, type, full, meta){
                     let v = '<div class="d-flex">';
                     if (data) {
                         let s = ''+data;
-                      v += '<button onclick=preview("'+s+'") class="badge border-0 badge-primary">View</button></div>';
+                        v += '<button onclick=preview("'+s+'") class="badge border-0 badge-primary">View</button></div>';
                     } else {
                         v = '-';
                     }
@@ -66,6 +70,8 @@ $(window).on('load', function () {
             },
             {
                 data: 'created_at',
+                orderable: true,
+                searchable: true,
                 render:(data, type, full,meta)=>{
                     return new Date(data).toLocaleDateString("en-US");
                 }

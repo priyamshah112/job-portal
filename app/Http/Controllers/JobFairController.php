@@ -87,7 +87,7 @@ class JobFairController extends Controller
     public function futureEvents()
     {
         $breadcrumbs = [
-            ['link' => "/", 'name' => "Home"],
+            ['link' => route('dashboard'), 'name' => "Home"],
             ['link' => "javascript:void(0)", 'name' => "Future Event"],
             ['name' => "List"]
         ];
@@ -114,7 +114,7 @@ class JobFairController extends Controller
     public function participate($id)
     {
         $breadcrumbs = [
-            ['link' => "/", 'name' => "Home"],
+            ['link' => route('dashboard'), 'name' => "Home"],
             ['link' => route('future-events'), 'name' => "Future Event"],
             ['name' => "Participate"]
         ];
@@ -130,7 +130,7 @@ class JobFairController extends Controller
     public function createForm()
     {
         $breadcrumbs = [
-            ['link' => "/", 'name' => "Home"],
+            ['link' => route('dashboard'), 'name' => "Home"],
             ['link' => "javascript:void(0)", 'name' => "Job Fair"],
             ['name' => "Create new Job Fair"]
         ];
@@ -143,7 +143,7 @@ class JobFairController extends Controller
     public function editForm($id)
     {
         $breadcrumbs = [
-            ['link' => "/", 'name' => "Home"],
+            ['link' => route('dashboard'), 'name' => "Home"],
             ['link' => route('job-fairs'), 'name' => "Job Fair"],
             ['name' => "Edit"]
         ];
