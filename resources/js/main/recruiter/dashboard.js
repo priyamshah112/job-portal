@@ -299,6 +299,7 @@ $('.buy-button').on('click', function() {
                         confirmButton: 'btn btn-success'
                     }
                 });
+                window.location.reload();
             }
             disableBuyNowButton(false);
         },
@@ -374,6 +375,7 @@ function verifyPayment(res) {
                     confirmButton: 'btn btn-success'
                 }
             });
+            window.location.reload();
         },
         error: function (err) {
             console.log('An error occurred.',err);    

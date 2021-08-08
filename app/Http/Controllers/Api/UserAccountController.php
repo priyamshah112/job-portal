@@ -196,7 +196,7 @@ class UserAccountController extends AppBaseController
     public function showAdminAccountSettings()
     {
         $breadcrumbs = [
-            ['link' => "/dashboard", 'name' => "Home"],
+            ['link' => route('dashboard'), 'name' => "Home"],
             ['name' => "Account Settings"],
         ];
         $admin = User::where('id', 3)->first();
@@ -281,7 +281,7 @@ class UserAccountController extends AppBaseController
     public function showRecruiterAccountSettings()
     {
         $breadcrumbs = [
-            ['link' => "/dashboard", 'name' => "Home"],
+            ['link' => route('dashboard'), 'name' => "Home"],
             ['name' => "Account Settings"],
         ];
         $recruiterInfo = Recruiter::where('user_id', 2)->first();
@@ -513,7 +513,7 @@ class UserAccountController extends AppBaseController
     public function showCandidateAccountSettings()
     {
         $breadcrumbs = [
-            ['link' => "/dashboard", 'name' => "Home"],
+            ['link' => route('dashboard'), 'name' => "Home"],
             ['name' => "Account Settings"],
         ];
         $candidate = Candidate::where('user_id', 1)->first();

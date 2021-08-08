@@ -99,7 +99,7 @@ class MenuTableSeeder extends Seeder
         Menu::create([
             "id"=> 9,
             'url'=> "list-resume",
-            'name'=> "My Resume",
+            'name'=> "Digital CV",
             'icon'=> "file",
             'slug'=> "resume",
             'order'=> 9,
