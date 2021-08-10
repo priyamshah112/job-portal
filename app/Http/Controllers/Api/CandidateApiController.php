@@ -2,33 +2,44 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\AppBaseController;
 use App\Models\Candidate;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 
-class CandidateApiController extends Controller
+class CandidateApiController extends AppBaseController
 {
     public function index()
     {
-        return DataTables::of(Candidate::whereNull('deleted_at')->with('user'))
-            ->addColumn('action', function ($data) {
-                $menu = '';
-                if ($data->user->active == 1) {
-                    $menu = '<buton title="Change Status" onclick="disable(' . $data->user->id . ', this)" class="btn p-0 m-0"><i data-feather="toggle-right" class="text-success font-large-1"></i></buton>';
-                } else {
-                    $menu = '<buton title="Change Status" onclick="enable(' . $data->user->id . ', this)" class="btn p-0 m-0"><i data-feather="toggle-left" class="text-danger font-large-1"></i></buton>';
-                }
-                $menu .= '<a title="View" href="' . route('candidates-view', ['id' => $data->user->id]) . '" class="btn p-0 m-0"><i data-feather="eye" class="text-primary ml-1 font-medium-5"></i></a>';
-                $menu .= '<a title="Edit" href="' . route('candidates-edit', ['id' => $data->user->id]) . '" class="btn p-0 m-0"><i data-feather="edit" class="text-warning ml-1 font-medium-5"></i></a>';
-                $menu .= '<buton title="Delete" onclick="deleter(' . $data->user->id . ', this)" class="btn p-0 m-0"><i data-feather="trash-2" class="text-danger ml-1 font-medium-5"></i></buton>';
-                return $menu;
-            })
-            ->rawColumns(['action'])
-            ->make(true);
+        $role = Auth::user()->user_type; 
+    
+        if($role === 'admin')
+        {
+            return DataTables::of(Candidate::whereNull('deleted_at')->with('user'))
+                ->addColumn('action', function ($data) {
+                    $menu = '';
+                    if ($data->user->active == 1) {
+                        $menu = '<buton title="Change Status" onclick="disable(' . $data->user->id . ', this)" class="btn p-0 m-0"><i data-feather="toggle-right" class="text-success font-large-1"></i></buton>';
+                    } else {
+                        $menu = '<buton title="Change Status" onclick="enable(' . $data->user->id . ', this)" class="btn p-0 m-0"><i data-feather="toggle-left" class="text-danger font-large-1"></i></buton>';
+                    }
+                    $menu .= '<a title="View" href="' . route('candidates-view', ['id' => $data->user->id]) . '" class="btn p-0 m-0"><i data-feather="eye" class="text-primary ml-1 font-medium-5"></i></a>';
+                    $menu .= '<a title="Edit" href="' . route('candidates-edit', ['id' => $data->user->id]) . '" class="btn p-0 m-0"><i data-feather="edit" class="text-warning ml-1 font-medium-5"></i></a>';
+                    $menu .= '<buton title="Delete" onclick="deleter(' . $data->user->id . ', this)" class="btn p-0 m-0"><i data-feather="trash-2" class="text-danger ml-1 font-medium-5"></i></buton>';
+                    return $menu;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        if($role === 'recruiter')
+        {
+            $candidates = Candidate::whereNull('deleted_at')->with('user')->get();
+            return $this->sendResponse($candidates, "Candidates Retreived Successfully");
+        }
 
     }
 

@@ -49,7 +49,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::put('/notifications/mark-all-unread-to-read', [NotificationApiController::class, 'mark_all_unread_to_read']);
         Route::put('/notifications/{id}', [NotificationApiController::class, 'mark_read']);
 
-        Route::group(['prefix' => 'admin'], function () {
+        Route::group(['prefix' => 'admin', 'middleware' => 'role:admin'], function () {
             // account info api for admin
             Route::get('admin-account-settings', [UserAccountController::class, 'showAdminAccountSettings']);
             Route::post('changeAdminPassword', [UserAccountController::class, 'changeAdminPassword']);
@@ -93,20 +93,23 @@ Route::group(['prefix' => 'v1'], function () {
             });
         });
     
-        Route::group(['prefix' => 'recruiter'], function () {
+        Route::group(['prefix' => 'recruiter', 'middleware' => 'role:recruiter'], function () {
+            
             // account info api for recruiter
             Route::get('recruiter-account-settings', [UserAccountController::class, 'showRecruiterAccountSettings']);
             Route::post('/changeRecruiterPassword', [UserAccountController::class, 'changeRecruiterPassword']);
             Route::post('changeRecruiterInfo', [UserAccountController::class, 'changeRecruiterInfo']);
-    
+            
             Route::post('attachments', [UserAccountController::class, 'attachmentList']);
             Route::post('attachments/upload', [UserAccountController::class, 'uploadAtt']);
             Route::post('attachments/delete', [UserAccountController::class, 'attachmentDelete']);
-
+            
+            Route::get('/candidates', [CandidateApiController::class, 'index']);
+            
             //Payment
             Route::post('order/{id}', [PaymentApiController::class, 'order']);
             Route::post('payments', [PaymentApiController::class, 'store']);
-
+            
             Route::post('/jobs/create-job', [JobApiController::class, 'store']);
             Route::post('/jobs/job-detail-update/{id}', [JobApiController::class, 'jobDetailUpdate']);
             Route::post('/jobs/criteria-update/{id}', [JobApiController::class, 'jobCriteriaUpdate']);
@@ -134,7 +137,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('/feedback', [FeedbackApiController::class, 'store']);
         });
     
-        Route::group(['prefix' => 'candidate'], function () {
+        Route::group(['prefix' => 'candidate', 'middleware' => 'role:candidate'], function () {
             // account info api for candidate
             Route::get('candidate-account-settings', [UserAccountController::class, 'showCandidateAccountSettings']);
             Route::post('changeCandidatePassword', [UserAccountController::class, 'changeCandidatePassword']);
@@ -166,7 +169,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('/notifications/unread-count', [NotificationApiController::class, 'unread_notification_count']);
         Route::put('/notifications/{id}', [NotificationApiController::class, 'mark_read']);
     
-        Route::group(['prefix' => 'candidate'], function () {
+        Route::group(['prefix' => 'candidate', 'middleware' => 'role:candidate'], function () {
             // account info api for candidate
             Route::get('candidate-account-settings', [UserAccountController::class, 'showCandidateAccountSettings']);
             Route::post('changeCandidatePassword', [UserAccountController::class, 'changeCandidatePassword']);

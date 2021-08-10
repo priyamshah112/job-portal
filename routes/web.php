@@ -75,6 +75,10 @@ Route::group(['middleware' => ['prevent-back-history','active_user','auth']], fu
     });
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard'); 
+    
+    Route::get('/candidates', [CandidatesController::class, 'index'])->name('candidates');
+
+    Route::get('/candidates/{id}', [CandidatesController::class, 'show'])->name('candidates-view');
 
     Route::view('/notifications', 'notifications.index')->name('notification-list');
     
@@ -92,9 +96,7 @@ Route::group(['middleware' => ['prevent-back-history','active_user','auth']], fu
         Route::get('/recruiters', [RecruitersController::class, 'index'])->name('recruiters');
         Route::get('/recruiters/{id}', [RecruitersController::class, 'show'])->name('recruiters-view');
         Route::get('/recruiters/edit/{id}', [RecruitersController::class, 'edit'])->name('recruiters-edit');
-   
-        Route::get('/candidates', [CandidatesController::class, 'index'])->name('candidates');
-        Route::get('/candidates/{id}', [CandidatesController::class, 'show'])->name('candidates-view');
+
         Route::get('/candidates/edit/{id}', [CandidatesController::class, 'edit'])->name('candidates-edit');
 
         Route::get('job-fair/create', [JobFairController::class, 'createForm'])->name('job-fair-store');
@@ -113,7 +115,6 @@ Route::group(['middleware' => ['prevent-back-history','active_user','auth']], fu
 
     // For Recruiters
     Route::group(['middleware' => 'role:recruiter'], function () {
-        
         
         Route::get('jobs/create', [JobController::class, 'createForm'])->name('jobs-create')->middleware('check-plan');
         Route::get('jobs/view/{id}', [JobController::class, 'show'])->name('jobs-view');
