@@ -222,7 +222,11 @@ class JobFairApiController extends AppBaseController
         
         DB::beginTransaction();
         try {
-            $job_fair = JobFair::findOrFail($id);
+            $job_fair = JobFair::where('id', $id)->first();
+            if(empty($job_fair))
+            {
+                return $this->sendError("Not Found");
+            }
 
             $input = [
                 'job_fair_id' => $id,

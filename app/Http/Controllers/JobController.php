@@ -59,6 +59,9 @@ class JobController extends AppBaseController
                $job['qualificationNames'] = $this->convertQualificationIdsToQualificationNames(($job->qualification_id));
                $job['stateNames'] = $this->convertStateIdsToStateNames($job->state);
             }
+
+            $jobs = collect($jobs)->sortBy('score', SORT_REGULAR, true);
+            
             return view('candidate.jobs')->with('jobs', $jobs);
         }
     }

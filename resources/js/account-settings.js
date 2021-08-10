@@ -70,31 +70,37 @@ $(function () {
                     processData: false,
                     contentType: false,
                 }).done((response) => {
-                    response = JSON.parse(response);
-                    if (response.status != 1) {
-                        toastr["info"]("👋 " + response.msg, "Info!", {
+                    toastr["success"]("👋 " + response.message, "Updated!", {
+                        closeButton: true,
+                        tapToDismiss: false,
+                        rtl: isRtl,
+                    });
+                    $('#account-upload-img').attr('src', response.data.imagePath);
+                    $('#navProfileImage').attr('src', response.data.imagePath);
+                    disableSubmitButton(false);
+                }).fail((error) => {
+                    if(error.status === 422)
+                    {
+                        let errors = err.responseJSON.message;
+                        console.log(errors, err)
+                        let showErrors = {}
+                        Object.keys(errors).forEach((key) => {
+                            showErrors = {
+                                ...showErrors,
+                                [key]: errors[key]
+                            }
+                        });
+                        validator.showErrors(showErrors);
+                    }
+                    else
+                    {
+                        toastr["info"]("👋 " + error.responseJSON.message, "Error!", {
                             closeButton: true,
                             tapToDismiss: false,
                             rtl: isRtl,
                         });
-                        disableSubmitButton(false);
-                        return;
                     }
-                    toastr["success"]("👋 " + response.msg, "Updated!", {
-                        closeButton: true,
-                        tapToDismiss: false,
-                        rtl: isRtl,
-                    });
-                    $('#account-upload-img').attr('src', response.imagePath);
-                    $('#navProfileImage').attr('src', response.imagePath);
                     disableSubmitButton(false);
-                }).fail((error) => {
-                    toastr["error"]("👋 " + error.msg, "Error!", {
-                        closeButton: true,
-                        tapToDismiss: false,
-                        rtl: isRtl,
-                    });
-                    validator.showErrors(showErrors);
                 });
             }
         });
@@ -133,17 +139,7 @@ $(function () {
                     processData: false,
                     contentType: false,
                 }).done((response) => {
-                    response = JSON.parse(response);
-                    if (response.status != 1) {
-                        toastr["info"]("" + response.msg, "Error!", {
-                            closeButton: true,
-                            tapToDismiss: false,
-                            rtl: isRtl,
-                        });
-                        disableSubmitButton(false);
-                        return;
-                    }
-                    toastr["success"]("👋 " + response.msg, "Updated!", {
+                    toastr["success"]("👋 " + response.message, "Updated!", {
                         closeButton: true,
                         tapToDismiss: false,
                         rtl: isRtl,
@@ -151,12 +147,28 @@ $(function () {
                     changePasswordForm.trigger('reset');
                     disableSubmitButton(false);
                 }).fail((error) => {
-                    toastr["info"]("👋 " + error.msg, "Error!", {
-                        closeButton: true,
-                        tapToDismiss: false,
-                        rtl: isRtl,
-                    });
-                    validator.showErrors(showErrors);
+                    if(error.status === 422)
+                    {
+                        let errors = err.responseJSON.message;
+                        console.log(errors, err)
+                        let showErrors = {}
+                        Object.keys(errors).forEach((key) => {
+                            showErrors = {
+                                ...showErrors,
+                                [key]: errors[key]
+                            }
+                        });
+                        validator.showErrors(showErrors);
+                    }
+                    else
+                    {
+                        toastr["info"]("👋 " + error.responseJSON.message, "Error!", {
+                            closeButton: true,
+                            tapToDismiss: false,
+                            rtl: isRtl,
+                        });
+                    }
+                    disableSubmitButton(false);
                 });
             }
         });

@@ -66,6 +66,10 @@
                   </div>
                   <div class="modal-body"> 
                     <p class="card-text">
+                      <strong>Company Name:</strong> 
+                      {{$job->recruiter_details['recruiter']->company_name}}
+                    </p>
+                    <p class="card-text">
                       <strong>Location:</strong>                  
                       @foreach ($job->stateNames as $state)
                         {{$state}}
@@ -119,7 +123,7 @@
               {{$job->position['name']}}
             </h5>
             <h5 class="card-text">
-              Job
+              {{$job->recruiter_details['recruiter']->company_name}}
             </h5>
           </div>
           <div class="card-body pt-2">

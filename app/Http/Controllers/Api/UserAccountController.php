@@ -200,7 +200,7 @@ class UserAccountController extends AppBaseController
             ['name' => "Account Settings"],
         ];
         $admin = User::where('id', 3)->first();
-        return collect(["status" => 1, $admin])->toJson();
+        return $this->sendResponse($admin, "Account Settings Retreived Successfully");
     }
     public function changeAdminInfo(Request $request)
     {
@@ -211,15 +211,9 @@ class UserAccountController extends AppBaseController
         ];
         $validator = Validator::make($input, $rules);
         if ($validator->fails()) {
-            $arr = ["status" => 400, "message" => $validator->errors()->first(), "data" => []];
-            return collect(["status" => 0, "msg" => $arr['message']])->toJson();
-
+            return $this->sendValidationError($validator->errors());
         }
-        $user = User::where('id', $id)->get();
-        if (empty($user)) {
-            return collect(["status" => 0, "msg" => "User Not Found"])->toJson();
-        }
-        User::where('id', $id)->update(['first_name' => $request->name]);
+        $user = User::where('id', $id)->update(['first_name' => $request->name]);
         try {
             if ($request->has('profile_picture')) {
                 if (!empty($user->thumbnail)) {
@@ -234,9 +228,9 @@ class UserAccountController extends AppBaseController
             }
             $user = User::where('id', $id)->first();
             $imagePath = $user->img_path ? '/'.$user->img_path .'/'.$user->image_name : "/images/portrait/small/avatar-s-11.jpg";
-            return collect(["status" => 1, "msg" => "General Info Updated Successfully", 'imagePath' => $imagePath])->toJson();
+            return $this->sendResponse(['imagePath' => $imagePath],"General Info Updated Successfully");
         } catch (Exception $exception) {
-            return collect(["status" => 0, "msg" => "Error occur while upload image. Choose other image"])->toJson();
+            return $this->sendError($exception->getMessage());
         }
     }
 
@@ -252,28 +246,22 @@ class UserAccountController extends AppBaseController
         $validator = Validator::make($input, $rules);
         $oldPassword  = User::where('id', $userid)->value('password');
         if ($validator->fails()) {
-            return collect(["status" => 0, "msg" => $validator->errors()->first()])->toJson();
-        } else {
-            try {
-                if ((Hash::check(request('old_password'), $oldPassword)) == false) {
-                    return collect(["status" => 0, "msg" => "Check your old password"])->toJson();
+            return $this->sendValidationError($validator->errors());
+        } 
+        
+        try {
+            if ((Hash::check(request('old_password'), $oldPassword)) == false) {
+                return $this->sendError("Check your old password");
+            } else {
+                if ((Hash::check(request('new_password'), $oldPassword)) == true) {
+                    return $this->sendError("Please enter a password which is not similar then current password.");
                 } else {
-                    if ((Hash::check(request('new_password'), $oldPassword)) == true) {
-                        return collect(["status" => 0, "msg" => "Please enter a password which is not similar then current password."])->toJson();
-                    } else {
-                        User::where('id', $userid)->update(['password' => Hash::make($input['new_password'])]);
-                        return collect(["status" => 1, "msg" => "Password updated successfully"])->toJson();
-                    }
+                    User::where('id', $userid)->update(['password' => Hash::make($input['new_password'])]);
+                    return $this->sendSuccess("Password updated successfully");
                 }
-            } catch (Exception $ex) {
-                $msg = "";
-                if (isset($ex->errorInfo[2])) {
-                    $msg = $ex->errorInfo[2];
-                } else {
-                    $msg = $ex->getMessage();
-                }
-                return collect(["status" => 0, "msg" => $msg])->toJson();
             }
+        } catch (Exception $ex) {
+            return $this->sendError($ex->getMessage());
         }
     }
 
@@ -532,28 +520,21 @@ class UserAccountController extends AppBaseController
         $validator = Validator::make($input, $rules);
         $oldPassword  = User::where('id', $loggedUserId)->value('password');
         if ($validator->fails()) {
-            return collect(["status" => 0, "msg" => $validator->errors()->first()])->toJson();
-        } else {
-            try {
-                if ((Hash::check(request('old_password'), $oldPassword)) == false) {
-                    return collect(["status" => 0, "msg" => "Check your old password"])->toJson();
+            return $this->sendValidationError($validator->errors());
+        }
+        try {
+            if ((Hash::check(request('old_password'), $oldPassword)) == false) {
+                return $this->sendError("Check your old password");
+            } else {
+                if ((Hash::check(request('new_password'), $oldPassword)) == true) {
+                    return $this->sendError("Please enter a password which is not similar then current password.");
                 } else {
-                    if ((Hash::check(request('new_password'), $oldPassword)) == true) {
-                        return collect(["status" => 0, "msg" => "Please enter a password which is not similar then current password."])->toJson();
-                    } else {
-                        User::where('id', $loggedUserId)->update(['password' => Hash::make($input['new_password'])]);
-                        return collect(["status" => 1, "msg" => "Password updated successfully"])->toJson();
-                    }
+                    User::where('id', $loggedUserId)->update(['password' => Hash::make($input['new_password'])]);
+                    return $this->sendSuccess("Password updated successfully");
                 }
-            } catch (Exception $ex) {
-                $msg = "";
-                if (isset($ex->errorInfo[2])) {
-                    $msg = $ex->errorInfo[2];
-                } else {
-                    $msg = $ex->getMessage();
-                }
-                return collect(["status" => 0, "msg" => $msg])->toJson();
             }
+        } catch (Exception $ex) {
+            return $this->sendError($ex->getMessage());
         }
     }
 
@@ -566,15 +547,9 @@ class UserAccountController extends AppBaseController
         ];
         $validator = Validator::make($input, $rules);
         if ($validator->fails()) {
-            $arr = ["status" => 400, "message" => $validator->errors()->first(), "data" => []];
-            return collect(["status" => 0, "msg" => $arr['message']])->toJson();
-
+           return $this->sendValidationError($validator->errors());
         }
-        $user = User::where('id', $loggedUserId)->get();
-        if (empty($user)) {
-            return collect(["status" => 0, "msg" => "User Not Found"])->toJson();
-        }
-        User::where('id', $loggedUserId)->update(['first_name' => $request->name]);
+        $user = User::where('id', $loggedUserId)->update(['first_name' => $request->name]);
         try {
             if ($request->has('profile_picture')) {
                 if (!empty($user->thumbnail)) {
@@ -589,9 +564,9 @@ class UserAccountController extends AppBaseController
             }
             $user = User::where('id', $loggedUserId)->first();
             $imagePath = $user->img_path ? '/'.$user->img_path .'/'.$user->image_name : "/images/portrait/small/avatar-s-11.jpg";
-            return collect(["status" => 1, "msg" => "General Info Updated Successfully", 'imagePath' => $imagePath])->toJson();
+            return $this->sendResponse(['imagePath' => $imagePath],"General Info Updated Successfully");
         } catch (Exception $exception) {
-            return collect(["status" => 0, "msg" => $exception])->toJson();
+            return $this->sendError($exception->getMessage());
         }
     }
 }

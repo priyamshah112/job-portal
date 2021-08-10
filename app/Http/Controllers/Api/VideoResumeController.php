@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\AppBaseController;
 use App\Models\Candidate;
 use App\Traits\NotificationTraits;
+use Illuminate\Support\Facades\Validator;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -50,6 +51,14 @@ class VideoResumeController extends AppBaseController
     public function store(Request $request)
     {
         $id = Auth::id();
+        $validator = Validator::make($request->all(), [
+            'video' => 'required'
+        ]);
+
+        if($validator->fails())
+        {
+            return $this->sendValidationError($validator->errors());
+        }
         try {
             if ($request->hasFile('video')) {
                 $candidate = Candidate::where('user_id', $id)->first();
@@ -89,7 +98,7 @@ class VideoResumeController extends AppBaseController
                 return $this->sendResponse($candidate, 'Video resume created Successfully');
             }
         } catch (Exception $e) {
-            return response()->json(['error-message' => $e->getMessage()]);
+            return $this->sendError($e->getMessage());
         }
     }
 

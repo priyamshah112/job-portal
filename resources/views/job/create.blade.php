@@ -22,6 +22,22 @@
 
 @endsection
 @section('content')
+<section>    
+    <div class="row match-height">
+        <div class="col-sm-12 col-md-12 col-12">
+            <div class="card card-app-design">
+                <div class="card-body text-center">
+                    @if(!empty($recruiter_package))
+                        <h4 class="card-title mt-1 mb-75 pt-25">Your package is : <span class="text-primary font-weight-bold">{{$recruiter_package->package['plan_name']}}</span></h4>
+                        <h5 class="card-title mt-1 mb-75 pt-25">Availed quota : <span class="text-primary font-weight-bold">{{$recruiter_package->post_quota_used ? $recruiter_package->post_quota_used : 0 }} / {{$recruiter_package->package['post_quota']}}</span></h5>
+                    @else
+                        <h5 class="card-title mt-1 mb-75 pt-25">No Active Plan</h5>                            
+                    @endif
+                </div>
+            </div>
+        </div>         
+    </div>
+</section>
 <section class="horizontal-wizard">
     <div class="bs-stepper horizontal-wizard-job-create">
         <div class="bs-stepper-header">
