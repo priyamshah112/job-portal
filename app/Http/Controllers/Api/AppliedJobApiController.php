@@ -84,7 +84,12 @@ class AppliedJobApiController extends AppBaseController
             abort(404);
         }
 
-        $job = Job::findOrFail($id);
+        $job = Job::where('id', $id)->first();
+
+        if(empty($job))
+        {
+            return $this->sendError("Not Found");
+        }
 
         $input = [
             'job_id' => $id,

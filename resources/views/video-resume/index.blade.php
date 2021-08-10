@@ -34,6 +34,26 @@
     @endif
     <section class="app-category-list">
         <!-- list section start -->
+        <div class="modal fade" id="sample-video-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-md modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title text-primary">Sample Video</h3>
+                        <button type="button" class="close modal-close-button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body d-flex justify-content-center p-0"> 
+                        <video height="450px" controls>
+                            <source
+                                src="{{ URL::asset('images/video/VID-20210808-WA0002.mp4')}}"
+                                type="video/mp4">
+                                Your browser does not support the video tag.
+                        </video> 
+                    </div>
+                </div>
+            </div>
+          </div>
         <div class="card p-2">
             <div class="row justify-content-center">
                 <div class="col-md-12 text-center capturedVideo {{ $capturedVideo ? '' : 'd-none' }}">
@@ -68,6 +88,7 @@
                             </div>
                             <p class="text-danger">*The recoding will automatically stop after 60 seconds</p>
                             <div class="btn btn-success rounded-lg m-1 startButton"> Start</div>
+                            <button class="btn btn-outline-warning" data-toggle="modal" data-target="#sample-video-modal">Sample Video</div>
                         </div>
                         <div class="preVideo d-none">
                             <video id="preview" width="600" height="500" autoplay muted></video>

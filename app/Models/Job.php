@@ -42,6 +42,6 @@ class Job extends Model
 
     public function recruiter_details()
     {
-        return $this->belongsTo(User::class,'recruiter_id', 'id');
+        return $this->belongsTo(User::class,'recruiter_id', 'id')->with('recruiter');
     }
 }
