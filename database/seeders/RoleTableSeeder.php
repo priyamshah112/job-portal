@@ -31,6 +31,7 @@ class RoleTableSeeder extends Seeder
         ])->givePermissionTo([
             'dashboard',
             'job',
+            'candidate',
             'applied-candidate',
             'future-event',
             'jobfair',

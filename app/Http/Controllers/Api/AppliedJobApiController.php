@@ -74,6 +74,10 @@ class AppliedJobApiController extends AppBaseController
                 $applied_job['skillNames'] = $this->convertSkillIdsToSkillNames($applied_job->skills);
             }
         }
+        else
+        {
+            abort(403);
+        }
 
         return $this->sendResponse($applied_jobs, "Applied Jobs Retreived Successfully");
     }

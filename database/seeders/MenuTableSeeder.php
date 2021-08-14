@@ -34,35 +34,35 @@ class MenuTableSeeder extends Seeder
             'order'=> 2,
             'permission_id'=> Permission::where('name','recruiter')->first()->id,
         ]);
-        
-        Menu::create([
-            "id"=> 3,
-            'url'=> "candidates",
-            'name'=> "Candidates",
-            'icon'=> "users",
-            'slug'=> "candidates",
-            'order'=> 3,
-            'permission_id'=> Permission::where('name','candidate')->first()->id,
-        ]);
 
         Menu::create([
-            "id"=> 4,
+            "id"=> 3,
             'url'=> "jobs",
             'name'=> "Jobs",
             'icon'=> "briefcase",
             'slug'=> "jobs",
-            'order'=> 4,
+            'order'=> 3,
             'permission_id'=> Permission::where('name','job')->first()->id,
         ]);
 
         Menu::create([
-            "id"=> 5,
+            "id"=> 4,
             'url'=> "applied-candidates",
             'name'=> "Applied Candidates",
             'icon'=> "align-center",
             'slug'=> "applied-candidates",
-            'order'=> 5,
+            'order'=> 4,
             'permission_id'=> Permission::where('name','applied-candidate')->first()->id,
+        ]);
+
+        Menu::create([
+            "id"=> 5,
+            'url'=> "candidates",
+            'name'=> "Candidates",
+            'icon'=> "users",
+            'slug'=> "candidates",
+            'order'=> 5,
+            'permission_id'=> Permission::where('name','candidate')->first()->id,
         ]);
 
         Menu::create([

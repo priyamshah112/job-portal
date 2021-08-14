@@ -290,9 +290,9 @@
                         </button>                        
                         <div>
                             <button type="button" class="btn btn-primary btn-submit mr-2" data-type="1">View Your Job Posting</button>
-                            <button type="button" class="btn btn-success btn-submit" data-type="0">
+                            {{-- <button type="button" class="btn btn-success btn-submit" data-type="0">
                                 <span class="align-middle d-sm-inline-block d-none">Submit</span>
-                            </button>
+                            </button> --}}
                         </div>
                     </div>
                 </form>
