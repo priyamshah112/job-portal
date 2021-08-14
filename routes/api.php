@@ -49,6 +49,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::put('/notifications/mark-all-unread-to-read', [NotificationApiController::class, 'mark_all_unread_to_read']);
         Route::put('/notifications/{id}', [NotificationApiController::class, 'mark_read']);
 
+        Route::get('/candidate/applied-jobs', [AppliedJobApiController::class, 'index'])->name('applied-jobs');
+
         Route::group(['prefix' => 'admin', 'middleware' => 'role:admin'], function () {
             // account info api for admin
             Route::get('admin-account-settings', [UserAccountController::class, 'showAdminAccountSettings']);
@@ -149,7 +151,6 @@ Route::group(['prefix' => 'v1'], function () {
             Route::delete('/video-resume-delete', [VideoResumeController::class, 'destroy']);
 
             Route::post('/job-apply/{id}', [AppliedJobApiController::class, 'store'])->name('job-apply');
-            Route::get('/applied-jobs', [AppliedJobApiController::class, 'index'])->name('applied-jobs');
 
             Route::group(['prefix' => 'job-fair'], function () {
                 Route::post('/apply/{id}', [JobFairApiController::class, 'apply'])->name('job-fair-apply');
