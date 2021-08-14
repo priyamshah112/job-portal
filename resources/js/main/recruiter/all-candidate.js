@@ -30,10 +30,25 @@ $(window).on('load', function () {
                 searchable: true,
             },
             {
+                data: 'skillNames',
+                orderable: true,
+                searchable: true,
+            },
+            {
+                data: 'stateNames',
+                orderable: true,
+                searchable: true,
+            },
+            {
+                data: 'cityNames',
+                orderable: true,
+                searchable: true,
+            },
+            {
                 data: 'dateOfBirth',
                 orderable: true,
                 searchable: true,
-            }
+            },
         ],
     });
 });

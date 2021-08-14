@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\AppBaseController;
 use App\Models\Candidate;
 use App\Models\User;
+use App\Traits\JobTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,8 @@ use Yajra\DataTables\DataTables;
 
 class CandidateApiController extends AppBaseController
 {
+    use JobTrait;
+
     public function index()
     {
         $role = Auth::user()->user_type; 
@@ -38,6 +41,11 @@ class CandidateApiController extends AppBaseController
         if($role === 'recruiter')
         {
             $candidates = Candidate::whereNull('deleted_at')->with('user')->get();
+            foreach ($candidates as $candidate) {
+                $candidate["skillNames"] = $this->convertSkillIdsToSkillNames($candidate->skills);
+                $candidate["stateNames"] = $this->convertStateIdsToStateNames($candidate->preferred_state);
+                $candidate["cityNames"] = $this->convertCityIdsToCityNames($candidate->preferred_city);
+            }
             return $this->sendResponse($candidates, "Candidates Retreived Successfully");
         }
 

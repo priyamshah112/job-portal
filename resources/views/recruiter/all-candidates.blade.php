@@ -30,6 +30,9 @@
           <tr>
             <th>Candidate</th>
             <th>Mobile</th>
+            <th>Skills</th>
+            <th>State</th>
+            <th>City</th>
             <th>Date of Birth</th>
           </tr>
         </thead>
