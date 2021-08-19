@@ -179,6 +179,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('/address-update', [CandidateResumeController::class, 'addressUpdate']);
             Route::post('/contact-update', [CandidateResumeController::class, 'contactUpdate']);
             Route::post('/qualification-update', [CandidateResumeController::class, 'qualificationUpdate']);
+            Route::get('/video-resume', [VideoResumeController::class, 'index']);
             Route::post('/video-resume', [VideoResumeController::class, 'store']);
             Route::delete('/video-resume-delete', [VideoResumeController::class, 'destroy']);
 
@@ -186,6 +187,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('/applied-jobs', [AppliedJobApiController::class, 'index'])->name('applied-jobs');
 
             Route::group(['prefix' => 'job-fair'], function () {
+                Route::get('/',[JobFairApiController::class, 'index']);
                 Route::post('/apply/{id}', [JobFairApiController::class, 'apply'])->name('job-fair-apply');
             });
 

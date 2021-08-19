@@ -45,6 +45,22 @@ class JobApiController extends AppBaseController
         }
         else if($user->user_type === 'candidate')
         {
+            
+            $isProfileCompleted = $this->checkCandidateProfileCompleted($user->id);
+            if(!$isProfileCompleted)
+            {
+                return $this->sendValidationError([
+                    'profile' => 'Complete Your Profile',
+                ]);
+            }
+
+            $isVideoResumeCompleted = $this->checkVideoResumeCompleted($user->id);
+            if(!$isVideoResumeCompleted)
+            {
+                return $this->sendValidationError([
+                    'video-resume' => 'Complete Video Resume',
+                ]);
+            }
             $jobs = Job::whereNull('deleted_at')->where(['draft' => '0'])->orderBy('updated_at')->get(); 
             $candidate = Candidate::where('user_id', $user->id)->first();
             foreach($jobs as $job)
