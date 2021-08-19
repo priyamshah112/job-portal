@@ -27,7 +27,28 @@ class JobFairApiController extends AppBaseController
 
     public function index()
     {
-        return "index";
+        $user = Auth::user();
+        
+        $isProfileCompleted = $this->checkCandidateProfileCompleted($user->id);
+        if(!$isProfileCompleted)
+        {
+            return $this->sendValidationError([
+                'profile' => 'Complete Your Profile',
+            ]);
+        }
+
+        $isVideoResumeCompleted = $this->checkVideoResumeCompleted($user->id);
+
+        if(!$isVideoResumeCompleted)
+        {
+            return $this->sendValidationError([
+                'video-resume' => 'Complete Video Resume',
+            ]);
+        }
+
+        $job_fairs = JobFair::all();
+
+        return $this->sendResponse($job_fairs, "Job Fair Retreived Successfully");
     }
 
     public function store(Request $request)

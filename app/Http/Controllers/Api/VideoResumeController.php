@@ -27,7 +27,7 @@ class VideoResumeController extends AppBaseController
             }
         });
         $id = Auth::id();
-        $candidate = Candidate::where('user_id', $id)->first();
+        $candidate = Candidate::with('user')->where('user_id', $id)->select('id','user_id','video_resume_name','video_resume_path')->first();
 
         return $this->sendResponse($candidate, 'Video Resume Retreived Successfully');
     }

@@ -504,8 +504,8 @@ class UserAccountController extends AppBaseController
             ['link' => route('dashboard'), 'name' => "Home"],
             ['name' => "Account Settings"],
         ];
-        $candidate = Candidate::where('user_id', 1)->first();
-        return collect(['success' => $candidate])->toJson();
+        $candidate = Candidate::with('user')->where('user_id', 1)->first();
+        return $this->sendResponse($candidate, 'Candidate Details Retreived Successfully');
 
     }
     public function changeCandidatePassword(Request $request)
