@@ -71,22 +71,13 @@ class VideoResumeController extends AppBaseController
 
                 $file = $request->file('video');
                 $path = 'storage/video-resume';
-                $extension = 'mp4';
-                $filename = uniqid() . time() . '.' . $file->getClientOriginalExtension() . $extension;
+                $filename = uniqid() . time() . '.' . $file->getClientOriginalExtension();
                 $file->move($path, $filename);
 
                 $candidate->update([
                     "video_resume_name" => $filename,
                     "video_resume_path" => $path
                 ]);
-
-                $id = Auth::id();
-                $candidate = Candidate::where('user_id', $id)->first();
-                if ($candidate && $candidate->video_resume_name) {
-                    $capturedVideo = true;
-                } else {
-                    $capturedVideo = false;
-                }
 
                 $this->notification([
                     "title" => 'Your video resume has been saved successfully',
