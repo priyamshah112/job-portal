@@ -183,7 +183,7 @@ class CandidateResumeController extends AppBaseController
         $validator  = Validator::make($input, [
             "category" => 'required',
             "department_id" => 'required',
-            "skills" => 'required|array',
+            "skills" => 'required',
             "qualification_id" => 'required',
             "previous_company" => 'required_if:category,==,experience',
             "previous_position" => 'required_if:category,==,experience',
