@@ -37,6 +37,10 @@ class Candidate extends Model
         'video_resume_path'
     ];
 
+    protected $casts = [
+        'skills' => 'array',
+    ];
+    
     public function user(){
         return $this->belongsTo(User::class)->whereNull('deleted_at');
     }
