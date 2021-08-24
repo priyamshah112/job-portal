@@ -552,6 +552,11 @@ class UserAccountController extends AppBaseController
         $user = User::where('id', $loggedUserId)->update(['first_name' => $request->name]);
         try {
             if ($request->has('profile_picture')) {
+                if ($request->profile_picture === null) 
+                {
+                    return $this->sendError("Profile Picture Cannot be Null.");
+                }
+
                 if (!empty($user->thumbnail)) {
                     Storage::disk('public')->delete('profile_pic/' . $loggedUserId . '/' . $user->thumbnail);
                 }
