@@ -61,11 +61,18 @@ class JobApiController extends AppBaseController
                     'video-resume' => 'Complete Video Resume',
                 ]);
             }
-            $jobs = Job::whereNull('deleted_at')->where(['draft' => '0'])->orderBy('updated_at')->get(); 
+            $jobs = Job::with('recruiter_details')
+            ->whereNull('deleted_at')
+            ->where(['draft' => '0'])
+            ->orderBy('updated_at')
+            ->get(); 
             $candidate = Candidate::where('user_id', $user->id)->first();
             foreach($jobs as $job)
             {
                $job['score'] = $this->score($job, $candidate->id);
+               $job['skillNames'] = $this->convertSkillIdsToSkillNames($job->skills);
+               $job['qualificationNames'] = $this->convertQualificationIdsToQualificationNames(($job->qualification_id));
+               $job['stateNames'] = $this->convertStateIdsToStateNames($job->state);
             }
             return $this->sendResponse($jobs, "Job List Retreived Successfully");
         }
