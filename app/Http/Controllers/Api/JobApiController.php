@@ -61,7 +61,7 @@ class JobApiController extends AppBaseController
                     'video-resume' => 'Complete Video Resume',
                 ]);
             }
-            $jobs = Job::with('recruiter_details')
+            $jobs = Job::with('recruiter_details','position')
             ->whereNull('deleted_at')
             ->where(['draft' => '0'])
             ->orderBy('updated_at')
