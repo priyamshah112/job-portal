@@ -46,7 +46,9 @@ class JobFairApiController extends AppBaseController
             ]);
         }
 
-        $job_fairs = JobFair::all();
+        $job_fairs = JobFair::with('department')
+        ->orderBy('updated_at','DESC')
+        ->get();
 
         return $this->sendResponse($job_fairs, "Job Fair Retreived Successfully");
     }
