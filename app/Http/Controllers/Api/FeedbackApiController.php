@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 
@@ -38,7 +39,6 @@ class FeedbackApiController extends AppBaseController
         $validator  = Validator::make($request->all(),[
             'subject' => 'required',
             'feedback' => 'required',
-            'fileToUpload' => 'mimes:jpeg,png|max:5048',
         ]);
 
         if($validator->fails()){
@@ -50,11 +50,27 @@ class FeedbackApiController extends AppBaseController
         try
         {
             $filename = "";
-            if ($request->hasFile('fileToUpload')) {
-                $filenameWithExt = $request->file('fileToUpload');
-                $path = 'storage/feedbacks';
-                $filename = uniqid() . time() . '.' . $filenameWithExt->getClientOriginalExtension();
-                $filenameWithExt->move($path, $filename);
+            if ($request->has('fileToUpload')) {
+                $path = 'storage/profile_pic';
+                if($request->encode === "base64"){
+                    $image_64 = $request->fileToUpload;
+                    if (preg_match('/^data:image\/(\w+);base64,/', $image_64)) {
+                        $data = substr($image_64, strpos($image_64, ',') + 1);
+                        $filename = uniqid() . time() . '.' . explode('/', explode(':', substr($image_64, 0, strpos($image_64, ';')))[1])[1];;
+                        Storage::disk('public')->put("feedbacks/".$filename, base64_decode($data));
+                    }
+                    else
+                    {
+                        return $this->sendError("Kindly, use base64 encoding methods to encrypt image.");
+                    }
+                }
+                else
+                {
+                    $filenameWithExt = $request->file('fileToUpload');
+                    $path = 'storage/feedbacks';
+                    $filename = uniqid() . time() . '.' . $filenameWithExt->getClientOriginalExtension();
+                    $filenameWithExt->move($path, $filename);
+                }
             }
             $user = Auth::user();
 
