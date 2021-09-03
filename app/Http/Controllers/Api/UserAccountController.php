@@ -560,10 +560,25 @@ class UserAccountController extends AppBaseController
                 if (!empty($user->thumbnail)) {
                     Storage::disk('public')->delete('profile_pic/' . $loggedUserId . '/' . $user->thumbnail);
                 }
-                $image = $request->file('profile_picture');
                 $path = 'storage/profile_pic';
-                $filename = uniqid() . time() . '.' . $image->getClientOriginalExtension();
-                $image->move($path, $filename);
+                if($request->encode === "base64"){
+                    $image_64 = $request->profile_picture;
+                    if (preg_match('/^data:image\/(\w+);base64,/', $image_64)) {
+                        $data = substr($image_64, strpos($image_64, ',') + 1);
+                        $filename = uniqid() . time() . '.' . explode('/', explode(':', substr($image_64, 0, strpos($image_64, ';')))[1])[1];;
+                        Storage::disk('public')->put("profile_pic/".$filename, base64_decode($data));
+                    }
+                    else
+                    {
+                        return $this->sendError("Kindly, use base64 encoding methods to encrypt image.");
+                    }
+                }
+                else
+                {
+                    $image = $request->file('profile_picture');
+                    $filename = uniqid() . time() . '.' . $image->getClientOriginalExtension();
+                    $image->move($path, $filename);
+                }
 
                 User::where('id', $loggedUserId)->update(["img_path" => $path, "image_name" => $filename]);
             }
