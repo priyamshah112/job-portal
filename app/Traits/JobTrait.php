@@ -157,7 +157,8 @@ trait JobTrait
 
         if($values !== null || !empty($values))
         {
-            foreach(json_decode($values) as $skill_id)
+            $values = gettype($values) == 'array' ? $values : json_decode($values);
+            foreach($values as $skill_id)
             {
                 $skill = Skill::where('id', $skill_id)->first();
                 if(!empty($skill))
