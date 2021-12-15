@@ -358,7 +358,7 @@
                     <div class="col-md-12 mt-3" id="capturedVideo"
                     style="display: {{ $capturedVideo ? 'block' : 'none' }};text-align: center">
                     <h3>Video CV</h3>
-                    <video width="600" height="500" controls>
+                    <video width="600" height="500" controls class="w-100">
                         <source
                             src="{{ URL::asset($candidate->video_resume_path . '/' . $candidate->video_resume_name) }}"
                             type="video/mp4">
