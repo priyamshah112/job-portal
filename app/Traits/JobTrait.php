@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-
+use App\Mail\SelectedCandidate;
 use App\Models\Candidate;
 use App\Models\City;
 use App\Models\Package;
@@ -14,6 +14,7 @@ use App\Models\State;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,7 +43,6 @@ trait JobTrait
             {
                 $score++;
             }
-
             if(in_array($this->age_by_dob($candidate->dateOfBirth), range($job->age_min,$job->age_max)))
             {
                 $score++;
@@ -53,7 +53,7 @@ trait JobTrait
                 $score++;
             }
 
-            if(count(array_intersect(json_decode($candidate->skills),json_decode($job->skills))) > 0)
+            if(count(array_intersect(gettype($candidate->skills) === 'array' ? $candidate->skills : json_decode($candidate->skills),gettype($job->skills) === 'array' ? $job->skills :json_decode($job->skills))) > 0)
             {
                 $score++;
             }
@@ -124,6 +124,7 @@ trait JobTrait
         }
         return false;
     }
+
     public function age_by_dob($dob){
         return Carbon::parse($dob)->age;
     }
@@ -226,6 +227,32 @@ trait JobTrait
             }
         }
         return $cityNames;
+    }
+
+    public function sendMailToRespectiveCandidate($job)
+    {
+        $users = User::where('user_type', 'candidate')->get();
+        foreach ($users as $user) {
+            if($this->checkCandidateProfileCompleted($user->id) && $this->checkVideoResumeCompleted($user->id))
+            {
+                if($this->score($job, $user->id) > 40)
+                { 
+                    try
+                    {
+                        $input = [
+                            'subject' => 'New Jobs is Posted by Recruiters  | NaukriWala.co.in',
+                            'email' => $user->email,
+                        ];
+
+                        Mail::to($input['email'])->send(new SelectedCandidate($input));
+                    }
+                    catch (\Exception $e)
+                    {
+                        // print("Mail has been not sent to ".$user->first_name." ".$user->last_name);
+                    }
+                }
+            }
+        }
     }
 
 }

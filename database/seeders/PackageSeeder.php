@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Package;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class PackageSeeder extends Seeder
@@ -14,51 +15,58 @@ class PackageSeeder extends Seeder
      */
     public function run()
     {
-        Package::create([
-            "plan_name" => "Basic Plan",
+        Package::updateOrCreate([
+            "plan_name" => "Basic Plan"
+        ],[
             "post_quota" => 12,
             "location_quota" => 1,
             "duration" => 12,
-            "amount" => 4000
+            "amount" => 5000
         ]);
-        Package::create([
-            "plan_name" => "Bronze Plan",
+        Package::updateOrCreate([
+            "plan_name" => "Bronze Plan"
+        ],[
             "post_quota" => 24,
             "location_quota" => 3,
             "duration" => 12,
-            "amount" => 7000
+            "amount" => 9000
         ]);
 
-        Package::create([
-            "plan_name" => "Silver Plan",
+        Package::updateOrCreate([
+            "plan_name" => "Silver Plan"
+        ],[
             "post_quota" => 60,
             "location_quota" => 3,
             "duration" => 12,
-            "amount" => 12000
+            "amount" => 14000
         ]);
 
-        Package::create([
-            "plan_name" => "Golden Plan",
+        Package::updateOrCreate([
+            "plan_name" => "Golden Plan"
+        ],[
             "post_quota" => "unlimited",
             "location_quota" => 3,
             "duration" => 12,
-            "amount" => 12000
+            "amount" => 18000
         ]);
 
-        Package::create([
-            "plan_name" => "Free Trial Plan",
+        Package::updateOrCreate([
+            "plan_name" => "Free Trial Plan"
+        ],[
             "post_quota" => 4,
             "location_quota" => 1,
             "duration" => 1,
             "amount" => 0
         ]);
         
-        Package::create([
-            "plan_name" => "Free Promotion Plan",
+        Package::withTrashed()->updateOrCreate([
+            "plan_name" => "Free Promotion Plan"
+        ],[
             "post_quota" => 12,
             "location_quota" => 1,
             "duration" => 3,
-            "amount" => 0
+            "amount" => 0,
+            "deleted_at" => Carbon::now()
         ]);
     }
 }

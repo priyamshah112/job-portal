@@ -41,6 +41,7 @@ class DashboardController extends Controller
       $packages = Package::all();
 
       $active_plan = RecruiterPackage::with('package')->where(['recruiter_id'=>auth()->user()->id,'status' => 'active'])->first();
+      
       return view('recruiter.dashboard', ['pageConfigs' => $pageConfigs])->with(compact(['packages','active_plan','candidates_count','jobs_count','total_hired_count','amount_spent']));
     }
   }

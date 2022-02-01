@@ -31,7 +31,7 @@
             <ul class="uk-navbar-nav">
                 <li class="uk-active">
                     <a href="#">
-                        <img src="{{ asset('images/logo/job_portal_logo.png') }}" alt="Logo" style="width: 300px;">
+                        <img src="{{ asset('images/logo/job_portal_logo.png') }}" alt="Logo" style="width: 160px;">
                     </a>
                 </li>
             </ul>

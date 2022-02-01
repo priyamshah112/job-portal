@@ -7,8 +7,9 @@ $configData = Helper::applClasses();
           <ul class="nav navbar-nav flex-row">
                <li class="nav-item mr-auto">
                     <a class="navbar-brand" href="{{url('dashboard/analytics')}}">
-                         <span class="brand-logo">
-                         </span>
+                         {{-- <span class="brand-logo">
+                         </span> --}}                         
+                         <img class="brand-logo w-100" src="{{ asset('images/logo/job_portal_logo.png') }}" alt="Logo" >
                     </a>
                </li>
                {{--      <li class="nav-item nav-toggle">--}}
@@ -19,8 +20,6 @@ $configData = Helper::applClasses();
                {{--      </li>--}}
           </ul>
      </div>
-     <img src="{{ asset('images/logo/job_portal_logo.png') }}" alt="Logo"
-          style="width: 300px;padding-bottom: 13%;padding-right: 23%;margin-top: -25%;margin-bottom: -25%;margin-left: 0;">
      <div class="shadow-bottom"></div>
      <div class="main-menu-content">
           <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">

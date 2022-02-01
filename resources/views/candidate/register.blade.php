@@ -21,7 +21,7 @@
   <div class="auth-inner row m-0">
     <!-- Brand logo-->
     <a class="d-none d-lg-block brand-logo" href="javascript:void(0);">
-      <img src="{{ asset('images/logo/job_portal_logo.png') }}" alt="Logo" style="width: 220px;">
+      <img src="{{ asset('images/logo/job_portal_logo.png') }}" alt="Logo" style="width: 160px;">
     </a>
     <!-- /Brand logo-->
     <!-- Left Text-->

@@ -85,7 +85,7 @@
             <div class="col-sm-12 col-md-12 col-12">
                 <div class="card card-app-design">
                     <div class="card-body text-center">
-                        @if(!empty($active_plan))
+                        @if(!empty($active_plan) && $active_plan->package !== null)
                             <h4 class="card-title mt-1 mb-75 pt-25">Your package is : <span class="text-primary font-weight-bold">{{$active_plan->package['plan_name']}}</span></h4>
                             <h5 class="card-title mt-1 mb-75 pt-25">Package Duration : <span class="text-primary font-weight-bold">{{$active_plan->from_date}} - {{$active_plan->to_date}}</span></h5>
                             <h5 class="card-title mt-1 mb-75 pt-25">Availed quota : <span class="text-primary font-weight-bold">{{$active_plan->post_quota_used ? $active_plan->post_quota_used : 0 }} / {{$active_plan->package['post_quota']}}</span></h5>

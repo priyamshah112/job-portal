@@ -191,7 +191,7 @@ class JobApiController extends AppBaseController
         $job->update($input);
 
         $user = auth()->user();
-        if($input['draft'] === '0')
+        if($input['draft'] === '0' || $input['draft'] === '1')
         {            
             $this->notification([
                 "title" => 'Your have published a job successfully.',
@@ -199,7 +199,10 @@ class JobApiController extends AppBaseController
                 "receiver_id" => $user->id,
                 "sender_id" => $user->id,
             ]);
+            
+            $job = Job::findOrFail($id);
             $this->incrementJobPostQuote($job->id, $user->id);
+            $this->sendMailToRespectiveCandidate($job);
         }
         else
         {

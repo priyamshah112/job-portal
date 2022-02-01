@@ -15,7 +15,7 @@
     <div class="card mb-0">
       <div class="card-body">
         <a href="javascript:void(0);" class="brand-logo">
-          <img src="{{ asset('images/logo/job_portal_logo.png') }}" alt="Logo" style="width: 300px;">
+          <img src="{{ asset('images/logo/job_portal_logo.png') }}" alt="Logo" style="width: 160px;">
           <h2 class="brand-text text-primary ml-1">Vuexy</h2>
         </a>
 

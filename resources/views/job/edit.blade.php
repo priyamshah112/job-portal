@@ -252,7 +252,7 @@
                             </div>
                         </div>
                     </div>
-                    @if(!empty($recruiter_package))                           
+                    @if(!empty($recruiter_package) && $recruiter_package->package !== null)                           
                         @for ($i=1 ; $i < $recruiter_package->package->location_quota; $i++)
                             <div class="row">
                                 <div class="col-lg-6 col-md-6">

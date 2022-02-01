@@ -24,8 +24,7 @@
             <div class="card mb-0">
                 <div class="card-body">
                     <a href="javascript:void(0);" class="brand-logo">
-                        <img src="{{ asset('images/logo/job_portal_logo.png') }}" alt="Logo"
-                            style="width: 300px;">
+                        <img src="{{ asset('images/logo/job_portal_logo.png') }}" alt="Logo" style="width: 160px;">
                     </a>
                     <h1>Account has been blocked.</h1>
                     <p>
