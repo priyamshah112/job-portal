@@ -38,11 +38,26 @@ class DashboardController extends Controller
         'created_by' => auth()->user()->id
         ])->sum('amount');
 
-      $packages = Package::all();
+      $free_package = Package::where('plan_name', "Free Trial Plan")->first();
+
+      $past_plan = RecruiterPackage::with('package')->where('recruiter_id', auth()->user()->id)->first();
+
+      if(!empty($past_plan))
+      {
+        $packages = Package::when(!empty($free_package), function($q) use ($free_package) {
+          $q->where('id', '!=', $free_package->id);
+        })->get();
+      }
+      else
+      {
+        $packages = Package::when(!empty($free_package), function($q) use ($free_package) {
+          $q->leftJoin('recruiter_packages', 'recruiter_packages.package_id', '=', 'packages.id')->where('recruiter_packages.package_id', '!=', $free_package->id)->orWhereNull('recruiter_packages.package_id')->select('packages.*', 'recruiter_packages.package_id');
+        })->get();
+      }
 
       $active_plan = RecruiterPackage::with('package')->where(['recruiter_id'=>auth()->user()->id,'status' => 'active'])->first();
-      
-      return view('recruiter.dashboard', ['pageConfigs' => $pageConfigs])->with(compact(['packages','active_plan','candidates_count','jobs_count','total_hired_count','amount_spent']));
+
+      return view('recruiter.dashboard', ['pageConfigs' => $pageConfigs])->with(compact(['packages','active_plan', 'past_plan', 'candidates_count','jobs_count','total_hired_count','amount_spent']));
     }
   }
 }

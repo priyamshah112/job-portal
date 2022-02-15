@@ -100,12 +100,18 @@
                     <div class="col">
 
                     </div>
+                    @if(!isset($past_plan))
                     <div class="col">
                         <h1 class="mb-75 pt-25">Upgrade Package</h1>
                     </div>
                     <div class="col text-right">
                         <div class="btn btn-primary p-1">30 days free trail</div>
                     </div>
+                    @else                    
+                    <div class="col  text-right">
+                        <h1 class="mb-75 pt-25">Upgrade Package</h1>
+                    </div>
+                    @endif
                 </div>
             </div>
             <!-- App Design Card -->
