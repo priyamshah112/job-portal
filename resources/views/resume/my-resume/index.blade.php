@@ -274,8 +274,8 @@
                         <hr class="p-0 text-primary mt-2">
                         <h6><strong>Qualification</strong></h6>
                         <div>
-                            <h4 class="badgeNew ml-4"> {{$candidate->qualification->name}} </h4>                                
                             @if ($candidate->qualification !== null)
+                                <h4 class="badgeNew ml-4"> {{$candidate->qualification->name}} </h4>                                
                             @endif
                         </div>
                         @if($candidate->category === 'experience')
