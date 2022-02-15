@@ -274,8 +274,8 @@
                         <hr class="p-0 text-primary mt-2">
                         <h6><strong>Qualification</strong></h6>
                         <div>
+                            <h4 class="badgeNew ml-4"> {{$candidate->qualification->name}} </h4>                                
                             @if ($candidate->qualification !== null)
-                                <h4 class="badgeNew ml-4"> {{$candidate->qualification->name}} </h4>                                
                             @endif
                         </div>
                         @if($candidate->category === 'experience')
@@ -288,6 +288,11 @@
                                 <p class="badgeNew ml-4">CTC: {{$candidate->previous_ctc}} ₹</p>
                             </div>
                         @endif
+                        <hr class="p-0 text-primary mt-2">
+                        <h6><strong>Linkedin</strong></h6>
+                        <div>
+                            <a class="badgeNew ml-4" href="{{ $candidate->linkedin_link !== null ? $candidate->linkedin_link : '#' }}"> {{$candidate->linkedin_link}} </a>  
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <div class="row mt-2">

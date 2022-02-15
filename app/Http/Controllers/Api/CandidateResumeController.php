@@ -79,6 +79,7 @@ class CandidateResumeController extends AppBaseController
                 'dateOfBirth' => $request->dateOfBirth,
                 'gender' => $request->gender,
                 'about' => $request->about,
+                'linkedin_link' => $request->linkedin_link,
             ]);
 
             $this->notification([

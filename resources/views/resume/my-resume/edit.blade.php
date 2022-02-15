@@ -150,6 +150,22 @@
                             </div>
                         </div>
                     </div>
+                    <div class="content-header">
+                        <h5 class="mb-0">Social Media</h5>
+                        <small>Enter Your Social Account.</small>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                <label for="linkedin_link" class="form-label">Linkedin</label>
+                                <input type="text"
+                                    class="form-control"
+                                    id="linkedin_link" name="linkedin_link" placeholder="https://linkedin.com"
+                                    value="{{ old('linkedin_link',$candidate->linkedin_link)}}"
+                                />
+                            </div>
+                        </div>
+                    </div>
                     <div class="d-flex justify-content-end">
                         <button type="submit" class="btn btn-primary btn-personal-update ">
                             <span class="align-middle d-sm-inline-block d-none">Update Personal Info</span>
@@ -348,7 +364,7 @@
                         <div class="col-lg-6 col-md-6">
                             <div class="form-group">
                                 <label for="firstName">Skills</label><span class="invalid-feedback">*</span>                            
-                                <select class="select2" id="skills" name="skills[]" multiple previous-selected="{{$candidate->skills}}">
+                                <select class="select2" id="skills" name="skills[]" multiple previous-selected="{{json_encode($candidate->skills)}}">
                                     <option value="">Select Skills</option>
                                 </select>
                             </div>

@@ -34,7 +34,8 @@ class Candidate extends Model
         'preferred_city', 
         'resume_path',
         'video_resume_name',
-        'video_resume_path'
+        'video_resume_path',
+        'linkedin_link',
     ];
 
     protected $casts = [
