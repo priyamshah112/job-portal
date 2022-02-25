@@ -33,6 +33,7 @@ use Illuminate\Support\Facades\Auth;
 // For Guest Route
 
 Route::view('/', 'welcome');
+Route::view('/privacy-policy', 'privacy-policy')->name('privacy.policy');
 Route::view('/pending-status', 'pending-status');
 Route::view('/pending-approval','pending-approval');
 Route::view('/account-blocked', 'account-blocked');

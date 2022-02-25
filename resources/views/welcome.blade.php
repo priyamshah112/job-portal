@@ -5,7 +5,11 @@
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.6.22/dist/css/uikit.min.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <style>
+        .footer p{
+            margin-top: 20px;
+        }
+    </style>
     <script>
         // Enable pusher logging - don't include this in production
         Pusher.logToConsole = true;
@@ -49,5 +53,13 @@
     </nav>
     <div>
         <img src="{{ asset('images/banner/coming_soon.png') }}" alt="" style="width: 100vw;">
+    </div>
+    <div class="footer uk-container">
+        <p class="uk-float-left"> <a href="{{ route('privacy.policy')}}">Privacy Policy</a></p>
+        <p class="uk-clearfix uk-float-right">
+            <span class="uk-float-md-left uk-d-block uk-d-md-inline-block uk-mt-25">COPYRIGHT &copy; <script>document.write(new Date().getFullYear())</script><a class="ml-25" href="#" target="_blank">NaukriWala</a>
+              <span class="uk-d-none uk-d-sm-inline-block">, All rights Reserved</span>
+            </span>
+        </p>
     </div>
 </body>
